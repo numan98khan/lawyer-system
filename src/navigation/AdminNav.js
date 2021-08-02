@@ -8,7 +8,10 @@ import Accounts from "../admin/Accounts";
 import Calender from "../admin/Calender";
 import Consultations from "../admin/Consultations";
 import NewCase from "../admin/NewCase";
+import Addclient from "../admin/NewCase/Addclient";
 import Tasks from "../admin/Tasks";
+import casedetails from "../admin/NewCase/casedetails";
+import PaymentOptions from "../admin/NewCase/PaymentOptions";
 
 class AdminNav extends Component {
   render() {
@@ -23,6 +26,9 @@ class AdminNav extends Component {
           <Route exact path="/tasks" component={Tasks} />
           <Route exact path="/consultations" component={Consultations} />
           <Route exact path="/accounts" component={Accounts} />
+          <Route exact path="/addclient" component={Addclient} />
+          <Route exact path="/casedetails" component={casedetails} />
+          <Route exact path="/paymentoptions" component={PaymentOptions} />
           
           
           {/* <Route exact path="/products" component={ProductList} />

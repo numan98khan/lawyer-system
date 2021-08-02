@@ -1,38 +1,79 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { ProductConsumer } from "../../context";
+import Button from "../../components/Button";
+import {Link} from 'react-router-dom'
 
-class Home extends Component {
+
+let styles = {
+
+  content: {
+    backgroundColor: 'white',
+    width: '400px',
+    height: 'auto',
+    color:'black',
+    alignItems:'center',
+    padding:'13px',
+    borderStyle:'solid',
+    borderWidth:'2px',
+    borderColor:'var(--mainPurple)'
+  },
+  container: {
+      color:'white',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'space-evenly',
+      width: '1000px',
+  },
+  newMatter:  {
+      textAlign:'center',
+      justifyContent:'center',
+      height:'100%'
+  },
+  newClient:  {
+      textAlign:'center',
+      justifyContent:'center',
+      height:'100%'
+  }
+}
+
+function Box(props) {
+
+  return (
+      <div style={styles.content}>
+          {props.content}
+      </div>
+  )
+}
+
+class NewCase extends Component {
   
     state={
         expanded: false
     }
 
-    handleExpandClick = () => {
-        this.setState({expanded: !this.state.expanded});
-    };
-
     render() {
-    var items = [
-        {
-            name: "Random Name #1",
-            description: "Probably the most random thing you have ever seen!"
-        },
-        {
-            name: "Random Name #2",
-            description: "Hello World!"
-        }
-    ]
+    const newClient = (
+      <div style={styles.newClient}>
+        <p>If you want to add a new client....</p>
+      <Link to="/addclient"><Button variant="contained" color="primary">Add client</Button></Link>
+      </div>
+    )
+    const newMatter = (
+      <div style={styles.newMatter}>
+          <p>Make case for existing client</p>
+          <Link to="/casedetails"><Button variant="contained" color="primary">case details</Button></Link>
+      </div>
+    )
 
     return (
       <ProductConsumer>
         {value => {
           return (
-            <div className="container py-5">
-              <div className="row">
-                <div className="col-10 mx-auto text-center text-slanted text-blue my-5">
-                  <h1>{"New Case"}</h1>
+            <div className="App-screen">
+                <div style={styles.container}>
+                <Box content={newClient}></Box>
+                <Box content={newMatter}></Box>
                 </div>
-              </div>
             </div>
           );
         }}
@@ -40,7 +81,7 @@ class Home extends Component {
     );
   }
 }
-export default Home;
+export default NewCase;
 
 
 

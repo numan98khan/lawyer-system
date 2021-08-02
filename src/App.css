@@ -1,5 +1,25 @@
+:root {
+  --mainBlue: #2a2a72;
+  --lightBlue: #009ffd;
+  --mainWhite: #f3f3f3;
+  --mainDark: #232528;
+  --mainYellow: #ffa400;
+  --mainPurple: #6600ff;
+}
+
 .App {
   text-align: center;
+}
+
+.App-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  padding-top: 10%;
+  padding-bottom: 10%;
 }
 
 .App-logo {
