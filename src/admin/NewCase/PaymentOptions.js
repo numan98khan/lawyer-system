@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {useHistory} from 'react-router-dom';
+import {useHistory,useLocation} from 'react-router-dom';
 import FormControl from '@material-ui/core/FormControl';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -13,6 +13,8 @@ import DateFnsUtils from '@date-io/date-fns';
 import countryList from 'react-select-country-list';
 import moment from 'moment';
 import ButtonContainer from '../../components/Button';
+import { ProductConsumer } from "../../context";
+
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
@@ -68,7 +70,16 @@ function PaymentOptions() {
     const [installmentDate,setDate]=useState(moment())
     const [amount,setAmount]=useState('0.00')
     const history = useHistory()
-
+    const location = useLocation();
+    const payload = {
+        FeeType,
+        feeAgreement,
+        agreedFee,
+        VAT,
+        advancePayment,
+        installmentDate,
+        amount
+    }
     const handleAdd = () => {
 
     }
@@ -83,7 +94,7 @@ function PaymentOptions() {
                     {
                         optionsFeeType.map((item,index)=>{
 
-                            return <MenuItem value={item.value}>{item.name}</MenuItem>
+                            return <MenuItem key = {index} value={item.value}>{item.name}</MenuItem>
                         })
                     }
                 </Select>
@@ -143,7 +154,17 @@ function PaymentOptions() {
             </ButtonContainer>
             <br></br>
             <FormControl className={classes.formControl}>
-                <ButtonContainer onClick={()=>{history.push('/')}}>Save payment options</ButtonContainer>
+            <ProductConsumer>
+                {value => {
+                    location.state.PaymentOptions = payload;
+                    return (<ButtonContainer onClick={()=>{
+                        value.addClientAndCase(location.state);
+                        // history.push('/')
+                }}>Save payment options</ButtonContainer>)
+            
+                }}  
+            </ProductConsumer>
+          
             </FormControl>
         </div>
     )

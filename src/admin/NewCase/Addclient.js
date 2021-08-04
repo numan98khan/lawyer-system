@@ -47,6 +47,8 @@ function Addclient() {
     const [contactNumber, setcontactNumber] = useState('')
     const [preferredCorr, setpreferredCorr] = useState('')
     const [howDidYou, sethowDidYou] = useState('')
+    const payload = {title,firstName,lastName,dob,gender,nationality,companyName,address,town,country,zipcode,email,contactNumber,preferredCorr,howDidYou};
+    
     return (
         <div className="App-screen">
             <FormControl className={classes.formControl}>
@@ -62,7 +64,7 @@ function Addclient() {
                 </Select>
             </FormControl>
             <FormControl className={classes.formControl}>
-                <TextField onChange={(e)=>{setfirstName(e.target.value)}} label="first name"></TextField>
+                <TextField name = "firstname" onChange={(e)=>{setfirstName(e.target.value)}} label="first name"></TextField>
             </FormControl>
             <FormControl className={classes.formControl}>
                 <TextField onChange={(e)=>{setlastName(e.target.value)}} label="last name"></TextField>
@@ -85,7 +87,7 @@ function Addclient() {
                     label="Date of birth"
                     format="MM/dd/yyyy"
                     value={dob}
-                    onChange={(e)=>{setdob(e.target.value)}}
+                    onChange={(e)=>{setdob(e)}}
                     KeyboardButtonProps={{
                         'aria-label': 'change date',
                     }}
@@ -153,7 +155,7 @@ function Addclient() {
                 <TextField onChange={(e)=>{sethowDidYou(e.target.value)}} label="how did you hear about us?"></TextField>
             </FormControl>
             <FormControl className={classes.formControl}>
-                <ButtonContainer onClick={()=>{history.push('/casedetails')}}>Save client</ButtonContainer>
+                <ButtonContainer onClick={()=>{history.push({pathname:'/casedetails',state:{clientDetails:payload}})}}>Save client</ButtonContainer>
             </FormControl>
 
         </div>

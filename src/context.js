@@ -118,7 +118,49 @@ class ProductProvider extends Component {
     // });
 
   }
-
+  addClientAndCase = (payload) => {
+  //add client and make new client user
+  // TODO  
+  //this.signUp()
+  //var client_key
+  fire.getFire().database()
+  .ref("/clients")
+  .push(
+    payload.clientDetails)
+    .then((snap)=> {
+      // Update successful.
+      var client_key = snap.key;
+      payload.caseDetails.clientId = client_key;
+      fire.getFire().database()
+      .ref("/cases")
+      .push(
+        payload.caseDetails)
+        .then((snap)=> {
+          
+          console.log(snap.doc)
+          
+          var case_key = snap.key;
+          payload.paymentOptions.clientid = client_key;
+          payload.paymentOptions.caseid = case_key;
+          fire.getFire().database()
+          .ref("/invoice")
+          .push(
+            payload.paymentOptions)
+            .then((snap)=> {
+              // Update successful.
+              console.log("case and client added successfully");
+      
+  });  
+  //add case of client
+  
+          // Update successful.
+          // console.log(snap.key)
+      
+  });  
+  //add case of client
+  });  
+  //add case of client
+  }
   
   setNotifData = () => {
     var fb=fire.getFire();
@@ -1121,6 +1163,7 @@ signUp(email,displayname,password, image)
           removeItem: this.removeItem,
           clearCart: this.clearCart,
           checkoutCart: this.checkoutCart, 
+          addClientAndCase :this.addClientAndCase 
         }}
       >
         {this.props.children}

@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {useHistory} from 'react-router-dom';
+import {useHistory,useLocation} from 'react-router-dom';
 import FormControl from '@material-ui/core/FormControl';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 function casedetails() {
+    const location = useLocation();
     const history = useHistory();
     const classes = useStyles();
     const [category, setCategory] = useState('')
@@ -36,6 +37,21 @@ function casedetails() {
     const [criminalRecord, setCriminalRecord] = useState('No')
     const [explanationOfCriminal, setexplanationOfCriminal] = useState('')
     const [AdditionalInformation, setAdditionalInformation] = useState('')
+    const payload = {
+        category,
+        subCategory,
+        briefDescription,
+        caseSupervisor,
+        caseWorker,
+        clientInstructions,
+        adviceToClient,
+        planOfAction,
+        chancesOfSuccess,
+        conflictsofInterest,
+        criminalRecord,
+        explanationOfCriminal,
+        AdditionalInformation
+    }
     return (
         <div className="App-screen">
             <FormControl className={classes.formControl}>
@@ -222,7 +238,13 @@ function casedetails() {
                 <TextField variant = "outlined" multiline = {true} minRows={'5'} onChange={(e)=>{setAdditionalInformation(e.target.value)}} label="additional information"></TextField>
             </FormControl>
             <FormControl className={classes.formControl}>
-                <ButtonContainer onClick={()=>{history.push('/paymentoptions')}}>Save case details</ButtonContainer>
+                <ButtonContainer onClick={()=>{
+                    location.state.caseDetails = payload;
+                    history.push({
+                        pathname:'/paymentoptions',
+                        state: location.state
+                    })
+            }}>Save case details</ButtonContainer>
             </FormControl>
         </div>
     )
