@@ -1,46 +1,195 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
+// import Product from "./Product";
+import Title from "../../components/Title";
 import { ProductConsumer } from "../../context";
 
-class Home extends Component {
-  
-    state={
-        expanded: false
-    }
+import clsx from 'clsx';
+// import { makeStyles } from '@material-ui/core/styles';
+import Drawer from '@material-ui/core/Drawer';
+// import Button from '@material-ui/core/Button';
+// import List from '@material-ui/core/List';
+// // import Divider from '@material-ui/core/Divider';
+// import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+// import ListItemText from '@material-ui/core/ListItemText';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import MailIcon from '@material-ui/icons/Mail';
+import IconButton from '@material-ui/core/IconButton';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
-    handleExpandClick = () => {
-        this.setState({expanded: !this.state.expanded});
-    };
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Button from '@material-ui/core/Button';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from '@material-ui/core/Dialog';
 
-    render() {
-    var items = [
-        {
-            name: "Random Name #1",
-            description: "Probably the most random thing you have ever seen!"
-        },
-        {
-            name: "Random Name #2",
-            description: "Hello World!"
-        }
-    ]
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Checkbox from '@material-ui/core/Checkbox';
+import Avatar from '@material-ui/core/Avatar';
+
+// import {useHistory} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+
+
+import TextField from '@material-ui/core/TextField';
+
+import Divider from '@material-ui/core/Divider';
+import Typography from '@material-ui/core/Typography';
+
+import Rating from '@material-ui/lab/Rating';
+
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+
+import Paper from '@material-ui/core/Paper';
+
+import ItemDetails from './DisplayItem';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
+  },
+}));
+
+class ReviewList extends Component {
+
+  extractProduct(products, pid){
+    var newArray = products.filter(function (el) {
+      // console.log(el)
+      return el.id === pid
+    });
+
+    return newArray[0];
+  } 
+
+  state = {
+    value:2,
+    open: false,
+  }
+  handleClose = () => {
+    this.setState({open: false});
+  }
+
+  handleToggle = () => {
+    // setOpen(!open);
+    this.setState({open: !this.state.open});
+  }
+
+  render() {
+    // const classes = useStyles();
+
+    // const classes = useStyles();
+    // const [open, setOpen] = React.useState(false);
+    // const handleClose = () => {
+    //   setOpen(false);
+    // };
+    // const handleToggle = () => {
+    //   setOpen(!open);
+    // };
+    // const history = useHistory();
+
+
+    const MyBackDrop = <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" open={this.state.open}>
+                <DialogTitle id="simple-dialog-title">Set backup account</DialogTitle>
+
+              </Dialog>
 
     return (
-      <ProductConsumer>
-        {value => {
-          return (
-            <div className="container py-5">
-              <div className="row">
-                <div className="col-10 mx-auto text-center text-slanted text-blue my-5">
-                  <h1>{"HOME"}</h1>
-                </div>
-              </div>
+      <Fragment>
+      
+        <div className="py-5">
+          <div className="container">
+            <Title title="Our Clients" />
+            <ProductConsumer>
+              {value => {
+                  return <TextField style={{}} 
+                        color='primary'
+                        id="outlined-basic" 
+                        label="Search Clients" 
+                        variant="outlined"
+                        onChange={value.searchClients} />;          
+              }}
+            </ProductConsumer>
+            <div className="row">
+
+              
+            
+
+            <ProductConsumer>
+            {value => {
+              return <List style={{width:'100%'}}>
+              {/* <ItemDetails review={value.reviewDetail} />   */}
+                  
+              {value.clientsList.map((client) => {
+                // const labelId = `checkbox-list-secondary-label-${productReview}`;
+                // const fetchedProduct = this.extractProduct(value.products, productReview.productId)
+                // console.log(productReview.review)
+                return (
+                  <div>
+                  {/*MyBackDrop*/}
+                  <ListItem 
+                    button
+                    // onClick={() => console.log('go to details')} 
+                    
+                    onClick={()=>{this.props.history.push({pathname:'/clientdetails',state:{clientDetails: client}})}} 
+                    
+                    alignItems="flex-start">
+                    {
+
+                    // <ListItemAvatar>
+                    //   <Avatar alt="Remy Sharp" src='{fetchedProduct.img}' />
+                    // </ListItemAvatar>
+                    
+                    }
+                    <ListItemText
+                      primary={client.firstName + ' ' + client.lastName}
+                      secondary={
+                        <React.Fragment>
+                          <Typography
+                            component="span"
+                            variant="body2"
+                            // className={classes.inline}
+                            color="textPrimary"
+                          >
+                            {client.companyName}
+                          </Typography>
+                          
+                          {" — "} {client.email}
+                        </React.Fragment>
+                      }
+                    />
+                  </ListItem>
+                  <Divider 
+                  // variant="inset" 
+                  component="li" />
+                  </div>
+              );
+              })}
+
+              
+                
+            
+              </List>
+            }}
+            </ProductConsumer>
+
+            
+
             </div>
-          );
-        }}
-      </ProductConsumer>
+          </div>
+        </div>
+      </Fragment>
     );
   }
 }
-export default Home;
+
+export default withRouter(ReviewList);
+
 
 
 

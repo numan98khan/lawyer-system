@@ -13,6 +13,8 @@ import Tasks from "../admin/Tasks";
 import casedetails from "../admin/NewCase/casedetails";
 import PaymentOptions from "../admin/NewCase/PaymentOptions";
 
+import ClientDetails from "../admin/Home/DisplayItem";
+
 class AdminNav extends Component {
   render() {
     return (
@@ -30,6 +32,7 @@ class AdminNav extends Component {
           <Route exact path="/casedetails" component={casedetails} />
           <Route exact path="/paymentoptions" component={PaymentOptions} />
           
+          <Route exact path="/clientdetails" component={ClientDetails} />
           
           {/* <Route exact path="/products" component={ProductList} />
           <Route component={Default} /> */}
