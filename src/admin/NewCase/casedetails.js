@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState,useEffect} from 'react'
 import {useHistory,useLocation} from 'react-router-dom';
 import FormControl from '@material-ui/core/FormControl';
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,6 +9,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import countryList from 'react-select-country-list';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import ButtonContainer from '../../components/Button';
+import Title from "../../components/Title"
 import {nulllist,optionsChances,optionsCaseWorker,optionsCaseSupervisor,optionsHousingLaw,optionsConsumerLaw,optionsCriminalLaw,optionsPersonalInjury,optionsImmigrationAssylum,optionsHumanRights,optionsEmploymentLaw,optionsFamilyLaw} from './lists'
 
 const useStyles = makeStyles((theme) => ({
@@ -33,8 +34,8 @@ function casedetails() {
     const [adviceToClient, setAdviceToClient] = useState('')
     const [planOfAction, setPlanOfAction] = useState('')
     const [chancesOfSuccess, setChances] = useState('')
-    const [conflictsofInterest, setConflictsofInterest] = useState('No')
-    const [criminalRecord, setCriminalRecord] = useState('No')
+    const [conflictsofInterest, setConflictsofInterest] = useState('no')
+    const [criminalRecord, setCriminalRecord] = useState('no')
     const [explanationOfCriminal, setexplanationOfCriminal] = useState('')
     const [AdditionalInformation, setAdditionalInformation] = useState('')
     const payload = {
@@ -52,8 +53,17 @@ function casedetails() {
         explanationOfCriminal,
         AdditionalInformation
     }
+    useEffect(() => {
+        
+        return () => {
+            // console.log("passed:",location.state)
+        }
+    })
     return (
         <div className="App-screen">
+            <div style={{marginBottom:"5%"}}>
+              <Title title="Enter case information"/>
+            </div>
             <FormControl className={classes.formControl}>
                 <InputLabel>category</InputLabel>
                 <Select
@@ -164,7 +174,7 @@ function casedetails() {
             <FormControl className={classes.formControl}>
                 <InputLabel>case supervisor</InputLabel>
                 <Select
-                value={subCategory}
+                value={caseSupervisor}
                 onChange={(e)=>{setCaseSupervisor(e.target.value)}}
                 >
                 {
@@ -177,7 +187,7 @@ function casedetails() {
             <FormControl className={classes.formControl}>
                 <InputLabel>case worker</InputLabel>
                 <Select
-                value={subCategory}
+                value={caseWorker}
                 onChange={(e)=>{setCaseWorker(e.target.value)}}
                 >
                 {
@@ -212,13 +222,13 @@ function casedetails() {
                 </Select>
             </FormControl>
             <FormControl className={classes.formControl}>
-                <InputLabel>conflictsofInterest</InputLabel>
+                <InputLabel>conflicts of Interest</InputLabel>
                 <Select
                 value={conflictsofInterest}
                 onChange={(e)=>{setConflictsofInterest(e.target.value)}}
                 >
-                <MenuItem value={'yes'}>Mr.</MenuItem>
-                <MenuItem value={'no.'}>Mrs.</MenuItem>
+                <MenuItem value={'yes'}>yes</MenuItem>
+                <MenuItem value={'no'}>no</MenuItem>
                 </Select>
             </FormControl>
             <FormControl className={classes.formControl}>
@@ -227,8 +237,8 @@ function casedetails() {
                 value={conflictsofInterest}
                 onChange={(e)=>{setCriminalRecord(e.target.value)}}
                 >
-                <MenuItem value={'yes'}>Mr.</MenuItem>
-                <MenuItem value={'no.'}>Mrs.</MenuItem>
+                <MenuItem value={'yes'}>yes</MenuItem>
+                <MenuItem value={'no'}>no</MenuItem>
                 </Select>
             </FormControl>
             <FormControl className={classes.formControl}>

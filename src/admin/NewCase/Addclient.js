@@ -7,6 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import 'date-fns';
+import Title from "../../components/Title"
 import DateFnsUtils from '@date-io/date-fns';
 import countryList from 'react-select-country-list';
 import moment from 'moment';
@@ -16,6 +17,10 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
+import PropTypes from 'prop-types';
+import MaskedInput from 'react-text-mask';
+import Input from '@material-ui/core/Input';
+
 
 const countries = countryList().getData();
 countries.unshift({value:"",label:""});
@@ -29,13 +34,34 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
+  function TextMaskCustom(props) {
+    const { inputRef, ...other } = props;
+  
+    return (
+      <MaskedInput
+        {...other}
+        ref={(ref) => {
+          inputRef(ref ? ref.inputElement : null);
+        }}
+        mask={[/\d/, /\d/, /\d/, /\d/, /\d/ , '-', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/]}
+        placeholderChar={'\u2000'}
+        showMask
+      />
+    );
+  }
+  
+  TextMaskCustom.propTypes = {
+    inputRef: PropTypes.func.isRequired,
+  };
+
 function Addclient() {
     const history = useHistory();
     const classes = useStyles();
     const [title, settitle] = useState('')
     const [firstName, setfirstName] = useState('')
+    const [cnic, setcnic] = useState('')
     const [lastName, setlastName] = useState('')
-    const [dob, setdob] = useState(moment.now())
+    const [dob, setdob] = useState(new Date())
     const [gender, setgender] = useState('')
     const [nationality, setnationality] = useState('')
     const [companyName, setcompanyName] = useState('')
@@ -47,20 +73,23 @@ function Addclient() {
     const [contactNumber, setcontactNumber] = useState('')
     const [preferredCorr, setpreferredCorr] = useState('')
     const [howDidYou, sethowDidYou] = useState('')
-    const payload = {title,firstName,lastName,dob,gender,nationality,companyName,address,town,country,zipcode,email,contactNumber,preferredCorr,howDidYou};
+    const payload = {title,firstName,lastName,dob,gender,nationality,companyName,address,town,country,zipcode,email,contactNumber,preferredCorr,howDidYou,cnic};
     
     return (
         <div className="App-screen">
+            <div style={{marginBottom:"5%"}}>
+              <Title title="Enter client information"/>
+            </div>
             <FormControl className={classes.formControl}>
                 <InputLabel>title</InputLabel>
                 <Select
                 value={title}
                 onChange={(e)=>{settitle(e.target.value)}}
                 >
-                <MenuItem value={'Mr'}>Mr.</MenuItem>
+                <MenuItem value={'Mr.'}>Mr.</MenuItem>
                 <MenuItem value={'Mrs.'}>Mrs.</MenuItem>
                 <MenuItem value={'Ms.'}>Ms.</MenuItem>
-                <MenuItem value={'Other'}>Other</MenuItem>
+                <MenuItem value={'(Other)'}>Other</MenuItem>
                 </Select>
             </FormControl>
             <FormControl className={classes.formControl}>
@@ -78,6 +107,14 @@ function Addclient() {
                 <MenuItem value={'male'}>male</MenuItem>
                 <MenuItem value={'female'}>female</MenuItem>
                 </Select>
+            </FormControl>
+            <FormControl className={classes.formControl}>
+                <InputLabel>cnic</InputLabel>
+                <Input
+                value={cnic}
+                onChange={(e)=>{setcnic(e.target.value)}}
+                inputComponent={TextMaskCustom}
+                />
             </FormControl>
             <FormControl className={classes.formControl}>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -110,7 +147,7 @@ function Addclient() {
             <FormControl className={classes.formControl}>
                 <InputLabel>nationality</InputLabel>
                 <Select
-                value={country}
+                value={nationality}
                 onChange={(e)=>{setnationality(e.target.value)}}
                 >
                 {
@@ -155,7 +192,7 @@ function Addclient() {
                 <TextField onChange={(e)=>{sethowDidYou(e.target.value)}} label="how did you hear about us?"></TextField>
             </FormControl>
             <FormControl className={classes.formControl}>
-                <ButtonContainer onClick={()=>{history.push({pathname:'/casedetails',state:{clientDetails:payload}})}}>Save client</ButtonContainer>
+                <ButtonContainer onClick={()=>{history.push({pathname:'/addcasedetails',state:{clientDetails:payload}})}}>Save client</ButtonContainer>
             </FormControl>
 
         </div>

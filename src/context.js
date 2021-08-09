@@ -67,8 +67,7 @@ class ProductProvider extends Component {
 
     // case vars
     clientsList: [],
-    clientsListDup: []
-
+    casesList: []
   };
 
 
@@ -111,6 +110,7 @@ class ProductProvider extends Component {
 
         // case functions
         this.setClients();
+        this.setCases();
 
       } else {
         // No user is signed in.
@@ -153,40 +153,91 @@ class ProductProvider extends Component {
         // console.log(this.state.clientsList)
 
         this.setState(() => {
-          return { clientsList: clients,
-                clientsListDup: clients};
+          return { clientsList: clients};
         });
 
-        console.log(this.state.clientsList)
+        // console.log(this.state.clientsList)
 
     }.bind(this));
     
   }
 
-  searchClients = query => {
-    var searchTerm = query.target.value.toLowerCase()
-    var newArray = this.state.clientsListDup.filter(function (el) {
+  setCases = () => {
+    var fb=fire.getFire();
+    var cases = [];
 
-      console.log(el)
-      
+    fb.database().ref('/')
+      .child('cases')
+      .on("value", function(snapshot) {
+        cases = []
+        snapshot.forEach((doc) => {
+          
+          // // console.log(doc.toJSON())
+          var tempJSON = doc.toJSON()  
+              tempJSON['id'] = doc.key
+              // tempJSON['inCart'] = false
+            
+              cases.push(tempJSON);
+              // console.log(tempJSON)
 
-      return el.firstName.toLowerCase().indexOf(searchTerm) !== -1
-            || el.lastName.toLowerCase().indexOf(searchTerm) !== -1
-            || el.email.toLowerCase().indexOf(searchTerm) !== -1
-    });
+        });
+        // console.log('hires ', hires.filter(function(el){ return el.state === 'REQUESTED' }).length)
+        
+        // console.log(this.state.clientsList)
 
-    this.setState(() => {
-      return {
-        clientsList: newArray,
-      };
-    });
+        this.setState(
+           { casesList: cases}, ()=>{console.log(this.state.casesList)}
+        );
+
+        // console.log(this.state.clientsList)
+
+    }.bind(this));
+    
   }
 
+
+  addCaseAndPayments = (payload) => {
+    payload.caseDetails.clientId = payload.clientDetails.id
+    fire.getFire().database()
+    .ref("/cases")
+    .push(
+      payload.caseDetails)
+      .then((snap)=> {
+        
+        // console.log(snap.doc)
+        
+        var case_key = snap.key;
+        payload.paymentOptions.clientid = payload.clientDetails.id;
+        payload.paymentOptions.caseid = case_key;
+        fire.getFire().database()
+        .ref("/invoice")
+        .push(
+          payload.paymentOptions)
+          .then((snap)=> {
+            // Update successful.
+            console.log("case and payment options added successfully");
+    
+          });
+        
+      }); 
+      }
   addClientAndCase = (payload) => {
-  //add client and make new client user
-  // TODO  
-  //this.signUp()
-  //var client_key
+  //convert dates to strings
+  payload.clientDetails.dob = payload.clientDetails.dob.toLocaleString();
+  let id = payload.clientDetails.id
+  //if user exists already then only add case details and payment options
+  fire.getFire().database().ref(`clients/${id}/`).once("value", snapshot => {
+    if (snapshot.exists()){
+      console.log("client exists!");
+      this.addCaseAndPayments(payload);
+    }
+  });
+  if (id)
+    return;
+  
+  //if new users then add client and make new client user, case, payment options
+  //convert dates to strings
+  payload.paymentOptions.installmentDate = payload.paymentOptions.installmentDate.toLocaleString();
   fire.getFire().database()
   .ref("/clients")
   .push(
@@ -201,9 +252,10 @@ class ProductProvider extends Component {
         payload.caseDetails)
         .then((snap)=> {
           
-          console.log(snap.doc)
+          // console.log(snap.doc)
           
           var case_key = snap.key;
+          var client_key = payload.caseDetails.clientId;
           payload.paymentOptions.clientid = client_key;
           payload.paymentOptions.caseid = case_key;
           fire.getFire().database()
@@ -212,7 +264,7 @@ class ProductProvider extends Component {
             payload.paymentOptions)
             .then((snap)=> {
               // Update successful.
-              console.log("case and client added successfully");
+              console.log("case, client and payment options added successfully");
       
   });  
   //add case of client

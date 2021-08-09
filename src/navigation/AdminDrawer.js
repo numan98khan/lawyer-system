@@ -10,18 +10,18 @@ import Drawer from '@material-ui/core/Drawer';
 // import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 // import Divider from '@material-ui/core/Divider';
+import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import WorkOutlineIcon from '@material-ui/icons/WorkOutline';
+import ForumIcon from '@material-ui/icons/Forum';
+import AddIcon from '@material-ui/icons/Add';
+import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-
-import LocalMallIcon from '@material-ui/icons/LocalMall';
-import LocalOfferIcon from '@material-ui/icons/LocalOffer';
-import RateReviewIcon from '@material-ui/icons/RateReview';
+import GroupIcon from '@material-ui/icons/Group';
+import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import LiveTvIcon from '@material-ui/icons/LiveTv';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 
@@ -30,6 +30,7 @@ import Switch from '@material-ui/core/Switch';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Redirect } from "react-router";
 import HomeIcon from '@material-ui/icons/Home';
+import { CalendarToday } from "@material-ui/icons";
 
 
 const AntSwitch = withStyles((theme) => ({
@@ -130,8 +131,64 @@ class MainDrawer extends Component {
                       }}
                       >
               <ListItem button key={'New Case'}>
-                  <ListItemIcon>{<LocalMallIcon  />}</ListItemIcon>
+                  <ListItemIcon>{<AddIcon></AddIcon>}</ListItemIcon>
                   <ListItemText primary={'New Case'} />
+                </ListItem>
+              </NavLink>
+              <NavLink to='/clients'
+                      style={{
+                        color:'#000000',
+                        textDecoration: 'none',
+                      }}
+                      activeStyle={{
+                        fontWeight: "bold",
+                        color: "#6600ff",
+                      }}
+                      isActive={(match, location) => {
+                        if (!match) {
+                          // // console.log(match)
+                          return false;
+                        }
+                        
+                        // value.switchScreen(location.pathname)
+                        // // console.log(location.pathname)
+                        // // console.log(location)
+                        // only consider an event active if its event id is an odd number
+                        const eventID = parseInt(match.params.eventID);
+                        return !isNaN(eventID) && eventID % 2 === 1;
+                      }}
+                      >
+              <ListItem button key={'Clients'}>
+                  <ListItemIcon>{<GroupIcon></GroupIcon>}</ListItemIcon>
+                  <ListItemText primary={'Clients'} />
+                </ListItem>
+              </NavLink>
+              <NavLink to='/cases'
+                      style={{
+                        color:'#000000',
+                        textDecoration: 'none',
+                      }}
+                      activeStyle={{
+                        fontWeight: "bold",
+                        color: "#6600ff",
+                      }}
+                      isActive={(match, location) => {
+                        if (!match) {
+                          // // console.log(match)
+                          return false;
+                        }
+                        
+                        // value.switchScreen(location.pathname)
+                        // // console.log(location.pathname)
+                        // // console.log(location)
+                        // only consider an event active if its event id is an odd number
+                        const eventID = parseInt(match.params.eventID);
+                        return !isNaN(eventID) && eventID % 2 === 1;
+                      }}
+                      >
+              <ListItem button key={'Cases'}>
+                  <ListItemIcon>{<WorkOutlineIcon></WorkOutlineIcon>}</ListItemIcon>
+                  <ListItemText primary={'Cases'} />
                 </ListItem>
               </NavLink>
 
@@ -146,7 +203,7 @@ class MainDrawer extends Component {
                         }}>
 
               <ListItem button key={'Calender'}>
-                  <ListItemIcon>{<ShoppingCartIcon />}</ListItemIcon>
+                  <ListItemIcon>{<CalendarTodayIcon></CalendarTodayIcon>}</ListItemIcon>
                   <ListItemText primary={'Calender'} />
                 </ListItem>
               </NavLink>
@@ -161,7 +218,7 @@ class MainDrawer extends Component {
                   color: "#6600ff"
                 }}>
                 <ListItem button key={'Tasks'}>
-                  <ListItemIcon>{<LocalOfferIcon />}</ListItemIcon>
+                  <ListItemIcon>{<FormatListNumberedIcon></FormatListNumberedIcon>}</ListItemIcon>
                   <ListItemText primary={'Tasks'} />
                 </ListItem>
               </NavLink>
@@ -176,7 +233,7 @@ class MainDrawer extends Component {
                           color: "#6600ff"
                         }}>
               <ListItem button key={'Consultations'}>
-                <ListItemIcon>{<RateReviewIcon />}</ListItemIcon>
+                <ListItemIcon>{<ForumIcon></ForumIcon>}</ListItemIcon>
                 <ListItemText primary={'Consultations'} />
               </ListItem>
               </NavLink>
@@ -191,7 +248,7 @@ class MainDrawer extends Component {
                           color: "#6600ff"
                         }}>
                 <ListItem button key={'Accounts'}>
-                  <ListItemIcon>{<LiveTvIcon />}</ListItemIcon>
+                  <ListItemIcon>{<AccountBalanceIcon></AccountBalanceIcon>}</ListItemIcon>
                   <ListItemText primary={'Accounts'} />
                 </ListItem>
               </NavLink>

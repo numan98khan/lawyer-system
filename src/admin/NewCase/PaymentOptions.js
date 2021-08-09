@@ -14,6 +14,7 @@ import countryList from 'react-select-country-list';
 import moment from 'moment';
 import ButtonContainer from '../../components/Button';
 import { ProductConsumer } from "../../context";
+import Title from "../../components/Title"
 
 import {
   MuiPickersUtilsProvider,
@@ -67,7 +68,7 @@ function PaymentOptions() {
     const [agreedFee,setAgreedFee]=useState('0.00')
     const [VAT,VATapplicable]=useState('yes')
     const [advancePayment,setAdvancePayment]=useState('0.00')
-    const [installmentDate,setDate]=useState(moment())
+    const [installmentDate,setDate]=useState(new Date())
     const [amount,setAmount]=useState('0.00')
     const history = useHistory()
     const location = useLocation();
@@ -85,6 +86,9 @@ function PaymentOptions() {
     }
     return (
         <div className="App-screen">
+            <div style={{marginBottom:"5%"}}>
+              <Title title="Enter payment information"/>
+            </div>
             <FormControl className={classes.formControl}>
                 <InputLabel>fee type</InputLabel>
                 <Select
@@ -135,7 +139,7 @@ function PaymentOptions() {
                     label="installment date"
                     format="MM/dd/yyyy"
                     value={installmentDate}
-                    onChange={(e)=>{setDate(e.target.value)}}
+                    onChange={(e)=>{setDate(e)}}
                     KeyboardButtonProps={{
                         'aria-label': 'change date',
                     }}
@@ -156,10 +160,10 @@ function PaymentOptions() {
             <FormControl className={classes.formControl}>
             <ProductConsumer>
                 {value => {
-                    location.state.PaymentOptions = payload;
+                    location.state.paymentOptions = payload;
                     return (<ButtonContainer onClick={()=>{
                         value.addClientAndCase(location.state);
-                        // history.push('/')
+                        history.push('/')
                 }}>Save payment options</ButtonContainer>)
             
                 }}  
