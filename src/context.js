@@ -195,7 +195,7 @@ class ProductProvider extends Component {
     
   }
 
-
+//add case and payments to existing client
   addCaseAndPayments = (payload) => {
     payload.caseDetails.clientId = payload.clientDetails.id
     fire.getFire().database()
@@ -221,6 +221,25 @@ class ProductProvider extends Component {
         
       }); 
       }
+
+  //add client user account
+  addClientUser = (email) => {
+    console.log(email)
+
+    var fb= fire.getFire();
+      fb.auth().createUserWithEmailAndPassword(email, '123456').then(function() {
+        
+      }.bind(this)
+      ).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        alert(errorMessage)
+        // ...
+      });
+  }
+
+  //adds new client or details for existing client
   addClientAndCase = (payload) => {
   //convert dates to strings
   payload.clientDetails.dob = payload.clientDetails.dob.toLocaleString();
@@ -232,12 +251,29 @@ class ProductProvider extends Component {
       this.addCaseAndPayments(payload);
     }
   });
+  //return if id exists
   if (id)
     return;
   
   //if new users then add client and make new client user, case, payment options
   //convert dates to strings
   payload.paymentOptions.installmentDate = payload.paymentOptions.installmentDate.toLocaleString();
+  this.addClientAndCase(payload);
+}
+
+  addClientAndCase = (payload) => {
+  //add client and make new client user
+
+  var currentdate = new Date(); 
+  var datetime = currentdate.getDate() + "/"
+                  + (currentdate.getMonth()+1)  + "/" 
+                  + currentdate.getFullYear() + " @ "  
+                  + currentdate.getHours() + ":"  
+                  + currentdate.getMinutes() + ":" 
+                  + currentdate.getSeconds();
+
+  payload.clientDetails['registration_time'] = datetime;
+
   fire.getFire().database()
   .ref("/clients")
   .push(
@@ -265,17 +301,14 @@ class ProductProvider extends Component {
             .then((snap)=> {
               // Update successful.
               console.log("case, client and payment options added successfully");
+              this.addClientUser(payload.clientDetails.email);
+              console.log("case and client added successfully");
+              
       
   });  
-  //add case of client
-  
-          // Update successful.
-          // console.log(snap.key)
       
   });  
-  //add case of client
   });  
-  //add case of client
   }
 
 
@@ -813,7 +846,8 @@ class ProductProvider extends Component {
           // checkoutCart: this.checkoutCart, 
 
           // case function exports
-          addClientAndCase :this.addClientAndCase 
+          addClientAndCase :this.addClientAndCase, 
+          addClientUser: this.addClientUser
         }}
       >
         {this.props.children}
