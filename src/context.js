@@ -182,11 +182,42 @@ class ProductProvider extends Component {
     });
   }
 
+  addClientUser = (email) => {
+    console.log(email)
+
+    var fb= fire.getFire();
+      fb.auth().createUserWithEmailAndPassword(email, '123456').then(function() {
+        
+      }.bind(this)
+      ).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        alert(errorMessage)
+        // ...
+      });
+  }
+
   addClientAndCase = (payload) => {
   //add client and make new client user
   // TODO  
   //this.signUp()
+  
   //var client_key
+
+  var currentdate = new Date(); 
+  var datetime = currentdate.getDate() + "/"
+                  + (currentdate.getMonth()+1)  + "/" 
+                  + currentdate.getFullYear() + " @ "  
+                  + currentdate.getHours() + ":"  
+                  + currentdate.getMinutes() + ":" 
+                  + currentdate.getSeconds();
+
+  payload.clientDetails.push({
+      key:   "registration date",
+      value: datetime
+  });
+
   fire.getFire().database()
   .ref("/clients")
   .push(
@@ -212,7 +243,9 @@ class ProductProvider extends Component {
             payload.paymentOptions)
             .then((snap)=> {
               // Update successful.
+              this.addClientUser(payload.clientDetails.email);
               console.log("case and client added successfully");
+              
       
   });  
   //add case of client
@@ -761,7 +794,8 @@ class ProductProvider extends Component {
           // checkoutCart: this.checkoutCart, 
 
           // case function exports
-          addClientAndCase :this.addClientAndCase 
+          addClientAndCase :this.addClientAndCase, 
+          addClientUser: this.addClientUser
         }}
       >
         {this.props.children}

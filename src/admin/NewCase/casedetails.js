@@ -24,6 +24,7 @@ function casedetails() {
     const location = useLocation();
     const history = useHistory();
     const classes = useStyles();
+    const [caseSrc, setCaseSrc] = useState('')
     const [category, setCategory] = useState('')
     const [subCategory, setSubCategory] = useState('')
     const [briefDescription, setBriefDescription] = useState('')
@@ -38,6 +39,7 @@ function casedetails() {
     const [explanationOfCriminal, setexplanationOfCriminal] = useState('')
     const [AdditionalInformation, setAdditionalInformation] = useState('')
     const payload = {
+        caseSrc,
         category,
         subCategory,
         briefDescription,
@@ -196,6 +198,9 @@ function casedetails() {
             </FormControl>
             <FormControl className={classes.formControl}>
                 <TextField variant = "outlined" multiline = {true} minRows={'5'} onChange={(e)=>{setPlanOfAction(e.target.value)}} label="plan of action"></TextField>
+            </FormControl>
+            <FormControl className={classes.formControl}>
+                <TextField variant = "outlined" minRows={'5'} onChange={(e)=>{setPlanOfAction(e.target.value)}} label="case source"></TextField>
             </FormControl>
             <FormControl className={classes.formControl}>
                 <InputLabel>chances of success</InputLabel>

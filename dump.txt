@@ -1,0 +1,23 @@
+new field in the case details --> couse source
+create a client user --> after new client added
+(default password for now)
+
+make client details and case details page
+client details: name, cnic, number of cases, date of registration
+
+case details: client name, case description, date of case creation, case ID
+add conflict of interest feature:
+check if case which is being currently added conflicts with previously added cases
+(check by comparing client name or cnic)
+
+file numbers --> each case will have its own unique file number
+
+when a case is closed and reopened, the case will have the same file number but different case number
+for example:
+001/001 is file: 001 and case 001
+when case is closed and reopened
+the new case id will be 001/002
+
+there will be a clerk account ---> clerk can make entry in peshi list
+admin will create clerk accounts
+admin and workers can view peshi list

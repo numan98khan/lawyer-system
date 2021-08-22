@@ -73,6 +73,22 @@ class NewCase extends Component {
                 <div style={styles.container}>
                 <Box content={newClient}></Box>
                 <Box content={newMatter}></Box>
+                
+                <ProductConsumer>
+                    {value => {
+                        // location.state.PaymentOptions = payload;
+                        return (<div style={styles.newClient}>
+                          <p>If you want to add a new client....</p>
+                          <Button onClick={()=>{
+                                  value.addClientUser('num@gmail.com');
+                              }}
+                          variant="contained" color="primary">Add User</Button>
+                        </div>)
+                
+                    }}  
+                </ProductConsumer>
+
+                  
                 </div>
             </div>
           );
