@@ -258,10 +258,10 @@ class ProductProvider extends Component {
   //if new users then add client and make new client user, case, payment options
   //convert dates to strings
   payload.paymentOptions.installmentDate = payload.paymentOptions.installmentDate.toLocaleString();
-  this.addClientAndCase(payload);
+  this.uploadPayload(payload);
 }
 
-  addClientAndCase = (payload) => {
+  uploadPayload = (payload) => {
   //add client and make new client user
 
   var currentdate = new Date(); 
@@ -287,11 +287,52 @@ class ProductProvider extends Component {
       .push(
         payload.caseDetails)
         .then((snap)=> {
-          
-          // console.log(snap.doc)
-          
           var case_key = snap.key;
           var client_key = payload.caseDetails.clientId;
+
+          case_key = "-MizLZx3Z1VmdIPYHsV1"
+          
+          fire.getFire().database().ref("files/"+case_key).once("value")
+          
+          fire.getFire().database().child("files").orderByChild("case_id").equalTo(case_key).once("value",snapshot => {
+              if (snapshot.exists()){
+                const userData = snapshot.val();
+                console.log("exists!", userData);
+              }
+          });
+
+          fire.getFire().database().ref("files/"+case_key).once("value")
+            .then(function(snapshot) {
+              var a = snapshot.exists();  // true
+              console.log(a);
+              
+              if (a) {
+                console.log(case_key)
+                
+                // fire.getFire().database()
+                // .ref("/files")
+                // .child().set()
+              } else {
+                
+                fire.getFire().database().ref("/files").once("value")
+                  .then(function(snapshot) {
+                    console.log(snapshot.numChildren()); 
+                        
+                    fire.getFire().database()
+                    .ref("/files")
+                    .child(snapshot.numChildren()).set({no:0, case_id:case_key})
+                  });
+
+              }
+            });
+
+            // console.log(a);
+
+          // fire.getFire().database()
+          // .ref("/cases")
+          // .push()
+          // console.log(snap.doc)
+          
           payload.paymentOptions.clientid = client_key;
           payload.paymentOptions.caseid = case_key;
           fire.getFire().database()

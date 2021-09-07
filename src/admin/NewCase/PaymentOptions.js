@@ -163,7 +163,7 @@ function PaymentOptions() {
                     location.state.paymentOptions = payload;
                     return (<ButtonContainer onClick={()=>{
                         value.addClientAndCase(location.state);
-                        history.push('/')
+                        // history.push('/')
                 }}>Save payment options</ButtonContainer>)
             
                 }}  
