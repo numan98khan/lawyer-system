@@ -26,6 +26,7 @@ function casedetails() {
     const history = useHistory();
     const classes = useStyles();
     const [caseSrc, setCaseSrc] = useState('')
+    const [caseStatus, setCaseStatus] = useState('open')
     const [category, setCategory] = useState('')
     const [subCategory, setSubCategory] = useState('')
     const [briefDescription, setBriefDescription] = useState('')
@@ -40,6 +41,7 @@ function casedetails() {
     const [explanationOfCriminal, setexplanationOfCriminal] = useState('')
     const [AdditionalInformation, setAdditionalInformation] = useState('')
     const payload = {
+        caseStatus,
         caseSrc,
         category,
         subCategory,

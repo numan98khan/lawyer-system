@@ -290,17 +290,34 @@ class ProductProvider extends Component {
           var case_key = snap.key;
           var client_key = payload.caseDetails.clientId;
 
-          case_key = "-MizLZx3Z1VmdIPYHsV1"
+          case_key = "-MjBCWsyyO50PiizCzWa"
           
-          fire.getFire().database().ref("files/"+case_key).once("value")
-          
-          fire.getFire().database().child("files").orderByChild("case_id").equalTo(case_key).once("value",snapshot => {
-              if (snapshot.exists()){
+          // fire.getFire().database().ref("files/"+case_key).once("value")
+
+          fire.getFire().database().ref("files").orderByChild("case_id").equalTo(case_key).once("value",snapshot => {
+            // console.log("checking this", snapshot.val());
+            if (snapshot.exists()){
+                
                 const userData = snapshot.val();
-                console.log("exists!", userData);
+                // console.log("exists!", Object.keys(snapshot.toJSON())[0]);
+                
+                var file_key = Object.keys(snapshot.toJSON())[0];
+                fire.getFire().database().ref("files/" + file_key.toString() + "/").transaction(function(file_) {
+                  console.log("transact!");
+                  if (file_) {
+                    
+                    file_.no++;
+                     
+                  }
+                  // console.log("post:" , post);
+                  // console.log("liked: ", liked);
+                  return file_;
+                });
+                // liked = false;
               }
           });
-
+          
+          /*
           fire.getFire().database().ref("files/"+case_key).once("value")
             .then(function(snapshot) {
               var a = snapshot.exists();  // true
@@ -325,6 +342,7 @@ class ProductProvider extends Component {
 
               }
             });
+            //*/
 
             // console.log(a);
 
