@@ -195,7 +195,7 @@ class ProductProvider extends Component {
     
   }
 
-//add case and payments to existing client
+  // add case and payments to existing client
   addCaseAndPayments = (payload) => {
     payload.caseDetails.clientId = payload.clientDetails.id
     fire.getFire().database()
@@ -216,11 +216,47 @@ class ProductProvider extends Component {
           .then((snap)=> {
             // Update successful.
             console.log("case and payment options added successfully");
-    
+            // Code for case addition to the same client file
+            //*
+            var client_key = payload.paymentOptions.clientid
+
+            fire.getFire().database()
+            .ref("files")
+            .orderByChild("client_id")
+            .equalTo(client_key)
+            .once("value",snapshot => {
+              
+              console.log("searching!");
+              
+              if (snapshot.exists()){
+
+                console.log("found it!");
+              
+                var file_key = Object.keys(snapshot.toJSON())[0];
+
+                console.log(file_key);
+                
+                fire.getFire().database().ref("files/" + file_key.toString() + "/cases/").once("value")
+                .then(function(snapshot) {
+                  console.log("num of children");
+                  console.log(snapshot.numChildren()); 
+
+                  fire.getFire().database().ref("files/" + file_key.toString() + "/cases/")
+                  .child(snapshot.numChildren())
+                  .set({case_id: case_key})
+              
+                });
+
+                  // fire.getFire().database().ref("files/" + file_key.toString() + "/cases/").child
+              }
+
+            });
+
+            //*/
           });
         
       }); 
-      }
+  }
 
   //add client user account
   addClientUser = (email) => {
@@ -259,7 +295,7 @@ class ProductProvider extends Component {
   //convert dates to strings
   payload.paymentOptions.installmentDate = payload.paymentOptions.installmentDate.toLocaleString();
   this.uploadPayload(payload);
-}
+  }
 
   uploadPayload = (payload) => {
   //add client and make new client user
@@ -319,37 +355,31 @@ class ProductProvider extends Component {
           //*/
           
           // Code for new client and file creation
-          /*
-          fire.getFire().database()
-          .ref("/files")
-          .child(1).set({cases:{0:case_key}, client_id:client_key})
-          //*/
-          /*
+          //*
+          console.log("debug!"); 
+     
           fire.getFire().database().ref("/files").once("value")
               .then(function(snapshot) {
+                console.log("doin somethin"); 
                 console.log(snapshot.numChildren()); 
-
-                // fire.getFire().database()
-                // .ref("/files")
-                // .child(client_key).child(snapshot.numChildren()).set({case_id:case_key})
-                
-                
                 fire.getFire().database()
                 .ref("/files")
-                .child(snapshot.numChildren()).set({cases:{0:case_key}, client_id:client_key})
+                .child(snapshot.numChildren())
+                .set({cases:{0:{case_id: case_key}}, client_id:client_key})
+            });
 
-              });
-
-          
+          //*/
           // Code for case addition to the same client file
-          //*
-          client_key = "-MjJCCx9f7SCrNWsq_L3"
+          /*
+          client_key = "-MjQPM-yOQGsKRb79SII"
 
           fire.getFire().database()
           .ref("files")
           .orderByChild("client_id")
           .equalTo(client_key)
           .once("value",snapshot => {
+            
+            console.log("searching!");
             if (snapshot.exists()){
               console.log("found it!");
               var file_key = Object.keys(snapshot.toJSON())[0];
@@ -363,7 +393,7 @@ class ProductProvider extends Component {
 
                 fire.getFire().database().ref("files/" + file_key.toString() + "/cases/")
                 .child(snapshot.numChildren())
-                .set({})
+                .set({case_id: case_key})
             
               });
 
