@@ -67,7 +67,8 @@ class ProductProvider extends Component {
 
     // case vars
     clientsList: [],
-    casesList: []
+    casesList: [],
+    filesList: []
   };
 
 
@@ -90,7 +91,6 @@ class ProductProvider extends Component {
         // this.setSellerOrders();
         
         this.setUserData();
-        
         // this.setCategories();
         // this.cartFetchDB();
         // this.setHire();
@@ -111,6 +111,7 @@ class ProductProvider extends Component {
         // case functions
         this.setClients();
         this.setCases();
+        this.setFiles();
 
       } else {
         // No user is signed in.
@@ -129,6 +130,55 @@ class ProductProvider extends Component {
 
   }
 
+  setFiles = () => {
+    console.log("setting files")
+    var fb=fire.getFire();
+    var files = [];
+
+    fb.database().ref('/')
+      .child('files')
+      .on("value", function(snapshot) {
+        files = []
+        snapshot.forEach((doc) => {
+          
+          // // console.log(doc.toJSON())
+          var tempJSON = doc.toJSON()  
+              tempJSON['id'] = doc.key
+              // tempJSON['inCart'] = false
+            
+              files.push(tempJSON);
+              // console.log(tempJSON)
+
+        });
+        // console.log('hires ', hires.filter(function(el){ return el.state === 'REQUESTED' }).length)
+        
+        // console.log(this.state.clientsList)
+
+        this.setState(
+           { filesList: files}
+          //  , ()=>{console.log(this.state.filesList)}
+        );
+
+        // console.log(this.state.clientsList)
+
+    }.bind(this));
+  }
+
+  //add hearing entry
+  addHearingEntry = (details) => {
+    return new Promise((resolve, reject)=> {
+      fire.getFire().database()
+      .ref("/hearings")
+      .push(details).then(()=>{
+        console.log("added entry to hearings")
+        resolve()
+      })
+      .catch((err)=>{
+        reject(err)
+      })
+    })
+   
+  }
   setClients = () => {
     var fb=fire.getFire();
     var clients = [];
@@ -154,7 +204,9 @@ class ProductProvider extends Component {
 
         this.setState(() => {
           return { clientsList: clients};
-        });
+        },
+        // ()=>{console.log(this.state.clientsList)}
+        );
 
         // console.log(this.state.clientsList)
 
@@ -186,7 +238,8 @@ class ProductProvider extends Component {
         // console.log(this.state.clientsList)
 
         this.setState(
-           { casesList: cases}, ()=>{console.log(this.state.casesList)}
+           { casesList: cases}
+          //  , ()=>{console.log(this.state.casesList)}
         );
 
         // console.log(this.state.clientsList)
@@ -208,7 +261,7 @@ class ProductProvider extends Component {
         
         var case_key = snap.key;
         payload.paymentOptions.clientid = payload.clientDetails.id;
-        payload.paymentOptions.caseid = case_key;
+        payload.caseDetails.case_id = case_key;
         fire.getFire().database()
         .ref("/invoice")
         .push(
@@ -243,7 +296,7 @@ class ProductProvider extends Component {
 
                   fire.getFire().database().ref("files/" + file_key.toString() + "/cases/")
                   .child(snapshot.numChildren())
-                  .set({case_id: case_key})
+                  .set(payload.caseDetails)
               
                 });
 
@@ -279,6 +332,9 @@ class ProductProvider extends Component {
   addClientAndCase = (payload) => {
   //convert dates to strings
   payload.clientDetails.dob = payload.clientDetails.dob.toLocaleString();
+  for(var i=0; i< payload.paymentOptions.installmentDate.length; i++){
+    payload.paymentOptions.installmentDate[i].date = payload.paymentOptions.installmentDate[i].date.toLocaleString();
+  }
   let id = payload.clientDetails.id
   //if user exists already then only add case details and payment options
   fire.getFire().database().ref(`clients/${id}/`).once("value", snapshot => {
@@ -293,7 +349,7 @@ class ProductProvider extends Component {
   
   //if new users then add client and make new client user, case, payment options
   //convert dates to strings
-  payload.paymentOptions.installmentDate = payload.paymentOptions.installmentDate.toLocaleString();
+  // payload.paymentOptions.installmentDate = payload.paymentOptions.installmentDate.toLocaleString();
   this.uploadPayload(payload);
   }
 
@@ -357,7 +413,7 @@ class ProductProvider extends Component {
           // Code for new client and file creation
           //*
           console.log("debug!"); 
-     
+          payload.caseDetails.case_id = case_key;
           fire.getFire().database().ref("/files").once("value")
               .then(function(snapshot) {
                 console.log("doin somethin"); 
@@ -365,7 +421,7 @@ class ProductProvider extends Component {
                 fire.getFire().database()
                 .ref("/files")
                 .child(snapshot.numChildren())
-                .set({cases:{0:{case_id: case_key}}, client_id:client_key})
+                .set({cases:{0:payload.caseDetails}, client_id:client_key})
             });
 
           //*/
@@ -979,7 +1035,7 @@ class ProductProvider extends Component {
           signUp: this.signUp,
           storeInDatabase: this.storeInDatabase,
           signOut: this.signOut,
-          
+          addHearingEntry: this.addHearingEntry,
           handleRDetailClose: this.handleRDetailClose,
           handleRDetailToggle: this.handleRDetailToggle,
           

@@ -28,6 +28,7 @@ function casedetails() {
     const classes = useStyles();
     const [caseSrc, setCaseSrc] = useState('')
     // const [caseStatus, setCaseStatus] = useState('open')
+    const [caseTitle, setcaseTitle] = useState('')
     const [category, setCategory] = useState('')
     const [subCategory, setSubCategory] = useState('')
     const [briefDescription, setBriefDescription] = useState('')
@@ -43,6 +44,7 @@ function casedetails() {
     const [AdditionalInformation, setAdditionalInformation] = useState('')
     const payload = {
         // caseStatus,
+        caseTitle,
         caseSrc,
         category,
         subCategory,
@@ -69,6 +71,9 @@ function casedetails() {
             <div style={{marginBottom:"5%"}}>
               <Title title="Enter case information"/>
             </div>
+            <FormControl className={classes.formControl}>
+                <TextField variant = "outlined" multiline = {true} onChange={(e)=>{setcaseTitle(e.target.value)}} label="case title"></TextField>
+            </FormControl>
             <FormControl className={classes.formControl}>
                 <InputLabel>category</InputLabel>
                 <Select
