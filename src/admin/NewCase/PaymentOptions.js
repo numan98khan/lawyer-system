@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import {useHistory,useLocation} from 'react-router-dom';
 import FormControl from '@material-ui/core/FormControl';
 import { makeStyles } from '@material-ui/core/styles';
@@ -7,6 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import RemoveIcon from '@material-ui/icons/RemoveCircleOutline';
 import InputLabel from '@material-ui/core/InputLabel';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
@@ -62,13 +63,14 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 function PaymentOptions() {
+   const [installmentcount, setinstallmentcount] = useState(0)
     const [FeeType,setFeeType] = useState('Fixed Fee')
     const classes = useStyles();
     const [feeAgreement,setFeeAgreement]=useState('')
     const [agreedFee,setAgreedFee]=useState('0.00')
     const [VAT,VATapplicable]=useState('yes')
     const [advancePayment,setAdvancePayment]=useState('0.00')
-    const [installmentDate,setDate]=useState(new Date())
+    const [installmentDate,setinstallmentDate]=useState([])
     const [amount,setAmount]=useState('0.00')
     const history = useHistory()
     const location = useLocation();
@@ -131,38 +133,80 @@ function PaymentOptions() {
                 onChange={(e)=>{setAdvancePayment(e.target.value)}} label="advance payment"></TextField>
             </FormControl>
             <br></br>
-            <FormControl className={classes.formControl}>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
-                    margin="normal"
-                    id="date-picker-dialog"
-                    label="installment date"
-                    format="MM/dd/yyyy"
-                    value={installmentDate}
-                    onChange={(e)=>{setDate(e)}}
-                    KeyboardButtonProps={{
-                        'aria-label': 'change date',
-                    }}
-                    />
-                </MuiPickersUtilsProvider>
-            </FormControl>
-            <FormControl className={classes.formControl}>
-                <TextField
-                InputProps={{
-                    startAdornment: <InputAdornment position="start">Rs.</InputAdornment>,
-                  }}
-                onChange={(e)=>{setAmount(e.target.value)}} label="installment amount"></TextField>
-            </FormControl>
-            <ButtonContainer>
+            {
+                [...Array(installmentcount)].map((e, i) => {
+                    return(
+                        <Fragment>
+                             <FormControl className={classes.formControl}>
+                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                    <KeyboardDatePicker
+                                    margin="normal"
+                                    id="date-picker-dialog"
+                                    label="installment date"
+                                    format="MM/dd/yyyy"
+                                    value={installmentDate[i]?installmentDate[i].date:null}
+                                    onChange={(e)=>{
+                                        setinstallmentDate(
+                                            installmentDate.map((item,idx) => 
+                                                idx === i 
+                                                ? {...item, date : e} 
+                                                : item 
+                                        ))
+                                    }}
+                                    KeyboardButtonProps={{
+                                        'aria-label': 'change date',
+                                    }}
+                                    />
+                                </MuiPickersUtilsProvider>
+                            </FormControl>
+                            <FormControl className={classes.formControl}>
+                                <TextField
+                                value = {installmentDate[i]?installmentDate[i].amount:null}
+                                InputProps={{
+                                    startAdornment: <InputAdornment position="start">Rs.</InputAdornment>,
+                                }}
+                                onChange={(e)=>{
+                                    setinstallmentDate(
+                                        installmentDate.map((item,idx) => 
+                                            idx === i 
+                                            ? {...item, amount : e.target.value} 
+                                            : item 
+                                    ))
+                                }} label="installment amount"></TextField>
+                            </FormControl>
+                        </Fragment>
+                    )
+                })
+
+            }
+           <div className="row">
+
+            <ButtonContainer onClick={()=>{
+                setinstallmentcount(installmentcount + 1)
+                setinstallmentDate(oldarray => [...oldarray,
+                {
+                    date: new Date(),
+                    amount: ''
+                }
+                ])
+                }}>
             <AddCircleOutlineIcon color="action" fontSize="large"></AddCircleOutlineIcon>
             </ButtonContainer>
+           {installmentcount>0 && <ButtonContainer onClick={()=>{
+                setinstallmentDate(installmentDate.filter((item,idx) => idx != installmentcount - 1));
+                setinstallmentcount(installmentcount - 1);
+                }}>
+            <RemoveIcon color="action" fontSize="large"></RemoveIcon>
+            </ButtonContainer>}
+           </div>
             <br></br>
             <FormControl className={classes.formControl}>
             <ProductConsumer>
                 {value => {
                     location.state.paymentOptions = payload;
                     return (<ButtonContainer onClick={()=>{
-                        value.addClientAndCase(location.state);
+                        // value.addClientAndCase(location.state);
+                        console.log(payload)
                         // history.push('/')
                 }}>Save payment options</ButtonContainer>)
             
