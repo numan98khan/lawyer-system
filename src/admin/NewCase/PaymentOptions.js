@@ -179,6 +179,7 @@ function PaymentOptions() {
                 })
 
             }
+            <h3 style={{color:' var(--mainPurple)',fontSize:'14px'}}>Add Instalment</h3>
            <div className="row">
 
             <ButtonContainer onClick={()=>{
