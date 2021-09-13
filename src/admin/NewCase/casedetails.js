@@ -10,7 +10,8 @@ import countryList from 'react-select-country-list';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import ButtonContainer from '../../components/Button';
 import Title from "../../components/Title"
-import {nulllist,optionsChances,optionsCaseWorker,optionsCaseSupervisor,optionsHousingLaw,optionsConsumerLaw,optionsCriminalLaw,optionsPersonalInjury,optionsImmigrationAssylum,optionsHumanRights,optionsEmploymentLaw,optionsFamilyLaw} from './lists'
+import {nulllist,optionsCivilLitigation,optionsChances,optionsCaseWorker,optionsCaseSupervisor,optionsHousingLaw,optionsConsumerLaw,optionsCriminalLaw,optionsPersonalInjury,optionsImmigrationAssylum,optionsHumanRights,optionsEmploymentLaw,optionsFamilyLaw} from './lists'
+import { Fragment } from 'react';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -26,7 +27,7 @@ function casedetails() {
     const history = useHistory();
     const classes = useStyles();
     const [caseSrc, setCaseSrc] = useState('')
-    const [caseStatus, setCaseStatus] = useState('open')
+    // const [caseStatus, setCaseStatus] = useState('open')
     const [category, setCategory] = useState('')
     const [subCategory, setSubCategory] = useState('')
     const [briefDescription, setBriefDescription] = useState('')
@@ -41,7 +42,7 @@ function casedetails() {
     const [explanationOfCriminal, setexplanationOfCriminal] = useState('')
     const [AdditionalInformation, setAdditionalInformation] = useState('')
     const payload = {
-        caseStatus,
+        // caseStatus,
         caseSrc,
         category,
         subCategory,
@@ -93,16 +94,11 @@ function casedetails() {
                 >
                     {
                         category === 'Civil Litigation'?
-                        <>
-                            <MenuItem value="Boundary and neighbour disputes">Boundary and neighbour disputes</MenuItem>
-                            <MenuItem value="Building disputes">Building disputes</MenuItem>
-                            <MenuItem value="Consumer disputes">Consumer disputes</MenuItem>
-                            <MenuItem value="Contractual disputes">Contractual disputes</MenuItem>
-                            <MenuItem value="Landlord and tenant disputes">Landlord and tenant disputes</MenuItem>
-                            <MenuItem value="Professional Negligence">Professional Negligence</MenuItem>
-                            <MenuItem value="Property disputes">Property disputes</MenuItem>
-                            <MenuItem value="Wills and inheritence disputes">Wills and inheritence disputes</MenuItem>
-                        </>
+                        optionsCivilLitigation.map((options,index)=>{
+                            
+                            return <MenuItem key={index} value={options.value}>{options.name}</MenuItem>
+                    })
+                        
                         :
 
                         category === 'Consumer Law'?

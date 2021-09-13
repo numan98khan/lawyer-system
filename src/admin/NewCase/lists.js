@@ -1,3 +1,37 @@
+export const optionsCivilLitigation = [
+{
+    value:"Boundary and neighbour disputes",
+    name:"Boundary and neighbour disputes"
+},
+{
+    value:"Building disputes",
+    name:"Building disputes"
+},
+{
+    value:"Consumer disputes",
+    name:"Consumer disputes"
+},
+{
+    value:"Contractual disputes",
+    name:"Contractual disputes"
+},
+{
+    value:"Landlord and tenant disputes",
+    name:"Landlord and tenant disputes"
+},
+{
+    value:"Professional Negligence",
+    name:"Professional Negligence"
+},
+{
+    value:"Property disputes",
+    name:"Property disputes"
+},
+{
+    value:"Wills and inheritence disputes",
+    name:"Wills and inheritence disputes"
+}
+]
 const optionsConsumerLaw = [
     {
         name:"",
