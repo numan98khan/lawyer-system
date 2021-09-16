@@ -68,7 +68,8 @@ class ProductProvider extends Component {
     // case vars
     clientsList: [],
     casesList: [],
-    filesList: []
+    filesList: [],
+    peshiList: []
   };
 
 
@@ -112,6 +113,7 @@ class ProductProvider extends Component {
         this.setClients();
         this.setCases();
         this.setFiles();
+        this.setPeshiList();
 
       } else {
         // No user is signed in.
@@ -128,6 +130,49 @@ class ProductProvider extends Component {
     //   // An error happened.
     // });
 
+  }
+
+  setPeshiList = () => {
+    console.log("setting peshi list")
+    var fb = fire.getFire();
+    var peshis = [];
+
+    fb.database().ref('/')
+      .child('hearings')
+      .on("value", function(snapshot) {
+        peshis = []
+        snapshot.forEach((doc) => {
+          
+          // // console.log(doc.toJSON())
+          var tempJSON = doc.toJSON() 
+              // tempJSON['inCart'] = false
+            
+              peshis.push(tempJSON);
+              // console.log(tempJSON)
+
+        });
+        // console.log('hires ', hires.filter(function(el){ return el.state === 'REQUESTED' }).length)
+        
+        console.log("debug it")
+        console.log(new Date(peshis[0].next_proceedings_date))
+        var peshisList = peshis.sort((a, b) => new Date(a.next_proceedings_date) - new Date(b.next_proceedings_date))
+
+        var counter = 0;
+        var item;
+        for (item of peshisList) {
+          // ... do something with s ...
+          counter += 1 
+          item['id'] = counter
+        }
+
+        this.setState(
+           { peshiList: peshisList}
+           , ()=>{console.log(this.state.peshiList)}
+        );
+
+        // console.log(this.state.clientsList)
+
+    }.bind(this));    
   }
 
   setFiles = () => {

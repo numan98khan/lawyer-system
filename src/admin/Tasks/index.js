@@ -397,17 +397,37 @@ function Tasks() {
                   </TableHead>
                   <TableBody>
                     {/* show hearings data here */}
-                    {/* {rows.map((row) => (
-                      <TableRow key={row.name}> */}
-                        {/* <TableCell component="th" scope="row">
-                          {row.name}
-                        </TableCell> */}
-                        {/* <TableCell align="center">{row.calories}</TableCell>
-                        <TableCell align="center">{row.fat}</TableCell>
-                        <TableCell align="center">{row.carbs}</TableCell>
-                        <TableCell align="center">{row.protein}</TableCell>
-                      </TableRow> */}
-                    {/* ))} */}
+                    <ProductConsumer>
+                    
+                    {value => {
+              
+                    return value.peshiList.map((row) => (
+                      <TableRow key={row.key}>
+                        <TableCell align="center">{row.id}</TableCell>
+                        <TableCell align="center">{row.file_n}</TableCell>
+                        <TableCell align="center">{row.case_n}</TableCell>
+                        <TableCell align="center">{row.caseTitle}</TableCell>
+                        <TableCell align="center">{row.nature_of_case}</TableCell>
+                        <TableCell align="center">{row.category}</TableCell>
+                        <TableCell align="center">{row.court}</TableCell>
+                        <TableCell align="center">{row.district}</TableCell>
+                        <TableCell align="center">{row.judge}</TableCell>
+                        <TableCell align="center">{row.previous_proceedings}</TableCell>
+                        <TableCell align="center">{row.prev_proceedings_date}</TableCell>
+                        <TableCell align="center">{row.next_proceedings_date}</TableCell>
+                        <TableCell align="center">{row.next_proceedings}</TableCell>
+                        <TableCell align="center">{row.remarks}</TableCell>
+                        <TableCell align="center">{row.caseSrc}</TableCell>
+                        <TableCell align="center">{row.caseSupervisor}</TableCell>
+                        <TableCell align="center">{row.caseWorker}</TableCell>
+                        <TableCell align="center">{row.case_clerk}</TableCell>
+                        <TableCell align="center">{row.other_party}</TableCell>
+                        <TableCell align="center">{row.updated_by}</TableCell>
+                        
+                      </TableRow>
+                    ))
+                    }}
+                    </ProductConsumer>
                   </TableBody>
                 </Table>
               </TableContainer>
