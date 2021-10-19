@@ -144,7 +144,9 @@ class ProductProvider extends Component {
         snapshot.forEach((doc) => {
           
           // // console.log(doc.toJSON())
-          var tempJSON = doc.toJSON() 
+          var tempJSON = doc.toJSON()
+          // if(tempJSON.length<1)
+          // return;
               // tempJSON['inCart'] = false
             
               peshis.push(tempJSON);
@@ -154,7 +156,7 @@ class ProductProvider extends Component {
         // console.log('hires ', hires.filter(function(el){ return el.state === 'REQUESTED' }).length)
         
         console.log("debug it")
-        console.log(new Date(peshis[0].next_proceedings_date))
+        // console.log(new Date(peshis[0].next_proceedings_date))
         var peshisList = peshis.sort((a, b) => new Date(a.next_proceedings_date) - new Date(b.next_proceedings_date))
 
         var counter = 0;

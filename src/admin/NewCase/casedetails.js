@@ -41,7 +41,10 @@ function casedetails() {
     const [conflictsofInterest, setConflictsofInterest] = useState('no')
     const [criminalRecord, setCriminalRecord] = useState('no')
     const [explanationOfCriminal, setexplanationOfCriminal] = useState('')
-    const [AdditionalInformation, setAdditionalInformation] = useState('')
+    const [court, setCourt] = useState('')
+    const [judge, setJudge] = useState('')
+    const [caseClerk, setCaseClerk] = useState('')
+    const [otherParty, setOtherParty] = useState('')
     const payload = {
         // caseStatus,
         caseTitle,
@@ -58,7 +61,10 @@ function casedetails() {
         conflictsofInterest,
         criminalRecord,
         explanationOfCriminal,
-        AdditionalInformation
+        court,
+        judge,
+        otherParty,
+        caseClerk
     }
     useEffect(() => {
         
@@ -216,9 +222,6 @@ function casedetails() {
                 <TextField variant = "outlined" multiline = {true} minRows={'5'} onChange={(e)=>{setPlanOfAction(e.target.value)}} label="plan of action"></TextField>
             </FormControl>
             <FormControl className={classes.formControl}>
-                <TextField variant = "outlined" minRows={'5'} onChange={(e)=>{setPlanOfAction(e.target.value)}} label="case source"></TextField>
-            </FormControl>
-            <FormControl className={classes.formControl}>
                 <InputLabel>chances of success</InputLabel>
                 <Select
                 value={chancesOfSuccess}
@@ -243,6 +246,19 @@ function casedetails() {
                 </Select>
             </FormControl>
             <FormControl className={classes.formControl}>
+                <InputLabel>case clerk</InputLabel>
+                <Select
+                value={caseClerk}
+                onChange={(e)=>{setCaseClerk(e.target.value)}}
+                >
+                {
+                    optionsCaseSupervisor.map((options,index)=>{
+                            
+                        return <MenuItem key={index} value={options.value}>{options.name}</MenuItem>
+                })}
+                </Select>
+            </FormControl>
+            <FormControl className={classes.formControl}>
                 <InputLabel>criminal record</InputLabel>
                 <Select
                 value={conflictsofInterest}
@@ -256,7 +272,13 @@ function casedetails() {
                 <TextField variant = "outlined" multiline = {true} minRows={'5'} onChange={(e)=>{setexplanationOfCriminal(e.target.value)}} label="explanation of criminal record"></TextField>
             </FormControl>
             <FormControl className={classes.formControl}>
-                <TextField variant = "outlined" multiline = {true} minRows={'5'} onChange={(e)=>{setAdditionalInformation(e.target.value)}} label="additional information"></TextField>
+            <TextField variant = "outlined" minRows={'5'} onChange={(e)=>{setCourt(e.target.value)}} label="case court"></TextField>
+            </FormControl>
+            <FormControl className={classes.formControl}>
+            <TextField variant = "outlined" minRows={'5'} onChange={(e)=>{setJudge(e.target.value)}} label="case judge"></TextField>
+            </FormControl>
+            <FormControl className={classes.formControl}>
+            <TextField variant = "outlined" minRows={'5'} onChange={(e)=>{setOtherParty(e.target.value)}} label="other party"></TextField>
             </FormControl>
             <FormControl className={classes.formControl}>
                 <ButtonContainer onClick={()=>{
@@ -272,3 +294,13 @@ function casedetails() {
 }
 
 export default casedetails
+
+//remarks
+//next proceeding date
+
+
+
+//previous date
+//everything else
+//updated by
+

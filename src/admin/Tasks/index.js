@@ -19,6 +19,7 @@ import TextField from '@material-ui/core/TextField';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
 import CreateIcon from '@material-ui/icons/Create';
+import Field from '../../components/Field';
 import DateFnsUtils from '@date-io/date-fns';
 import ButtonContainer from '../../components/Button';
 import { useHistory } from "react-router-dom";
@@ -30,303 +31,17 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 
-function Entry({Details, closeEntry}){
-
-  const [state, setstate] = React.useState({})
-  const history = useHistory();
-  React.useEffect(() => {
-    if(state.file_n !== Details.file_n || state.case_n !== Details.case_n){
-      console.log("hey")
-      const {
-      AdditionalInformation,
-      adviceToClient,
-      briefDescription,
-      chancesOfSuccess,
-      clientId,
-      clientInstructions,
-      conflictsofInterest,
-      criminalRecord,
-      explanationOfCriminal,
-      planOfAction,
-      ...therest} = Details;
-      //add dates
-      therest["prev_proceedings_date"] = new Date().toString()
-      therest["next_proceedings_date"] = new Date().toString()
-      // console.log(therest)
-      setstate(therest)
-
-    }
-  })
-  
-
-  return (
-    <ProductConsumer>
-    {
-      value => {
-        return(
-          <div className="pl-4 pr-4">
-          <div className="mb-5" style={{minWidth:"1000px"}}>
-            <Title title="ADD ENTRY"/>
-            <div className="d-flex mt-4 flex-wrap justify-content-evenly">
-            <TextField className="mb-4 mr-1" style={{minWidth:"10px"}} 
-            disabled
-            color='primary'
-            id="outlined-basic" 
-            label="file number" 
-            variant="outlined"
-            value={Details.file_n}
-            />
-            <TextField className="mb-4 mr-1" style={{minWidth:"10px"}} 
-            disabled
-            color='primary'
-            id="outlined-basic" 
-            label="case number" 
-            variant="outlined"
-            value={Details.case_n}
-            />
-            <TextField className="mb-4 mr-1" style={{minWidth:"300px"}} 
-            disabled
-            color='primary'
-            id="outlined-basic" 
-            label="case category" 
-            variant="outlined"
-            value={Details.category}
-            />
-            <TextField className="mb-4 mr-1" style={{minWidth:"300px"}} 
-            disabled
-            color='primary'
-            id="outlined-basic" 
-            label="case title" 
-            variant="outlined"
-            value={Details.caseTitle}
-            />
-            <TextField className="mb-4 mr-1" style={{minWidth:"300px"}} 
-            disabled
-            color='primary'
-            id="outlined-basic" 
-            label="case supervisor" 
-            variant="outlined"
-            value={Details.caseSupervisor}
-            />
-            <TextField className="mb-4 mr-1" style={{minWidth:"300px"}} 
-            disabled
-            color='primary'
-            id="outlined-basic" 
-            label="case worker" 
-            variant="outlined"
-            value={Details.caseWorker}
-            />
-            <TextField className="mb-4 mr-1" style={{minWidth:"300px"}} 
-            disabled
-            color='primary'
-            id="outlined-basic" 
-            label="case source" 
-            variant="outlined"
-            value={Details.caseSrc}
-            />     
-            </div>
-            {/* ------------------------------------------------- */}
-            <Divider style={{marginBottom:'40px',marginTop:'20px'}}/>
-            {/* ------------------------------------------------- */}
-            <div className="d-flex mt-4 flex-wrap justify-content-between">
-            <TextField className="mb-4 mr-1" style={{minWidth:"300px"}} 
-            color='primary'
-            id="outlined-basic" 
-            label="court" 
-            variant="outlined"
-            onChange = {(e)=>{
-              const value = e.target.value;
-              setstate(oldstate => ({...oldstate,"court":value}));
-            }}
-            // value={}
-            /> 
-            <TextField className="mb-4 mr-1" style={{minWidth:"300px"}} 
-            color='primary'
-            id="outlined-basic" 
-            label="district" 
-            variant="outlined"
-            onChange = {(e)=>{
-              const value = e.target.value;
-              setstate(oldstate => ({...oldstate,"district":value}));
-            }}
-            // value={}
-            /> 
-            <TextField className="mb-4 mr-1" style={{minWidth:"300px"}} 
-            color='primary'
-            id="outlined-basic" 
-            label="judge" 
-            variant="outlined"
-            onChange = {(e)=>{
-              const value = e.target.value;
-              setstate(oldstate => ({...oldstate,"judge":value}));
-            }}
-            // value={}
-            /> 
-            <TextField className="mb-4 mr-1" style={{minWidth:"300px"}} 
-            color='primary'
-            id="outlined-basic" 
-            label="other party" 
-            variant="outlined"
-            onChange = {(e)=>{
-              const value = e.target.value;
-              setstate(oldstate => ({...oldstate,"other_party":value}));
-            }}
-            // value={}
-            /> 
-            </div>
-            <div className="d-flex mt-4 flex-wrap justify-content-between">
-            <TextField className="mb-4 mr-1" style={{minWidth:"300px"}} 
-            color='primary'
-            id="outlined-basic" 
-            label="previous proceedings" 
-            variant="outlined"
-            onChange = {(e)=>{
-              const value = e.target.value;
-              setstate(oldstate => ({...oldstate,"previous_proceedings":value}));
-            }}
-            // value={}
-            />
-            <div className="d-flex align-items-center" style={{height:'50px'}}>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-              style={{minWidth:"300px"}}
-              margin="normal"
-              id="date-picker-dialog"
-              label="previous proceedings date"
-              variant="outlined"
-              format="MM/dd/yyyy"
-              value={state["prev_proceedings_date"]}
-              onChange = {(e)=>{
-                setstate(oldstate => ({...oldstate,"prev_proceedings_date":e.toString()}));
-              }}
-              KeyboardButtonProps={{
-                  'aria-label': 'change date',
-              }}
-              />
-          </MuiPickersUtilsProvider>
-
-            </div>
-            <TextField className="mb-4 mr-1" style={{minWidth:"300px"}} 
-            color='primary'
-            id="outlined-basic" 
-            label="next proceedings" 
-            variant="outlined"
-            onChange = {(e)=>{
-              const value = e.target.value;
-              setstate(oldstate => ({...oldstate,"next_proceedings":value}));
-            }}
-            // value={}
-            />
-            <div className="d-flex align-items-center" style={{height:'50px'}}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
-            style={{minWidth:"300px"}}
-            margin="normal"
-            id="date-picker-dialog"
-            label="next proceedings date"
-            variant="outlined"
-            format="MM/dd/yyyy"
-            value={state["next_proceedings_date"]}
-            onChange = {(e)=>{
-              setstate(oldstate => ({...oldstate,"next_proceedings_date":e.toString()}));
-            }}
-            KeyboardButtonProps={{
-                'aria-label': 'change date',
-            }}
-            />
-        </MuiPickersUtilsProvider>
-
-            </div>
-
-            </div>
-            <div className="d-flex mt-4 flex-wrap justify-content-between">
-            <TextField className="mb-4 mr-2" style={{minWidth:"300px"}} 
-            color='primary'
-            id="outlined-basic" 
-            label="case clerk" 
-            variant="outlined"
-            onChange = {(e)=>{
-              const value = e.target.value;
-              setstate(oldstate => ({...oldstate,"case_clerk":value}));
-            }}
-            // value={}
-            /> 
-            <TextField className="mb-4 mr-1" style={{minWidth:"300px"}} 
-            color='primary'
-            id="outlined-basic" 
-            label="updated by"
-            // multiline = {true} minRows={'5'} 
-            variant="outlined"
-            onChange = {(e)=>{
-              const value = e.target.value;
-              setstate(oldstate => ({...oldstate,"updated_by":value}));
-            }}
-            // value={}
-            /> 
-            <TextField className="mb-4 mr-1" style={{minWidth:"300px"}} 
-            color='primary'
-            id="outlined-basic" 
-            label="nature of case"
-            // multiline = {true} minRows={'5'} 
-            onChange = {(e)=>{
-              const value = e.target.value;
-              setstate(oldstate => ({...oldstate,"nature_of_case":value}));
-            }}
-            variant="outlined"
-            // value={}
-            /> 
-            <TextField className="mb-4 mr-1" style={{minWidth:"300px"}} 
-            color='primary'
-            id="outlined-basic" 
-            label="remarks"
-            multiline = {true} minRows={'5'} 
-            variant="outlined"
-            onChange = {(e)=>{
-              const value = e.target.value;
-              setstate(oldstate => ({...oldstate,"remarks":value}));
-            }}
-            // value={}
-            /> 
-            </div>
-            
-            <ButtonContainer onClick={()=>{
-                    // value.addClientAndCase(location.state);
-                    value.addHearingEntry(state).then((res)=>{
-                      alert("hearing date added")
-                      setstate({})
-                      closeEntry()
-                    })
-                    .catch((err)=>{
-                      alert("something went wrong, date not added")
-                    })
-                    setstate({});
-            }}>Submit Entry</ButtonContainer>
-
-          </div>
-          {/* ------------------------------------------------- */}
-          <Divider style={{marginBottom:'40px',marginTop:'20px'}}/>
-            {/* ------------------------------------------------- */}
-          </div>
-        )
-      }
-      
-    }
-  </ProductConsumer>
-
-    
-  )
-}
-
-
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
 function Tasks() {
   const [searchterm, setsearchterm] = React.useState('');
   const [file_n, setfile_n] = React.useState(-1);
   const [case_n, setcase_n] = React.useState(-1);
-  const [openEntry, setopenEntry] = React.useState(false)
+  const [firstName, setFirstName] = React.useState("Moiz");
+  const [websiteName, setWebsiteName] = React.useState("Ciphertrick");
+  const [firstNameInput, setFirstNameInput] = React.useState(false);
+  const [websiteNameInput, setWebsiteNameInput] = React.useState(false);
+  const [temp, settemp] = React.useState('')
+
+  // const [openEntry, setopenEntry] = React.useState(false)
   const [entryDetails, setentryDetails] = React.useState([])
 
     const useStyles = makeStyles({
@@ -413,8 +128,8 @@ function Tasks() {
                         <TableCell align="center">{row.district}</TableCell>
                         <TableCell align="center">{row.judge}</TableCell>
                         <TableCell align="center">{row.previous_proceedings}</TableCell>
-                        <TableCell align="center">{row.prev_proceedings_date}</TableCell>
-                        <TableCell align="center">{row.next_proceedings_date}</TableCell>
+                        <TableCell align="center">{row.prev_proceedings_date.slice(0, 24)}</TableCell>
+                        <TableCell align="center">{row.next_proceedings_date.slice(0, 24)}</TableCell>
                         <TableCell align="center">{row.next_proceedings}</TableCell>
                         <TableCell align="center">{row.remarks}</TableCell>
                         <TableCell align="center">{row.caseSrc}</TableCell>
@@ -428,11 +143,62 @@ function Tasks() {
                     ))
                     }}
                     </ProductConsumer>
+                    <TableRow>
+                        <TableCell align="center">lolo</TableCell>
+                        <TableCell align="center">
+                        <input value = "d" onChange = {(e)=>{}} onBlur = {(e)=>{}} autoFocus/> 
+                        </TableCell>
+                        <TableCell align="center">
+                        <input value = "d" onChange = {(e)=>{}} onBlur = {(e)=>{}} autoFocus/> 
+                        </TableCell>
+                        <TableCell align="center"><div className={`${firstNameInput===false? 'editablecell' :''} `}>
+                        <Field value = {firstName} 
+                        inputChange = {(e) => {
+                          setFirstName(e.target.value);
+                        }}
+                        doubleClick = {() => 
+                          {
+
+                            settemp(firstName)
+                            setFirstNameInput(true)
+                          }
+                      }
+                        blur = {() => 
+                          {
+                            setFirstNameInput(false)
+                            if(firstName.length < 1){
+                              setFirstName(temp)
+                            }
+                          }
+                      }
+                        active = {firstNameInput}>
+                        </Field>
+                          </div></TableCell>
+                        <TableCell align="center">
+                        hhiuhiuh
+                        </TableCell>
+                        <TableCell align="center">pppoop</TableCell>
+                        <TableCell align="center">buurrrrp</TableCell>
+                        <TableCell align="center">motic</TableCell>
+                        <TableCell align="center">sobbb</TableCell>
+                        <TableCell align="center">im so alone </TableCell>
+                        <TableCell align="center">yes</TableCell>
+                        <TableCell align="center">yesss</TableCell>
+                        <TableCell align="center">plss</TableCell>
+                        <TableCell align="center">boo</TableCell>
+                        <TableCell align="center">aaaaaaaa</TableCell>
+                        <TableCell align="center">u</TableCell>
+                        <TableCell align="center">juju</TableCell>
+                        <TableCell align="center">sqed</TableCell>
+                        <TableCell align="center">spongebb</TableCell>
+                        <TableCell align="center">hehehee</TableCell>
+                        
+                      </TableRow>
                   </TableBody>
                 </Table>
               </TableContainer>
               </div>
-              {openEntry && <Entry Details={entryDetails} closeEntry={()=>{setopenEntry(false)}}/>}
+              {/* {openEntry && <Entry Details={entryDetails} closeEntry={()=>{setopenEntry(false)}}/>} */}
               <TextField className="mb-4" style={{minWidth:"400px"}} 
                         color='primary'
                         id="outlined-basic" 
@@ -508,10 +274,10 @@ function Tasks() {
                                 <ListItemSecondaryAction>
                                   <IconButton edge="end" aria-label="delete" onClick={
                                     ()=>{
-                                      file["cases"][key]["file_n"] = file["id"]
-                                      file["cases"][key]["case_n"] = key
-                                      setentryDetails(file["cases"][key])
-                                      setopenEntry(true)
+                                      // file["cases"][key]["file_n"] = file["id"]
+                                      // file["cases"][key]["case_n"] = key
+                                      // setentryDetails(file["cases"][key])
+                                      // setopenEntry(true)
                                     }
                                     }>
                                     <CreateIcon />

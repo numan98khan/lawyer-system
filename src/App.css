@@ -27,6 +27,13 @@
   pointer-events: none;
 }
 
+.editablecell:hover{
+  color: var(--mainPurple);
+  transform: scale(1.5, 1.5);
+  transition: transform 0.2s;
+  
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

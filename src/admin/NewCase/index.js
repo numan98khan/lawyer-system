@@ -158,7 +158,7 @@ export default NewCase;
 
 
 
-// <Paper elevation={3} >
-                
-//                     {/*<img src={img} className="img-fluid" alt="product" />*/}
-//                 </Paper>
+
+
+
+

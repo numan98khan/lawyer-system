@@ -228,7 +228,7 @@ class clientList extends Component {
                     
                     }
                     <ListItemText
-                      primary="primary"
+                      primary={Case.caseTitle}
                       secondary={
                         <React.Fragment>
                           <Typography

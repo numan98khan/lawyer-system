@@ -149,7 +149,7 @@ function PaymentOptions() {
                                         setinstallmentDate(
                                             installmentDate.map((item,idx) => 
                                                 idx === i 
-                                                ? {...item, date : e} 
+                                                ? {...item, date : e.toString()} 
                                                 : item 
                                         ))
                                     }}
