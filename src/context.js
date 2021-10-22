@@ -70,6 +70,78 @@ class ProductProvider extends Component {
     casesList: [],
     filesList: [],
     peshiList: []
+    // peshiList: [{
+    //   key: 1,
+    //   id: "haaaaah",
+    //   file_n: "haaaaah",
+    //   case_n: "haaaaah",
+    //   court_case_n: 'sca',
+    //   caseTitle: "haaaaah",
+    //   nature_of_case: "haaaaah",
+    //   category: "haaaaah",
+    //   court: "haaaaah",
+    //   district: "haaaaah",
+    //   judge: "haaaaah",
+    //   previous_proceedings: "haaaaah",
+    //   prev_proceedings_date: "haaaaah",
+    //   next_proceedings_date: "haaaaah",
+    //   next_proceedings: "haaaaah",
+    //   remarks: "haaaaah",
+    //   caseSrc: "haaaaah",
+    //   caseSupervisor: "haaaaah",
+    //   caseWorker: "haaaaah",
+    //   case_clerk: "haaaaah",
+    //   other_party: "haaaaah",
+    //   updated_by: "haaaaah",
+    // },
+    // {
+    //   key: 1,
+    //   id: "haaaaah",
+    //   file_n: "haaaaah",
+    //   case_n: "haaaaah",
+    //   caseTitle: "haaaaah",
+    //   court_case_n: 'sca',
+    //   nature_of_case: "haaaaah",
+    //   category: "haaaaah",
+    //   court: "haaaaah",
+    //   district: "haaaaah",
+    //   judge: "haaaaah",
+    //   previous_proceedings: "haaaaah",
+    //   prev_proceedings_date: "haaaaah",
+    //   next_proceedings_date: "haaaaah",
+    //   next_proceedings: "haaaaah",
+    //   remarks: "haaaaah",
+    //   caseSrc: "haaaaah",
+    //   caseSupervisor: "haaaaah",
+    //   caseWorker: "haaaaah",
+    //   case_clerk: "haaaaah",
+    //   other_party: "haaaaah",
+    //   updated_by: "haaaaah",
+    // },{
+    //   key: 1,
+    //   id: "haaaaah",
+    //   file_n: "haaaaah",
+    //   case_n: "haaaaah",
+    //   court_case_n: 'sca',
+    //   caseTitle: "haaaaah",
+    //   nature_of_case: "haaaaah",
+    //   category: "haaaaah",
+    //   court: "haaaaah",
+    //   district: "haaaaah",
+    //   judge: "haaaaah",
+    //   previous_proceedings: "haaaaah",
+    //   prev_proceedings_date: "haaaaah",
+    //   next_proceedings_date: "haaaaah",
+    //   next_proceedings: "haaaaah",
+    //   remarks: "haaaaah",
+    //   caseSrc: "haaaaah",
+    //   caseSupervisor: "haaaaah",
+    //   caseWorker: "haaaaah",
+    //   case_clerk: "haaaaah",
+    //   other_party: "haaaaah",
+    //   updated_by: "haaaaah",
+    // }, 
+    // ]
   };
 
 
@@ -112,8 +184,9 @@ class ProductProvider extends Component {
         // case functions
         this.setClients();
         this.setCases();
-        this.setFiles();
-        this.setPeshiList();
+
+        this.setFiles(); // TEMP BLOCK
+        // this.setPeshiList(); // TEMP BLOCK
 
       } else {
         // No user is signed in.

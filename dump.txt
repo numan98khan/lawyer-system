@@ -21,3 +21,28 @@ the new case id will be 001/002
 there will be a clerk account ---> clerk can make entry in peshi list
 admin will create clerk accounts
 admin and workers can view peshi list
+
+
+
+<TableRow key={row.key}>
+    <TableCell align="center">{row.id}</TableCell>
+    <TableCell align="center">{row.file_n}</TableCell>
+    <TableCell align="center">{row.case_n}</TableCell>
+    <TableCell align="center">{row.caseTitle}</TableCell>
+    <TableCell align="center">{row.nature_of_case}</TableCell>
+    <TableCell align="center">{row.category}</TableCell>
+    <TableCell align="center">{row.court}</TableCell>
+    <TableCell align="center">{row.district}</TableCell>
+    <TableCell align="center">{row.judge}</TableCell>
+    <TableCell align="center">{row.previous_proceedings}</TableCell>
+    <TableCell align="center">{row.prev_proceedings_date.slice(0, 24)}</TableCell>
+    <TableCell align="center">{row.next_proceedings_date.slice(0, 24)}</TableCell>
+    <TableCell align="center">{row.next_proceedings}</TableCell>
+    <TableCell align="center">{row.remarks}</TableCell>
+    <TableCell align="center">{row.caseSrc}</TableCell>
+    <TableCell align="center">{row.caseSupervisor}</TableCell>
+    <TableCell align="center">{row.caseWorker}</TableCell>
+    <TableCell align="center">{row.case_clerk}</TableCell>
+    <TableCell align="center">{row.other_party}</TableCell>
+    <TableCell align="center">{row.updated_by}</TableCell>
+</TableRow>

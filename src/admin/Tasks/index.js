@@ -25,11 +25,90 @@ import ButtonContainer from '../../components/Button';
 import { useHistory } from "react-router-dom";
 
 
+import AddPeshiRow from "./AddPeshiRow";
+
+import EditableCellComp from "../../components/EditableCellComp";
+
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
+
+var llist = [{
+  key: 1,
+  id: "haaaaah",
+  file_n: "haaaaah",
+  case_n: "haaaaah",
+  court_case_n: 'sca',
+  caseTitle: "haaaaah",
+  nature_of_case: "haaaaah",
+  category: "haaaaah",
+  court: "haaaaah",
+  district: "haaaaah",
+  judge: "haaaaah",
+  previous_proceedings: "haaaaah",
+  prev_proceedings_date: "haaaaah",
+  next_proceedings_date: "haaaaah",
+  next_proceedings: "haaaaah",
+  remarks: "haaaaah",
+  caseSrc: "haaaaah",
+  caseSupervisor: "haaaaah",
+  caseWorker: "haaaaah",
+  case_clerk: "haaaaah",
+  other_party: "haaaaah",
+  updated_by: "haaaaah",
+},
+{
+  key: 1,
+  id: "haaaaah",
+  file_n: "haaaaah",
+  case_n: "haaaaah",
+  caseTitle: "haaaaah",
+  court_case_n: 'sca',
+  nature_of_case: "haaaaah",
+  category: "haaaaah",
+  court: "haaaaah",
+  district: "haaaaah",
+  judge: "haaaaah",
+  previous_proceedings: "haaaaah",
+  prev_proceedings_date: "haaaaah",
+  next_proceedings_date: "haaaaah",
+  next_proceedings: "haaaaah",
+  remarks: "haaaaah",
+  caseSrc: "haaaaah",
+  caseSupervisor: "haaaaah",
+  caseWorker: "haaaaah",
+  case_clerk: "haaaaah",
+  other_party: "haaaaah",
+  updated_by: "haaaaah",
+},{
+  key: 1,
+  id: "haaaaah",
+  file_n: "haaaaah",
+  case_n: "haaaaah",
+  court_case_n: 'sca',
+  caseTitle: "haaaaah",
+  nature_of_case: "haaaaah",
+  category: "haaaaah",
+  court: "haaaaah",
+  district: "haaaaah",
+  judge: "haaaaah",
+  previous_proceedings: "haaaaah",
+  prev_proceedings_date: "haaaaah",
+  next_proceedings_date: "haaaaah",
+  next_proceedings: "haaaaah",
+  remarks: "haaaaah",
+  caseSrc: "haaaaah",
+  caseSupervisor: "haaaaah",
+  caseWorker: "haaaaah",
+  case_clerk: "haaaaah",
+  other_party: "haaaaah",
+  updated_by: "haaaaah",
+}, 
+]
+
+// llist = []
 
 function Tasks() {
   const [searchterm, setsearchterm] = React.useState('');
@@ -59,7 +138,7 @@ function Tasks() {
         setfile_n(parseInt(file_number,10));
         setcase_n(parseInt(case_number,10));
       }
-      if(searchterm===""){
+      if(searchterm==="haaaaah"){
 
         setfile_n(-1)
         setcase_n(-1)
@@ -90,6 +169,7 @@ function Tasks() {
                       {/* <TableCell align="center">Dessert (100g serving)</TableCell> */}
                       <TableCell align="center">#</TableCell>
                       <TableCell align="center">FILE#</TableCell>
+                      <TableCell align="center">CASE#</TableCell>
                       <TableCell align="center">COURT CASE#</TableCell>
                       <TableCell align="center">CASE TITLE</TableCell>
                       <TableCell align="center">NATURE OF CASE</TableCell>
@@ -117,83 +197,66 @@ function Tasks() {
                     {value => {
               
                     return value.peshiList.map((row) => (
-                      <TableRow key={row.key}>
+                      // return llist.map((row) => (
+                        <TableRow>
+                        
                         <TableCell align="center">{row.id}</TableCell>
                         <TableCell align="center">{row.file_n}</TableCell>
                         <TableCell align="center">{row.case_n}</TableCell>
-                        <TableCell align="center">{row.caseTitle}</TableCell>
-                        <TableCell align="center">{row.nature_of_case}</TableCell>
+
+                        <TableCell align="center">{row.court_case_n}</TableCell>
+                      
+
+                        <EditableCellComp value={row.caseTitle} > </EditableCellComp>
+                        <EditableCellComp value={row.nature_of_case} > </EditableCellComp>
+
                         <TableCell align="center">{row.category}</TableCell>
-                        <TableCell align="center">{row.court}</TableCell>
-                        <TableCell align="center">{row.district}</TableCell>
-                        <TableCell align="center">{row.judge}</TableCell>
+                        
+                        {/* <TableCell align="center">{row.court}</TableCell> */}
+                        <EditableCellComp value={row.court} > </EditableCellComp>
+
+                        {/* <TableCell align="center">{row.district}</TableCell> */}
+                        <EditableCellComp value={row.district} > </EditableCellComp>
+
+                        {/* <TableCell align="center">{row.judge}</TableCell> */}
+                        <EditableCellComp value={row.judge} > </EditableCellComp>
+
                         <TableCell align="center">{row.previous_proceedings}</TableCell>
+                        {/* <EditableCellComp value={row.} > </EditableCellComp> */}
+                        
                         <TableCell align="center">{row.prev_proceedings_date.slice(0, 24)}</TableCell>
                         <TableCell align="center">{row.next_proceedings_date.slice(0, 24)}</TableCell>
                         <TableCell align="center">{row.next_proceedings}</TableCell>
-                        <TableCell align="center">{row.remarks}</TableCell>
-                        <TableCell align="center">{row.caseSrc}</TableCell>
-                        <TableCell align="center">{row.caseSupervisor}</TableCell>
-                        <TableCell align="center">{row.caseWorker}</TableCell>
-                        <TableCell align="center">{row.case_clerk}</TableCell>
-                        <TableCell align="center">{row.other_party}</TableCell>
+                        
+                        {/* <TableCell align="center">{row.remarks}</TableCell> */}
+                        <EditableCellComp value={row.remarks} > </EditableCellComp>
+
+                        {/* <TableCell align="center">{row.caseSrc}</TableCell> */}
+                        <EditableCellComp value={row.caseSrc} > </EditableCellComp>
+
+                        {/* <TableCell align="center">{row.caseSupervisor}</TableCell> */}
+                        <EditableCellComp value={row.caseSupervisor} > </EditableCellComp>
+
+                        {/* <TableCell align="center">{row.caseWorker}</TableCell> */}
+                        <EditableCellComp value={row.caseWorker} > </EditableCellComp>
+
+                        {/* <TableCell align="center">{row.case_clerk}</TableCell> */}
+                        <EditableCellComp value={row.case_clerk} > </EditableCellComp>
+
+                        {/* <TableCell align="center">{row.other_party}</TableCell> */}
+                        <EditableCellComp value={row.other_party} > </EditableCellComp>
+
                         <TableCell align="center">{row.updated_by}</TableCell>
                         
                       </TableRow>
                     ))
                     }}
                     </ProductConsumer>
-                    <TableRow>
-                        <TableCell align="center">lolo</TableCell>
-                        <TableCell align="center">
-                        <input value = "d" onChange = {(e)=>{}} onBlur = {(e)=>{}} autoFocus/> 
-                        </TableCell>
-                        <TableCell align="center">
-                        <input value = "d" onChange = {(e)=>{}} onBlur = {(e)=>{}} autoFocus/> 
-                        </TableCell>
-                        <TableCell align="center"><div className={`${firstNameInput===false? 'editablecell' :''} `}>
-                        <Field value = {firstName} 
-                        inputChange = {(e) => {
-                          setFirstName(e.target.value);
-                        }}
-                        doubleClick = {() => 
-                          {
 
-                            settemp(firstName)
-                            setFirstNameInput(true)
-                          }
-                      }
-                        blur = {() => 
-                          {
-                            setFirstNameInput(false)
-                            if(firstName.length < 1){
-                              setFirstName(temp)
-                            }
-                          }
-                      }
-                        active = {firstNameInput}>
-                        </Field>
-                          </div></TableCell>
-                        <TableCell align="center">
-                        hhiuhiuh
-                        </TableCell>
-                        <TableCell align="center">pppoop</TableCell>
-                        <TableCell align="center">buurrrrp</TableCell>
-                        <TableCell align="center">motic</TableCell>
-                        <TableCell align="center">sobbb</TableCell>
-                        <TableCell align="center">im so alone </TableCell>
-                        <TableCell align="center">yes</TableCell>
-                        <TableCell align="center">yesss</TableCell>
-                        <TableCell align="center">plss</TableCell>
-                        <TableCell align="center">boo</TableCell>
-                        <TableCell align="center">aaaaaaaa</TableCell>
-                        <TableCell align="center">u</TableCell>
-                        <TableCell align="center">juju</TableCell>
-                        <TableCell align="center">sqed</TableCell>
-                        <TableCell align="center">spongebb</TableCell>
-                        <TableCell align="center">hehehee</TableCell>
-                        
-                      </TableRow>
+
+                    <AddPeshiRow/>
+
+
                   </TableBody>
                 </Table>
               </TableContainer>
