@@ -15,7 +15,7 @@ const RowCell = (props) => {
             setCellValue(temp)
         }
         else if (temp !== cellValue) {
-            props.updateHearing(props.cell, cellValue, props.hearing_key)
+            props.changeCellValue(props.cell, cellValue)
         } 
     }
 

@@ -44,7 +44,10 @@ function casedetails() {
     const [court, setCourt] = useState('')
     const [judge, setJudge] = useState('')
     const [caseClerk, setCaseClerk] = useState('')
+    const [courtCaseNo, setcourtCaseNo] = useState('')
     const [otherParty, setOtherParty] = useState('')
+    const [remarks, setremarks] = useState('')
+    const [district, setDistrict] = useState('')
     const payload = {
         // caseStatus,
         caseTitle,
@@ -64,7 +67,10 @@ function casedetails() {
         court,
         judge,
         otherParty,
-        caseClerk
+        caseClerk,
+        courtCaseNo,
+        remarks,
+        district
     }
     useEffect(() => {
         
@@ -180,6 +186,9 @@ function casedetails() {
                 </Select>
             </FormControl>
             <FormControl className={classes.formControl}>
+                <TextField variant = "outlined" multiline = {true} minRows={'1'} onChange={(e)=>{setcourtCaseNo(e.target.value)}} label="court case#"></TextField>
+            </FormControl>
+            <FormControl className={classes.formControl}>
                 <TextField variant = "outlined" multiline = {true} minRows={'5'} onChange={(e)=>{setBriefDescription(e.target.value)}} label="brief description about the case"></TextField>
             </FormControl>
             <FormControl className={classes.formControl}>
@@ -273,6 +282,12 @@ function casedetails() {
             </FormControl>
             <FormControl className={classes.formControl}>
             <TextField variant = "outlined" minRows={'5'} onChange={(e)=>{setCourt(e.target.value)}} label="case court"></TextField>
+            </FormControl>
+            <FormControl className={classes.formControl}>
+            <TextField variant = "outlined" minRows={'5'} onChange={(e)=>{setDistrict(e.target.value)}} label="district"></TextField>
+            </FormControl>
+            <FormControl className={classes.formControl}>
+            <TextField variant = "outlined" minRows={'5'} onChange={(e)=>{setremarks(e.target.value)}} label="remarks"></TextField>
             </FormControl>
             <FormControl className={classes.formControl}>
             <TextField variant = "outlined" minRows={'5'} onChange={(e)=>{setJudge(e.target.value)}} label="case judge"></TextField>

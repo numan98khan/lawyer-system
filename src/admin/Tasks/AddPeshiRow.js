@@ -13,38 +13,61 @@ import {
     KeyboardDatePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import EditableCell from '../../components/EditableNewCellComp'
 
 function AddPeshiRow() {
-    const [fileNum, setFileNum] = React.useState("0");
-    const [courtCase, setCourtCase] = React.useState("0");
+    const [fileNum, setFileNum] = React.useState("");
+    const [courtCase, setCourtCase] = React.useState("");
     const [retCase, setRetCase] = React.useState(null);
     const [nextProceedings, setNextProceedings] = React.useState("")
     const [dob, setdob] = React.useState(new Date())
+    const [newCase, setnewCase] = React.useState(null)
     
     const contextValue = React.useContext(ProductContext);
         
     function getCaseData(fnum, cnum) {
-        // console.log(contextValue.filesList.find(x => x.id === '0'));
+        //check if case is new or hearing exists already
+        //if hearing exists, get data from hearing
 
+        //else get it from cases table
         if (contextValue.filesList.length === 0){
             return;
         }
 
         var cases = contextValue.filesList.find(x => x.id === fnum).cases;
         var retCase = null;
+        var peshiData = null;
 
+        
         // console.log(cases);
-
+        
         if (cases[cnum] !== undefined) {
-            retCase = cases[cnum];
+            peshiData = contextValue.peshiList.filter(x => x.case_id === cases[cnum].case_id)
 
+            if(peshiData.length > 0){
+                setnewCase(false)
+                retCase = peshiData.pop();
+                
+            }
+            else {
+                setnewCase(true)
+                retCase = cases[cnum];
+                retCase['previous_proceedings'] = 'new case';
+                retCase['previous_proceedings_date'] = 'new case';
+                retCase['file_n'] = fnum;
+                retCase['case_n'] = cnum;
+                retCase['updated_by'] = contextValue.user.email;
+            }
+            
             setRetCase(retCase)
             console.log(retCase);
+            // console.log(peshiData)
 
         }
 
         
     }
+
 
 
     const handleChangeFileNum = e => {
@@ -90,6 +113,11 @@ function AddPeshiRow() {
         getCaseData('0', '0')
 
       }, []);
+    function ChangeCellValue(cell, value){
+        retCase[cell] = value
+        console.log(cell, value)
+        setRetCase(retCase)
+    }
 
     return (
         <TableRow>
@@ -104,13 +132,27 @@ function AddPeshiRow() {
                             // pushPeshi();
 
                             var payload = retCase;
-                            retCase['previous_proceedings'] = 'null';
-                            retCase['prev_proceedings_date'] = 'null';
-                            retCase['next_proceedings_date'] = dob;
+                            //check if case has previous peshi row
+
+                            //if case is new, get details from case, else from peshi row
+                            if (!newCase){
+
+                                retCase['previous_proceedings_date'] = retCase['next_proceedings_date']
+                                retCase['previous_proceedings'] = retCase['next_proceedings'];
+                            }
+
+                            retCase['next_proceedings_date'] = dob.toLocaleDateString();
                             retCase['next_proceedings'] = nextProceedings;
-                            retCase['updated_by'] = value.uid;
+                            retCase['updated_by'] = value.user.email;
                                 
                             value.addHearingEntry(payload).then(() => {
+                                //clear everything
+                                setFileNum("")
+                                setCourtCase("")
+                                setRetCase(null)
+                                setNextProceedings("")
+                                setdob(new Date())
+                                setnewCase(null)
 
                             }).catch((error) => {
                                 console.log(error)
@@ -142,24 +184,59 @@ function AddPeshiRow() {
             </TableCell>
 
 
-            <TableCell align="center">ccnum</TableCell>
-            <TableCell align="center">{retCase == null ? '' : retCase.caseTitle }</TableCell>
+            {/* <TableCell align="center">ccnum</TableCell> */}
+            {
+                retCase == null ? null :
+                (
+                    <EditableCell value={retCase == null ? '' : retCase.courtCaseNo } cell={"courtCaseNo"} changeCellValue={ChangeCellValue}></EditableCell>
+                    
+                ) 
+            }
+            {
+                retCase == null ? null :
+                (
+                    <EditableCell value={retCase == null ? '' : retCase.caseTitle } cell={"caseTitle"} changeCellValue={ChangeCellValue}></EditableCell>
+                    
+                ) 
+            }
             <TableCell align="center">{retCase == null ? '' : retCase.subCategory}</TableCell>
             <TableCell align="center">{retCase == null ? '' : retCase.category}</TableCell>
-            <TableCell align="center">{retCase == null ? '' : retCase.court}</TableCell>
-            <TableCell align="center">{retCase == null ? '' : retCase.district}</TableCell>
-            <TableCell align="center">{retCase == null ? '' : retCase.judge}</TableCell>
+            {
+                retCase == null ? null :
+                (
+                    <EditableCell value={retCase == null ? '' : retCase.court } cell={"court"} changeCellValue={ChangeCellValue}></EditableCell>
+                    
+                ) 
+            }
+            {
+                retCase == null ? null :
+                (
+                    <EditableCell value={retCase == null ? '' : retCase.district } cell={"district"} changeCellValue={ChangeCellValue}></EditableCell>
+                    
+                ) 
+            }
+            {/* <TableCell align="center">ccnum</TableCell> */}
+            {
+                retCase == null ? null :
+                (
+                    <EditableCell value={retCase == null ? '' : retCase.judge } cell={"judge"} changeCellValue={ChangeCellValue}></EditableCell>
+                    
+                ) 
+            }
+            {/* <TableCell align="center">{retCase == null ? '' : retCase.judge}</TableCell> */}
+            {/* <TableCell align="center">ccnum</TableCell> */}
+           
 
-            <TableCell align="center">{retCase == null ? '' : 'pp'}</TableCell>
-            <TableCell align="center">{retCase == null ? '' : 'ppd'}</TableCell>
+            <TableCell align="center">{retCase == null ? '' : (newCase?retCase.previous_proceedings:retCase.next_proceedings)}</TableCell>
+            <TableCell align="center">{retCase == null ? '' : (newCase?retCase.previous_proceedings_date:retCase.next_proceedings_date)}</TableCell>
             
             <TableCell align="center" 
-                
+                style={{
+                    minWidth: '200px',
+                    paddingBottom:'30px'
+                }}
             >
                 <MuiPickersUtilsProvider 
-                style={{
-                    minWidth: '200px'
-                }}
                 utils={DateFnsUtils}>
                     <KeyboardDatePicker
                     margin="normal"
@@ -175,7 +252,7 @@ function AddPeshiRow() {
                 </MuiPickersUtilsProvider>
             </TableCell>
             
-            <TableCell align="center">{dob.toString()}</TableCell>
+            {/* <TableCell align="center">{dob.toString()}</TableCell> */}
             
             <TableCell align="center">
                 <input value = {nextProceedings} 
@@ -188,13 +265,45 @@ function AddPeshiRow() {
                         /> 
             </TableCell>
 
-            <TableCell align="center">{retCase == null ? '' : retCase.remarks}</TableCell>
+            {/* <TableCell align="center">{retCase == null ? '' : retCase.remarks}</TableCell> */}
+            {/* <TableCell align="center">ccnum</TableCell> */}
+            {
+                retCase == null ? null :
+                (
+                    <EditableCell value={retCase == null ? '' : retCase.remarks } cell={"remarks"} changeCellValue={ChangeCellValue}></EditableCell>
+                    
+                ) 
+            }
             <TableCell align="center">{retCase == null ? '' : retCase.caseSrc}</TableCell>
-            <TableCell align="center">{retCase == null ? '' : retCase.caseSupervisor}</TableCell>
-            <TableCell align="center">{retCase == null ? '' : retCase.caseWorker}</TableCell>
-            <TableCell align="center">{retCase == null ? '' : retCase.caseClerk}</TableCell>
+            {/* <TableCell align="center">{retCase == null ? '' : retCase.caseSupervisor}</TableCell> */}
+            {/* <TableCell align="center">ccnum</TableCell> */}
+            {
+                retCase == null ? null :
+                (
+                    <EditableCell value={retCase == null ? '' : retCase.caseSupervisor } cell={"caseSupervisor"} changeCellValue={ChangeCellValue}></EditableCell>
+                    
+                ) 
+            }
+            {/* <TableCell align="center">{retCase == null ? '' : retCase.caseWorker}</TableCell> */}
+            {/* <TableCell align="center">ccnum</TableCell> */}
+            {
+                retCase == null ? null :
+                (
+                    <EditableCell value={retCase == null ? '' : retCase.caseWorker } cell={"caseWorker"} changeCellValue={ChangeCellValue}></EditableCell>
+                    
+                ) 
+            }
+            {/* <TableCell align="center">{retCase == null ? '' : retCase.caseClerk}</TableCell> */}
+            {/* <TableCell align="center">ccnum</TableCell> */}
+            {
+                retCase == null ? null :
+                (
+                    <EditableCell value={retCase == null ? '' : retCase.caseClerk } cell={"caseClerk"} changeCellValue={ChangeCellValue}></EditableCell>
+                    
+                ) 
+            }
             <TableCell align="center">{retCase == null ? '' : retCase.otherParty}</TableCell>
-            <TableCell align="center">{retCase == null ? '' : 'updated auto'}</TableCell>
+            <TableCell align="center">{retCase == null ? '' : retCase.updated_by}</TableCell>
                         
         </TableRow>
     )

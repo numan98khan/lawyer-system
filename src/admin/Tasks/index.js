@@ -23,6 +23,8 @@ import Field from '../../components/Field';
 import DateFnsUtils from '@date-io/date-fns';
 import ButtonContainer from '../../components/Button';
 import { useHistory } from "react-router-dom";
+import { ProductContext } from "../../context";
+
 
 
 import AddPeshiRow from "./AddPeshiRow";
@@ -35,80 +37,6 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 
-var llist = [{
-  key: 1,
-  id: "haaaaah",
-  file_n: "haaaaah",
-  case_n: "haaaaah",
-  court_case_n: 'sca',
-  caseTitle: "haaaaah",
-  nature_of_case: "haaaaah",
-  category: "haaaaah",
-  court: "haaaaah",
-  district: "haaaaah",
-  judge: "haaaaah",
-  previous_proceedings: "haaaaah",
-  prev_proceedings_date: "haaaaah",
-  next_proceedings_date: "haaaaah",
-  next_proceedings: "haaaaah",
-  remarks: "haaaaah",
-  caseSrc: "haaaaah",
-  caseSupervisor: "haaaaah",
-  caseWorker: "haaaaah",
-  case_clerk: "haaaaah",
-  other_party: "haaaaah",
-  updated_by: "haaaaah",
-},
-{
-  key: 1,
-  id: "haaaaah",
-  file_n: "haaaaah",
-  case_n: "haaaaah",
-  caseTitle: "haaaaah",
-  court_case_n: 'sca',
-  nature_of_case: "haaaaah",
-  category: "haaaaah",
-  court: "haaaaah",
-  district: "haaaaah",
-  judge: "haaaaah",
-  previous_proceedings: "haaaaah",
-  prev_proceedings_date: "haaaaah",
-  next_proceedings_date: "haaaaah",
-  next_proceedings: "haaaaah",
-  remarks: "haaaaah",
-  caseSrc: "haaaaah",
-  caseSupervisor: "haaaaah",
-  caseWorker: "haaaaah",
-  case_clerk: "haaaaah",
-  other_party: "haaaaah",
-  updated_by: "haaaaah",
-},{
-  key: 1,
-  id: "haaaaah",
-  file_n: "haaaaah",
-  case_n: "haaaaah",
-  court_case_n: 'sca',
-  caseTitle: "haaaaah",
-  nature_of_case: "haaaaah",
-  category: "haaaaah",
-  court: "haaaaah",
-  district: "haaaaah",
-  judge: "haaaaah",
-  previous_proceedings: "haaaaah",
-  prev_proceedings_date: "haaaaah",
-  next_proceedings_date: "haaaaah",
-  next_proceedings: "haaaaah",
-  remarks: "haaaaah",
-  caseSrc: "haaaaah",
-  caseSupervisor: "haaaaah",
-  caseWorker: "haaaaah",
-  case_clerk: "haaaaah",
-  other_party: "haaaaah",
-  updated_by: "haaaaah",
-}, 
-]
-
-// llist = []
 
 function Tasks() {
   const [searchterm, setsearchterm] = React.useState('');
@@ -121,7 +49,9 @@ function Tasks() {
   const [temp, settemp] = React.useState('')
 
   // const [openEntry, setopenEntry] = React.useState(false)
-  const [entryDetails, setentryDetails] = React.useState([])
+  // const [entryDetails, setentryDetails] = React.useState([])
+  const contextValue = React.useContext(ProductContext);
+
 
     const useStyles = makeStyles({
       table: {
@@ -145,6 +75,10 @@ function Tasks() {
       }
       console.log(file_n,case_n);
     })
+
+    function updateHearing(cell, value, key){
+      contextValue.updateHearing(cell, value, key)
+    }
 
     function getName(clientsList,file,key){
       for (var i = 0; i<clientsList.length; i++){
@@ -195,56 +129,57 @@ function Tasks() {
                     <ProductConsumer>
                     
                     {value => {
-              
                     return value.peshiList.map((row) => (
                       // return llist.map((row) => (
+            
                         <TableRow>
                         
                         <TableCell align="center">{row.id}</TableCell>
                         <TableCell align="center">{row.file_n}</TableCell>
                         <TableCell align="center">{row.case_n}</TableCell>
 
-                        <TableCell align="center">{row.court_case_n}</TableCell>
+                        {/* <TableCell align="center">{row.court_case_n}</TableCell> */}
                       
 
-                        <EditableCellComp value={row.caseTitle} > </EditableCellComp>
-                        <EditableCellComp value={row.nature_of_case} > </EditableCellComp>
+                        <EditableCellComp updateHearing={updateHearing} hearing_key={row.key} cell={"courtCaseNo"} value={row.courtCaseNo} > </EditableCellComp>
+                        <EditableCellComp updateHearing={updateHearing} hearing_key={row.key} cell={"caseTitle"} value={row.caseTitle} > </EditableCellComp>
+                        <EditableCellComp updateHearing={updateHearing} hearing_key={row.key} cell={"subCategory"} value={row.subCategory} > </EditableCellComp>
 
                         <TableCell align="center">{row.category}</TableCell>
                         
                         {/* <TableCell align="center">{row.court}</TableCell> */}
-                        <EditableCellComp value={row.court} > </EditableCellComp>
+                        <EditableCellComp updateHearing={updateHearing} hearing_key={row.key} cell={"court"} value={row.court} > </EditableCellComp>
 
                         {/* <TableCell align="center">{row.district}</TableCell> */}
-                        <EditableCellComp value={row.district} > </EditableCellComp>
+                        <EditableCellComp updateHearing={updateHearing} hearing_key={row.key} cell={"district"} value={row.district} > </EditableCellComp>
 
                         {/* <TableCell align="center">{row.judge}</TableCell> */}
-                        <EditableCellComp value={row.judge} > </EditableCellComp>
+                        <EditableCellComp updateHearing={updateHearing} hearing_key={row.key} cell={"judge"} value={row.judge} > </EditableCellComp>
 
                         <TableCell align="center">{row.previous_proceedings}</TableCell>
                         {/* <EditableCellComp value={row.} > </EditableCellComp> */}
                         
-                        <TableCell align="center">{row.prev_proceedings_date.slice(0, 24)}</TableCell>
+                        <TableCell align="center">{row.previous_proceedings_date.slice(0, 24)}</TableCell>
                         <TableCell align="center">{row.next_proceedings_date.slice(0, 24)}</TableCell>
                         <TableCell align="center">{row.next_proceedings}</TableCell>
                         
                         {/* <TableCell align="center">{row.remarks}</TableCell> */}
-                        <EditableCellComp value={row.remarks} > </EditableCellComp>
+                        <EditableCellComp updateHearing={updateHearing} hearing_key={row.key} cell={"remarks"} value={row.remarks} > </EditableCellComp>
 
                         {/* <TableCell align="center">{row.caseSrc}</TableCell> */}
-                        <EditableCellComp value={row.caseSrc} > </EditableCellComp>
+                        <EditableCellComp updateHearing={updateHearing} hearing_key={row.key} cell={"caseSrc"} value={row.caseSrc} > </EditableCellComp>
 
                         {/* <TableCell align="center">{row.caseSupervisor}</TableCell> */}
-                        <EditableCellComp value={row.caseSupervisor} > </EditableCellComp>
+                        <EditableCellComp updateHearing={updateHearing} hearing_key={row.key} cell={"caseSupervisor"} value={row.caseSupervisor} > </EditableCellComp>
 
                         {/* <TableCell align="center">{row.caseWorker}</TableCell> */}
-                        <EditableCellComp value={row.caseWorker} > </EditableCellComp>
+                        <EditableCellComp updateHearing={updateHearing} hearing_key={row.key} cell={"caseWorker"} value={row.caseWorker} > </EditableCellComp>
 
                         {/* <TableCell align="center">{row.case_clerk}</TableCell> */}
-                        <EditableCellComp value={row.case_clerk} > </EditableCellComp>
+                        <EditableCellComp updateHearing={updateHearing} hearing_key={row.key} cell={"caseClerk"} value={row.caseClerk} > </EditableCellComp>
 
                         {/* <TableCell align="center">{row.other_party}</TableCell> */}
-                        <EditableCellComp value={row.other_party} > </EditableCellComp>
+                        <EditableCellComp updateHearing={updateHearing} hearing_key={row.key} cell={"otherParty"} value={row.otherParty} > </EditableCellComp>
 
                         <TableCell align="center">{row.updated_by}</TableCell>
                         

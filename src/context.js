@@ -60,7 +60,7 @@ class ProductProvider extends Component {
     // isDrawerVisible: true,
     // isSeller: false,
     isSeller: true,
-    uid: "uHrYlhp39KS7Bsl5FYsSQzm9m8x2",
+    // uid: "uHrYlhp39KS7Bsl5FYsSQzm9m8x2",
     isRDetailsPopUp: false,
     user:null,
     userData: [],
@@ -186,7 +186,7 @@ class ProductProvider extends Component {
         this.setCases();
 
         this.setFiles(); // TEMP BLOCK
-        // this.setPeshiList(); // TEMP BLOCK
+        this.setPeshiList(); // TEMP BLOCK
 
       } else {
         // No user is signed in.
@@ -206,6 +206,7 @@ class ProductProvider extends Component {
   }
 
   setPeshiList = () => {
+    // console.log(this.state.user.email)
     console.log("setting peshi list")
     var fb = fire.getFire();
     var peshis = [];
@@ -218,6 +219,7 @@ class ProductProvider extends Component {
           
           // // console.log(doc.toJSON())
           var tempJSON = doc.toJSON()
+          tempJSON['key'] = doc.key
           // if(tempJSON.length<1)
           // return;
               // tempJSON['inCart'] = false
@@ -366,6 +368,16 @@ class ProductProvider extends Component {
 
     }.bind(this));
     
+  }
+
+  updateHearing(cell, value, key){
+    var update = {}
+    update[cell] = value
+    console.log(update)
+    console.log("update!",cell, value, key)
+    fire.getFire().database()
+                .ref("/hearings/" + key + '/')
+                .update(update)
   }
 
   // add case and payments to existing client
@@ -1181,7 +1193,8 @@ class ProductProvider extends Component {
 
           // case function exports
           addClientAndCase :this.addClientAndCase, 
-          addClientUser: this.addClientUser
+          addClientUser: this.addClientUser,
+          updateHearing: this.updateHearing
         }}
       >
         {this.props.children}
