@@ -40,6 +40,7 @@ import {
 
 function Tasks() {
   const [searchterm, setsearchterm] = React.useState('');
+  const [filterDate, setdate] = React.useState(new Date())
   const [file_n, setfile_n] = React.useState(-1);
   const [case_n, setcase_n] = React.useState(-1);
   const [firstName, setFirstName] = React.useState("Moiz");
@@ -96,6 +97,22 @@ function Tasks() {
               <div style={{marginBottom:"5%"}}>
               <Title title="PESHI LIST"/>
             </div>
+            <div className="bg-light" style={{height:'100px', padding:'30px'}}>
+            <MuiPickersUtilsProvider 
+                utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                    margin="normal"
+                    id="date-picker-dialog"
+                    // label="Date of birth"
+                    format="MM/dd/yyyy"
+                    value={filterDate}
+                    onChange={(e)=>{setdate(e)}}
+                    KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                    }}
+                    />
+                </MuiPickersUtilsProvider>
+            </div>
               <TableContainer component={Paper}>
                 <Table className={classes.table} aria-label="simple table">
                   <TableHead>
@@ -129,7 +146,10 @@ function Tasks() {
                     <ProductConsumer>
                     
                     {value => {
-                    return value.peshiList.map((row) => (
+                    return value.peshiList.filter((row) => {
+                      return (row.next_proceedings_date === filterDate.toLocaleDateString('en-US'))
+                    }
+                      ).map((row) => (
                       // return llist.map((row) => (
             
                         <TableRow>
@@ -159,8 +179,8 @@ function Tasks() {
                         <TableCell align="center">{row.previous_proceedings}</TableCell>
                         {/* <EditableCellComp value={row.} > </EditableCellComp> */}
                         
-                        <TableCell align="center">{row.previous_proceedings_date.slice(0, 24)}</TableCell>
-                        <TableCell align="center">{row.next_proceedings_date.slice(0, 24)}</TableCell>
+                        <TableCell align="center">{row.previous_proceedings_date}</TableCell>
+                        <TableCell align="center">{row.next_proceedings_date}</TableCell>
                         <TableCell align="center">{row.next_proceedings}</TableCell>
                         
                         {/* <TableCell align="center">{row.remarks}</TableCell> */}
@@ -200,7 +220,7 @@ function Tasks() {
               <TextField className="mb-4" style={{minWidth:"400px"}} 
                         color='primary'
                         id="outlined-basic" 
-                        label="Search case" 
+                        label="Quick search cases" 
                         placeholder="File number/case number"
                         variant="outlined"
                         value={searchterm}
