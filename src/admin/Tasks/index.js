@@ -26,6 +26,7 @@ import { useHistory } from "react-router-dom";
 import { ProductContext } from "../../context";
 import { LogIcon } from "../../../src/icons"
 
+import DescriptionIcon from '@material-ui/icons/Description';
 
 
 import AddPeshiRow from "./AddPeshiRow";
@@ -299,7 +300,10 @@ function Tasks() {
                                 
                                 <ListItemSecondaryAction>
                                   <button style={{backgroundColor:'transparent', border:'none'}}>
-                                  <LogIcon></LogIcon>
+                                    <LogIcon></LogIcon>
+                                  
+                                  {/* Improve button later */}
+                                  {/* <DescriptionIcon  edge="end" aria-label="delete" ></DescriptionIcon> */}
                                   </button>
                                   {/* <IconButton edge="end" aria-label="delete" onClick={
                                     ()=>{

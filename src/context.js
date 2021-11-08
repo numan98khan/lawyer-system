@@ -371,14 +371,32 @@ class ProductProvider extends Component {
     
   }
 
-  updateHearing(cell, value, key){
+  updateHearing(cell, value, key, temp){
     var update = {}
-    update[cell] = value
-    console.log(update)
+
+
+    update[cell] = value[1]
+
+    // console.log(update, temp)
     console.log("update!",cell, value, key)
     fire.getFire().database()
                 .ref("/hearings/" + key + '/')
-                .update(update)
+                .update(update).then(
+                  (snap)=> {
+                    fire.getFire().database()
+                      .ref("/hearing_logs/" + key + '/')
+                      .push(
+                        {
+                          'time_stamp': new Date().toLocaleString(),
+                          'key': cell,
+                          'new_value': value[1],
+                          'prev_value': value[0]
+                        }
+                      )
+                      // console.log('poppers')
+                      // console.log(snap)
+                  }
+                )
   }
 
   // add case and payments to existing client

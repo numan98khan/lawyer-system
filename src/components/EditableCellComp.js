@@ -10,12 +10,18 @@ const RowCell = (props) => {
     const [temp, settemp] = React.useState('')
 
     function updateChange() {
+
         setCellValueInput(false)
         if(cellValue.length < 1){
             setCellValue(temp)
         }
         else if (temp !== cellValue) {
-            props.updateHearing(props.cell, cellValue, props.hearing_key)
+
+            console.log('TEMP', temp)
+            if (temp !== undefined){
+                var json_obj = [temp, cellValue];
+                props.updateHearing(props.cell, json_obj, props.hearing_key)
+            }
         } 
     }
 
