@@ -24,6 +24,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import ButtonContainer from '../../components/Button';
 import { useHistory } from "react-router-dom";
 import { ProductContext } from "../../context";
+import { LogIcon } from "../../../src/icons"
 
 
 
@@ -224,7 +225,13 @@ function Tasks() {
                         placeholder="File number/case number"
                         variant="outlined"
                         value={searchterm}
-                        onChange={(query)=> setsearchterm(query.target.value.toLowerCase())} />
+                        onChange={(query)=> {
+                          setsearchterm(query.target.value.toLowerCase())
+                          if(query.target.value.length < 1){
+                            setfile_n(-1)
+                            setcase_n(-1)
+                          }
+                          }} />
 
               <div className="search-results">
                 {
@@ -236,6 +243,7 @@ function Tasks() {
                       return file["id"]===file_n.toString()
                     }
                     else{
+                      
                       return true
                     }
                   }
@@ -290,7 +298,10 @@ function Tasks() {
                                 />
                                 
                                 <ListItemSecondaryAction>
-                                  <IconButton edge="end" aria-label="delete" onClick={
+                                  <button style={{backgroundColor:'transparent', border:'none'}}>
+                                  <LogIcon></LogIcon>
+                                  </button>
+                                  {/* <IconButton edge="end" aria-label="delete" onClick={
                                     ()=>{
                                       // file["cases"][key]["file_n"] = file["id"]
                                       // file["cases"][key]["case_n"] = key
@@ -299,7 +310,7 @@ function Tasks() {
                                     }
                                     }>
                                     <CreateIcon />
-                                  </IconButton>
+                                  </IconButton> */}
                                 </ListItemSecondaryAction>
                               </ListItem>
                               <Divider 

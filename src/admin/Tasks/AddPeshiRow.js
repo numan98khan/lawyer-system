@@ -47,7 +47,6 @@ function AddPeshiRow() {
             if(peshiData.length > 0){
                 setnewCase(false)
                 retCase = peshiData.pop();
-                
             }
             else {
                 setnewCase(true)
@@ -56,8 +55,9 @@ function AddPeshiRow() {
                 retCase['previous_proceedings_date'] = 'new case';
                 retCase['file_n'] = fnum;
                 retCase['case_n'] = cnum;
-                retCase['updated_by'] = contextValue.user.email;
+                // retCase['updated_by'] = 'noman';
             }
+            retCase['updated_by'] = contextValue.user.email;
             
             setRetCase(retCase)
             console.log(retCase);
@@ -84,7 +84,6 @@ function AddPeshiRow() {
         // getCaseData(0, 0)
 
         if (tempVal.length !== 0 && courtCase.length !== 0) {
-            console.log('fuck me')
             getCaseData(tempVal, courtCase)
         } else {
             setRetCase(null);   

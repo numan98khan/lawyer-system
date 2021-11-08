@@ -155,6 +155,7 @@ class ProductProvider extends Component {
       if (user) {
         console.log("USER +> " + user.uid)
         this.setState({user:user})
+        console.log(user)
         
         // this.setProducts();
         // this.setOffers();
