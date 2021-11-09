@@ -17,12 +17,8 @@ const RowCell = (props) => {
         }
         else if (temp !== cellValue) {
 
-            console.log('TEMP', temp)
-            if (temp !== undefined){
-                var json_obj = [temp, cellValue];
-                props.updateHearing(props.cell, json_obj, props.hearing_key)
-            }
-        } 
+        props.updateHearing(props.cell, cellValue, props.hearing_key, temp)
+        }
     }
 
     return (

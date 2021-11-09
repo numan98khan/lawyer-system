@@ -79,8 +79,8 @@ function Tasks() {
       console.log(file_n,case_n);
     })
 
-    function updateHearing(cell, value, key){
-      contextValue.updateHearing(cell, value, key)
+    function updateHearing(cell, value, key, old_value){
+      contextValue.updateHearing(cell, value, key, old_value)
     }
 
     function getName(clientsList,file,key){

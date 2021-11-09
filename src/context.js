@@ -371,14 +371,14 @@ class ProductProvider extends Component {
     
   }
 
-  updateHearing(cell, value, key, temp){
+  updateHearing(cell, value, key, old_value){
     var update = {}
 
 
-    update[cell] = value[1]
+    update[cell] = value
 
     // console.log(update, temp)
-    console.log("update!",cell, value, key)
+    // console.log("update!",cell, value, key)
     fire.getFire().database()
                 .ref("/hearings/" + key + '/')
                 .update(update).then(
@@ -389,8 +389,8 @@ class ProductProvider extends Component {
                         {
                           'time_stamp': new Date().toLocaleString(),
                           'key': cell,
-                          'new_value': value[1],
-                          'prev_value': value[0]
+                          'new_value': value,
+                          'prev_value': old_value
                         }
                       )
                       // console.log('poppers')
