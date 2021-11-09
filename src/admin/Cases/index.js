@@ -6,7 +6,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import { ProductContext } from "../../context";
+
 
 import clsx from 'clsx';
 // import { makeStyles } from '@material-ui/core/styles';
@@ -95,39 +95,8 @@ const filterValues = [
 ]
 
 
-class casesList extends Component {
-  constructor(props){
-    super(props)
-  }
-  state = {
-    value:2,
-    open: false,
-    searchTerm:'',
-    searchFilter:'category',
-    cases:[]
-  }
+class clientList extends Component {
   
-  static contextType = ProductContext;
-
-  componentDidUpdate(){
-    const filesList = this.context.filesList
-    const cases = []
-    if(filesList.length > 0){
-      filesList.map((file, index)=>{
-        for(var key in Object.keys(file.cases)){
-          cases.push(file.cases[key])
-        }
-      })
-    if(cases.length !== this.state.cases.length){
-      this.setState({
-        cases:cases
-      },()=>{console.log(this.state.cases)})
-    }
-      // this.setState({
-      //   filesList: filesList
-      // },()=>console.log(this.state.filesList))
-    }
-  }
   extractProduct(products, pid){
     var newArray = products.filter(function (el) {
       // console.log(el)
@@ -137,6 +106,12 @@ class casesList extends Component {
     return newArray[0];
   } 
   
+  state = {
+    value:2,
+    open: false,
+    searchTerm:'',
+    searchFilter:'category'
+  }
   handleClose = () => {
     this.setState({open: false});
   }
@@ -214,7 +189,7 @@ class casesList extends Component {
             <ProductConsumer>
               {value => {
 
-                return <h5>{this.state.cases
+                return <h5>{value.casesList
                   .filter((Case)=> this.handleFilter(Case))
                   .length} case(s)</h5>
               }
@@ -227,15 +202,22 @@ class casesList extends Component {
               
             
 
-            {/* <ProductConsumer> */}
-              <List style={{width:'100%'}}>
-            {
-              this.state.cases.filter((Case)=> {return this.handleFilter(Case)}).map((Case, index)=>{
-                return(
+            <ProductConsumer>
+            {value => {
+              return <List style={{width:'100%'}}>
+              {/* <ItemDetails review={value.reviewDetail} />   */}
+                  
+              {value.casesList
+              .filter((Case)=> this.handleFilter(Case)).map((Case) => {
+                // const labelId = `checkbox-list-secondary-label-${productReview}`;
+                // const fetchedProduct = this.extractProduct(value.products, productReview.productId)
+                // console.log(productReview.review)
+                return (
+                  <div key = {Case.id}>
                   <ListItem 
                     button
                     // onClick={() => console.log('go to details')} 
-                    onClick={()=>{}} 
+                    onClick={()=>{this.props.history.push({pathname:'/casedetails',state:{caseDetails: Case}})}} 
                     
                     alignItems="flex-start">
                     {
@@ -255,19 +237,27 @@ class casesList extends Component {
                             // className={classes.inline}
                             color="textPrimary"
                           >
-                            {Case.caseSupervisor}
+                            {Case.category}
                           </Typography>
                           
-                          {" — "} {Case.category}
+                          {" — "} {Case.subCategory}
                         </React.Fragment>
                       }
                     />
                   </ListItem>
-                )      
-              })
-            }
-            </List>
-            {/* </ProductConsumer> */}
+                  <Divider 
+                  // variant="inset" 
+                  component="li" />
+                  </div>
+              );
+              })}
+
+              
+                
+            
+              </List>
+            }}
+            </ProductConsumer>
 
             
 
@@ -279,7 +269,7 @@ class casesList extends Component {
   }
 }
 
-export default withRouter(casesList);
+export default withRouter(clientList);
 
 
 
