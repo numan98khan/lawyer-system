@@ -26,7 +26,6 @@ import { useHistory } from "react-router-dom";
 import { ProductContext } from "../../context";
 import { LogIcon } from "../../../src/icons"
 
-import DescriptionIcon from '@material-ui/icons/Description';
 
 
 import AddPeshiRow from "./AddPeshiRow";
@@ -42,6 +41,7 @@ import {
 
 function Tasks() {
   const [searchterm, setsearchterm] = React.useState('');
+  const [filterDate, setdate] = React.useState(new Date())
   const [file_n, setfile_n] = React.useState(-1);
   const [case_n, setcase_n] = React.useState(-1);
   const [firstName, setFirstName] = React.useState("Moiz");
@@ -78,8 +78,8 @@ function Tasks() {
       console.log(file_n,case_n);
     })
 
-    function updateHearing(cell, value, key, old_value){
-      contextValue.updateHearing(cell, value, key, old_value)
+    function updateHearing(cell, value, key){
+      contextValue.updateHearing(cell, value, key)
     }
 
     function getName(clientsList,file,key){
@@ -97,6 +97,22 @@ function Tasks() {
               <div className="mb-5" style={{minWidth:"1000px"}} >
               <div style={{marginBottom:"5%"}}>
               <Title title="PESHI LIST"/>
+            </div>
+            <div className="bg-light" style={{height:'100px', padding:'30px'}}>
+            <MuiPickersUtilsProvider 
+                utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                    margin="normal"
+                    id="date-picker-dialog"
+                    // label="Date of birth"
+                    format="MM/dd/yyyy"
+                    value={filterDate}
+                    onChange={(e)=>{setdate(e)}}
+                    KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                    }}
+                    />
+                </MuiPickersUtilsProvider>
             </div>
               <TableContainer component={Paper}>
                 <Table className={classes.table} aria-label="simple table">
@@ -131,7 +147,10 @@ function Tasks() {
                     <ProductConsumer>
                     
                     {value => {
-                    return value.peshiList.map((row) => (
+                    return value.peshiList.filter((row) => {
+                      return (row.next_proceedings_date === filterDate.toLocaleDateString('en-US'))
+                    }
+                      ).map((row) => (
                       // return llist.map((row) => (
             
                         <TableRow>
@@ -161,8 +180,8 @@ function Tasks() {
                         <TableCell align="center">{row.previous_proceedings}</TableCell>
                         {/* <EditableCellComp value={row.} > </EditableCellComp> */}
                         
-                        <TableCell align="center">{row.previous_proceedings_date.slice(0, 24)}</TableCell>
-                        <TableCell align="center">{row.next_proceedings_date.slice(0, 24)}</TableCell>
+                        <TableCell align="center">{row.previous_proceedings_date}</TableCell>
+                        <TableCell align="center">{row.next_proceedings_date}</TableCell>
                         <TableCell align="center">{row.next_proceedings}</TableCell>
                         
                         {/* <TableCell align="center">{row.remarks}</TableCell> */}
@@ -202,7 +221,7 @@ function Tasks() {
               <TextField className="mb-4" style={{minWidth:"400px"}} 
                         color='primary'
                         id="outlined-basic" 
-                        label="Search case" 
+                        label="Quick search cases" 
                         placeholder="File number/case number"
                         variant="outlined"
                         value={searchterm}
@@ -280,10 +299,7 @@ function Tasks() {
                                 
                                 <ListItemSecondaryAction>
                                   <button style={{backgroundColor:'transparent', border:'none'}}>
-                                    <LogIcon></LogIcon>
-                                  
-                                  {/* Improve button later */}
-                                  {/* <DescriptionIcon  edge="end" aria-label="delete" ></DescriptionIcon> */}
+                                  <LogIcon></LogIcon>
                                   </button>
                                   {/* <IconButton edge="end" aria-label="delete" onClick={
                                     ()=>{

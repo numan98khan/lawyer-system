@@ -140,7 +140,7 @@ function AddPeshiRow() {
                                 retCase['previous_proceedings'] = retCase['next_proceedings'];
                             }
 
-                            retCase['next_proceedings_date'] = dob.toLocaleDateString();
+                            retCase['next_proceedings_date'] = dob.toLocaleDateString('en-US');
                             retCase['next_proceedings'] = nextProceedings;
                             retCase['updated_by'] = value.user.email;
                                 
@@ -243,7 +243,9 @@ function AddPeshiRow() {
                     // label="Date of birth"
                     format="MM/dd/yyyy"
                     value={dob}
-                    onChange={(e)=>{setdob(e)}}
+                    onChange={(e)=>{
+                        console.log(e)
+                        setdob(e)}}
                     KeyboardButtonProps={{
                         'aria-label': 'change date',
                     }}
