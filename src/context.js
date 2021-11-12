@@ -235,9 +235,15 @@ class ProductProvider extends Component {
           //   // item['id'] = counter
           //   console.log(item);
           // }
-  
 
-          peshis.push(tempJSON);
+          for(var obj in tempJSON){
+            console.log(tempJSON[obj])
+          
+            if (obj !== 'key'){
+
+              peshis.push(tempJSON[obj]);
+            }
+          }
           // console.log(tempJSON)
 
         });

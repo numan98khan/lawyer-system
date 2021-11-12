@@ -25,6 +25,11 @@ import ButtonContainer from '../../components/Button';
 import { useHistory } from "react-router-dom";
 import { ProductContext } from "../../context";
 import { LogIcon } from "../../../src/icons"
+import { useLocation } from 'react-router-dom';
+import { caseValueMap} from '../NewCase/lists'
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
 
 
 
@@ -39,6 +44,7 @@ import {
 function LogSheet() {
     const [casePath, setCasePath] = React.useState('0/0');
     const [filterDate, setdate] = React.useState(new Date())
+    const location = useLocation()
 
     const contextValue = React.useContext(ProductContext);
     const useStyles = makeStyles({
@@ -50,6 +56,7 @@ function LogSheet() {
     const classes = useStyles();
 
     React.useEffect(() => {
+      setCasePath(location.state)
         // contextValue.setLogSheet(casePath);
 
         // var case_number='';
@@ -77,7 +84,7 @@ function LogSheet() {
                 <div style={{marginBottom:"5%"}}>
                 <Title title={"LOG SHEET " + casePath}/>
               </div>
-              <div className="bg-light" style={{height:'100px', padding:'30px'}}>
+              <div className="bg-light d-flex justify-content-between" style={{height:'100px', padding:'30px'}}>
                 <MuiPickersUtilsProvider 
                     utils={DateFnsUtils}>
                         <KeyboardDatePicker
@@ -92,6 +99,22 @@ function LogSheet() {
                         }}
                         />
                 </MuiPickersUtilsProvider>
+                <div>
+
+                <InputLabel>yo</InputLabel>
+                <Select style={{width:"20%"}}
+                value={''}
+                onChange={(e)=>{}}
+                >
+                <MenuItem value={'Housing Law (Property & Conveyancing)'}>Housing Law (Property & Conveyancing)</MenuItem>
+                </Select>
+                </div>
+                <TextField style={{width:"20%"}} 
+                        color='primary'
+                        id="outlined-basic" 
+                        label="quick search" 
+                        variant="outlined"
+                        onChange={()=> {}} />
               </div>
                 <TableContainer component={Paper}>
                   <Table className={classes.table} aria-label="simple table">
@@ -121,11 +144,12 @@ function LogSheet() {
                           
                                 <TableCell align="center">{row.id}</TableCell>
                                 <TableCell align="center">{row.time_stamp}</TableCell>
-                                <TableCell align="center">{row.case_n}</TableCell>
+                                <TableCell align="center">{caseValueMap[row.key]}</TableCell>
     
                                 {/* <TableCell align="center">{row.court_case_n}</TableCell> */}
                             
-                                <TableCell align="center">{row.updated_by}</TableCell>
+                                <TableCell align="center">{row.prev_value}</TableCell>
+                                <TableCell align="center">{row.new_value}</TableCell>
                             
                             </TableRow>
                       ))
