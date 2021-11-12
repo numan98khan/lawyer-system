@@ -16,6 +16,7 @@ import Clients from "../admin/Clients";
 import Cases from "../admin/Cases";
 import ClientDetails from "../admin/Clients/DisplayItem";
 import CaseDetails from "../admin/Cases/DisplayItem";
+import LogSheet from "../admin/LogSheet";
 
 class AdminNav extends Component {
   render() {
@@ -37,6 +38,7 @@ class AdminNav extends Component {
           <Route exact path="/clientdetails" component={ClientDetails} />
           <Route exact path="/clients" component={Clients} />
           <Route exact path="/cases" component={Cases} />
+          <Route exact path="/logsheet" component={LogSheet} />
           
           {/* <Route exact path="/products" component={ProductList} />
           <Route component={Default} /> */}

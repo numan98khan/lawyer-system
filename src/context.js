@@ -69,7 +69,8 @@ class ProductProvider extends Component {
     clientsList: [],
     casesList: [],
     filesList: [],
-    peshiList: []
+    peshiList: [],
+    logSheetList: []
     // peshiList: [{
     //   key: 1,
     //   id: "haaaaah",
@@ -189,6 +190,8 @@ class ProductProvider extends Component {
         this.setFiles(); // TEMP BLOCK
         this.setPeshiList(); // TEMP BLOCK
 
+        this.setLogSheet('0/0');
+
       } else {
         // No user is signed in.
       }
@@ -204,6 +207,62 @@ class ProductProvider extends Component {
     //   // An error happened.
     // });
 
+  }
+
+  setLogSheet = (casePath) => {
+    // console.log(this.state.user.email)
+    console.log("setting log sheet", casePath)
+    var fb = fire.getFire();
+    var peshis = [];
+
+    fb.database().ref('/')
+      .child('hearing_logs/' + casePath + '/')
+      .on("value", function(snapshot) {
+        peshis = []
+        snapshot.forEach((doc) => {
+          
+          // // console.log(doc.toJSON())
+          var tempJSON = doc.toJSON()
+          tempJSON['key'] = doc.key
+          // if(tempJSON.length<1)
+          // return;
+              // tempJSON['inCart'] = false
+          
+          console.log(tempJSON);
+          // for (item of tempJSON) {
+          //   // ... do something with s ...
+          //   // counter += 1 
+          //   // item['id'] = counter
+          //   console.log(item);
+          // }
+  
+
+          peshis.push(tempJSON);
+          // console.log(tempJSON)
+
+        });
+        // console.log('hires ', hires.filter(function(el){ return el.state === 'REQUESTED' }).length)
+        
+        console.log("debug it")
+        // console.log(new Date(peshis[0].next_proceedings_date))
+        var peshisList = peshis.sort((a, b) => new Date(a.next_proceedings_date) - new Date(b.next_proceedings_date))
+
+        var counter = 0;
+        var item;
+        for (item of peshisList) {
+          // ... do something with s ...
+          counter += 1 
+          item['id'] = counter
+        }
+
+        this.setState(
+           { logSheetList: peshisList}
+           , ()=>{console.log(this.state.logSheetList)}
+        );
+
+        // console.log(this.state.clientsList)
+
+    }.bind(this));    
   }
 
   setPeshiList = () => {
@@ -279,7 +338,7 @@ class ProductProvider extends Component {
 
         this.setState(
            { filesList: files}
-          //  , ()=>{console.log(this.state.filesList)}
+           , ()=>{console.log(this.state.filesList)}
         );
 
         // console.log(this.state.clientsList)
@@ -371,14 +430,32 @@ class ProductProvider extends Component {
     
   }
 
-  updateHearing(cell, value, key){
+  updateHearing(cell, value, key, old_value, case_path){
     var update = {}
+
+
     update[cell] = value
-    console.log(update)
-    console.log("update!",cell, value, key)
+
+    // console.log(update, temp)
+    console.log("update!",cell, value, key, old_value)
     fire.getFire().database()
                 .ref("/hearings/" + key + '/')
-                .update(update)
+                .update(update).then(
+                  (snap)=> {
+                    fire.getFire().database()
+                      .ref("/hearing_logs/" + case_path + "/" + key + '/')
+                      .push(
+                        {
+                          'time_stamp': new Date().toLocaleString(),
+                          'key': cell,
+                          'new_value': value,
+                          'prev_value': old_value
+                        }
+                      )
+                      // console.log('poppers')
+                      // console.log(snap)
+                  }
+                )
   }
 
   // add case and payments to existing client
@@ -1195,7 +1272,8 @@ class ProductProvider extends Component {
           // case function exports
           addClientAndCase :this.addClientAndCase, 
           addClientUser: this.addClientUser,
-          updateHearing: this.updateHearing
+          updateHearing: this.updateHearing,
+          setLogSheet: this.setLogSheet
         }}
       >
         {this.props.children}

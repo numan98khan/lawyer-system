@@ -15,7 +15,8 @@ const RowCell = (props) => {
             setCellValue(temp)
         }
         else if (temp !== cellValue) {
-            props.updateHearing(props.cell, cellValue, props.hearing_key)
+            console.log('case path', props.file_n + '/' + props.case_n )
+            props.updateHearing(props.cell, cellValue, props.hearing_key, temp, props.file_n + '/' + props.case_n)
         } 
     }
 

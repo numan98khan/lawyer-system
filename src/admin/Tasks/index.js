@@ -54,6 +54,9 @@ function Tasks() {
   // const [entryDetails, setentryDetails] = React.useState([])
   const contextValue = React.useContext(ProductContext);
 
+  const history = useHistory();
+
+  
 
     const useStyles = makeStyles({
       table: {
@@ -78,8 +81,16 @@ function Tasks() {
       console.log(file_n,case_n);
     })
 
-    function updateHearing(cell, value, key){
-      contextValue.updateHearing(cell, value, key)
+    function updateHearing(cell, value, key, old_value, case_path){
+      contextValue.updateHearing(cell, value, key, old_value, case_path)
+    }
+
+    function openLogSheet(case_path){
+      contextValue.setLogSheet(case_path)
+      history.push({
+          pathname:'/logsheet',
+          state: case_path
+      })
     }
 
     function getName(clientsList,file,key){
@@ -162,20 +173,20 @@ function Tasks() {
                         {/* <TableCell align="center">{row.court_case_n}</TableCell> */}
                       
 
-                        <EditableCellComp updateHearing={updateHearing} hearing_key={row.key} cell={"courtCaseNo"} value={row.courtCaseNo} > </EditableCellComp>
-                        <EditableCellComp updateHearing={updateHearing} hearing_key={row.key} cell={"caseTitle"} value={row.caseTitle} > </EditableCellComp>
-                        <EditableCellComp updateHearing={updateHearing} hearing_key={row.key} cell={"subCategory"} value={row.subCategory} > </EditableCellComp>
+                        <EditableCellComp updateHearing={updateHearing} file_n={row.file_n} case_n={row.case_n} hearing_key={row.key} cell={"courtCaseNo"} value={row.courtCaseNo} > </EditableCellComp>
+                        <EditableCellComp updateHearing={updateHearing} file_n={row.file_n} case_n={row.case_n} hearing_key={row.key} cell={"caseTitle"} value={row.caseTitle} > </EditableCellComp>
+                        <EditableCellComp updateHearing={updateHearing} file_n={row.file_n} case_n={row.case_n} hearing_key={row.key} cell={"subCategory"} value={row.subCategory} > </EditableCellComp>
 
                         <TableCell align="center">{row.category}</TableCell>
                         
                         {/* <TableCell align="center">{row.court}</TableCell> */}
-                        <EditableCellComp updateHearing={updateHearing} hearing_key={row.key} cell={"court"} value={row.court} > </EditableCellComp>
+                        <EditableCellComp updateHearing={updateHearing} file_n={row.file_n} case_n={row.case_n} hearing_key={row.key} cell={"court"} value={row.court} > </EditableCellComp>
 
                         {/* <TableCell align="center">{row.district}</TableCell> */}
-                        <EditableCellComp updateHearing={updateHearing} hearing_key={row.key} cell={"district"} value={row.district} > </EditableCellComp>
+                        <EditableCellComp updateHearing={updateHearing} file_n={row.file_n} case_n={row.case_n} hearing_key={row.key} cell={"district"} value={row.district} > </EditableCellComp>
 
                         {/* <TableCell align="center">{row.judge}</TableCell> */}
-                        <EditableCellComp updateHearing={updateHearing} hearing_key={row.key} cell={"judge"} value={row.judge} > </EditableCellComp>
+                        <EditableCellComp updateHearing={updateHearing} file_n={row.file_n} case_n={row.case_n} hearing_key={row.key} cell={"judge"} value={row.judge} > </EditableCellComp>
 
                         <TableCell align="center">{row.previous_proceedings}</TableCell>
                         {/* <EditableCellComp value={row.} > </EditableCellComp> */}
@@ -185,22 +196,22 @@ function Tasks() {
                         <TableCell align="center">{row.next_proceedings}</TableCell>
                         
                         {/* <TableCell align="center">{row.remarks}</TableCell> */}
-                        <EditableCellComp updateHearing={updateHearing} hearing_key={row.key} cell={"remarks"} value={row.remarks} > </EditableCellComp>
+                        <EditableCellComp updateHearing={updateHearing} file_n={row.file_n} case_n={row.case_n} hearing_key={row.key} cell={"remarks"} value={row.remarks} > </EditableCellComp>
 
                         {/* <TableCell align="center">{row.caseSrc}</TableCell> */}
-                        <EditableCellComp updateHearing={updateHearing} hearing_key={row.key} cell={"caseSrc"} value={row.caseSrc} > </EditableCellComp>
+                        <EditableCellComp updateHearing={updateHearing} file_n={row.file_n} case_n={row.case_n} hearing_key={row.key} cell={"caseSrc"} value={row.caseSrc} > </EditableCellComp>
 
                         {/* <TableCell align="center">{row.caseSupervisor}</TableCell> */}
-                        <EditableCellComp updateHearing={updateHearing} hearing_key={row.key} cell={"caseSupervisor"} value={row.caseSupervisor} > </EditableCellComp>
+                        <EditableCellComp updateHearing={updateHearing} file_n={row.file_n} case_n={row.case_n} hearing_key={row.key} cell={"caseSupervisor"} value={row.caseSupervisor} > </EditableCellComp>
 
                         {/* <TableCell align="center">{row.caseWorker}</TableCell> */}
-                        <EditableCellComp updateHearing={updateHearing} hearing_key={row.key} cell={"caseWorker"} value={row.caseWorker} > </EditableCellComp>
+                        <EditableCellComp updateHearing={updateHearing} file_n={row.file_n} case_n={row.case_n} hearing_key={row.key} cell={"caseWorker"} value={row.caseWorker} > </EditableCellComp>
 
                         {/* <TableCell align="center">{row.case_clerk}</TableCell> */}
-                        <EditableCellComp updateHearing={updateHearing} hearing_key={row.key} cell={"caseClerk"} value={row.caseClerk} > </EditableCellComp>
+                        <EditableCellComp updateHearing={updateHearing} file_n={row.file_n} case_n={row.case_n} hearing_key={row.key} cell={"caseClerk"} value={row.caseClerk} > </EditableCellComp>
 
                         {/* <TableCell align="center">{row.other_party}</TableCell> */}
-                        <EditableCellComp updateHearing={updateHearing} hearing_key={row.key} cell={"otherParty"} value={row.otherParty} > </EditableCellComp>
+                        <EditableCellComp updateHearing={updateHearing} file_n={row.file_n} case_n={row.case_n} hearing_key={row.key} cell={"otherParty"} value={row.otherParty} > </EditableCellComp>
 
                         <TableCell align="center">{row.updated_by}</TableCell>
                         
@@ -267,6 +278,7 @@ function Tasks() {
                           )
                           .map(function(key, index) {
                             // console.log(value.clientsList["-MjYcy-1vhwjXOXuXsP4"])
+                            // console.log('cmon', idx+'/'+key )
                             return (
                               <div key={index}>
                               <ListItem
@@ -298,8 +310,15 @@ function Tasks() {
                                 />
                                 
                                 <ListItemSecondaryAction>
-                                  <button style={{backgroundColor:'transparent', border:'none'}}>
-                                  <LogIcon></LogIcon>
+                                  <button 
+                                    style={{backgroundColor:'transparent', border:'none'}}
+                                    onClick={() => 
+                                      // alert("Hello!")
+
+                                      openLogSheet(idx+'/'+key)
+                                    }  
+                                  >
+                                    <LogIcon></LogIcon>
                                   </button>
                                   {/* <IconButton edge="end" aria-label="delete" onClick={
                                     ()=>{
