@@ -235,9 +235,15 @@ class ProductProvider extends Component {
           //   // item['id'] = counter
           //   console.log(item);
           // }
-  
 
-          peshis.push(tempJSON);
+          for(var obj in tempJSON){
+            console.log(tempJSON[obj])
+          
+            if (obj !== 'key'){
+
+              peshis.push(tempJSON[obj]);
+            }
+          }
           // console.log(tempJSON)
 
         });
@@ -346,13 +352,32 @@ class ProductProvider extends Component {
     }.bind(this));
   }
 
+  
   //add hearing entry
-  addHearingEntry = (details) => {
+  addHearingEntry = (details, initCase) => {
+    // console.log(details)
+    const {next_proceedings, next_proceedings_date, previous_proceedings, previous_proceedings_date, updated_by, ...remaining_keys} = details;
+    // const {next_proceedings, next_proceedings_date, previous_proceedings, previous_proceedings_date, updated_by, ...remaining_init} = initCase;
+    
+    
     return new Promise((resolve, reject)=> {
+      console.log(remaining_keys);
+       
+      // console.log(initCase)
       fire.getFire().database()
       .ref("/hearings")
-      .push(details).then(()=>{
-        console.log("added entry to hearings")
+      .push(details).then((snapshot)=>{
+        console.log("added entry to hearings", snapshot.key);
+        for (var key in remaining_keys) {
+          if (remaining_keys.hasOwnProperty(key)) {
+              if (remaining_keys[key] !== initCase[key]) {
+  
+                console.log(key + " -> " + remaining_keys[key], initCase[key]);
+                this.updateHearingField(remaining_keys['file_n']+'/'+remaining_keys['case_n'], snapshot.key, key, remaining_keys[key], initCase[key]);
+                      
+              }
+          }
+        }
         resolve()
       })
       .catch((err)=>{
@@ -430,6 +455,19 @@ class ProductProvider extends Component {
     
   }
 
+  updateHearingField (case_path, key, cell, value, old_value) {
+    fire.getFire().database()
+      .ref("/hearing_logs/" + case_path + "/" + key + '/')
+      .push(
+        {
+          'time_stamp': new Date().toLocaleString(),
+          'key': cell,
+          'new_value': value,
+          'prev_value': old_value
+        }
+      )
+  }
+
   updateHearing(cell, value, key, old_value, case_path){
     var update = {}
 
@@ -442,18 +480,8 @@ class ProductProvider extends Component {
                 .ref("/hearings/" + key + '/')
                 .update(update).then(
                   (snap)=> {
-                    fire.getFire().database()
-                      .ref("/hearing_logs/" + case_path + "/" + key + '/')
-                      .push(
-                        {
-                          'time_stamp': new Date().toLocaleString(),
-                          'key': cell,
-                          'new_value': value,
-                          'prev_value': old_value
-                        }
-                      )
-                      // console.log('poppers')
-                      // console.log(snap)
+                    this.updateHearingField(case_path, key, cell, value, old_value);
+                    
                   }
                 )
   }

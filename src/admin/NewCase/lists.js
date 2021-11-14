@@ -1,3 +1,28 @@
+export const caseValueMap = {
+    // id: "haaaaah",
+      file_n: "FILE#",
+      case_n: "CASE#",
+      court_case_n: 'COURT CASE#',
+      subCategory: "SUB CATEGORY",
+      caseTitle: "CASE TITLE",
+      nature_of_case: "NATURE OF CASE",
+      category: "CATEGORY",
+      court: "COURT",
+      district: "DISTRICT",
+      judge: "JUDGE",
+      previous_proceedings: "PREVIOUS PROCEEDING",
+      prev_proceedings_date: "PREVIOUS PROCEEDING DATE",
+      next_proceedings_date: "NEXT PROCEEDING DATE",
+      next_proceedings: "NEXT PROCEEDING",
+      remarks: "REMARKS",
+      caseSrc: "CASE SOURCE",
+      caseSupervisor: "CASE SUPERVISOR",
+      caseWorker: "CASE WORKER",
+      case_clerk: "CASE CLERK",
+      other_party: "OTHER PARTY",
+      updated_by: "UPDATED BY",
+}
+
 export const optionsCivilLitigation = [
 {
     value:"Boundary and neighbour disputes",

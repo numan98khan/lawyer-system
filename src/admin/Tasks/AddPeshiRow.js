@@ -15,10 +15,15 @@ import {
 import DateFnsUtils from '@date-io/date-fns';
 import EditableCell from '../../components/EditableNewCellComp'
 
+import _ from "lodash";
+
 function AddPeshiRow() {
-    const [fileNum, setFileNum] = React.useState("");
-    const [courtCase, setCourtCase] = React.useState("");
+    const [fileNum, setFileNum] = React.useState("0");
+    const [courtCase, setCourtCase] = React.useState("0");
     const [retCase, setRetCase] = React.useState(null);
+
+    const [initCase, setInitCase] = React.useState(null);
+
     const [nextProceedings, setNextProceedings] = React.useState("")
     const [dob, setdob] = React.useState(new Date())
     const [newCase, setnewCase] = React.useState(null)
@@ -47,6 +52,14 @@ function AddPeshiRow() {
             if(peshiData.length > 0){
                 setnewCase(false)
                 retCase = peshiData.pop();
+                
+                // let trueDeep = jQ.extend(true, retCase, {});
+
+                var trueDeep = _.cloneDeep(retCase);
+
+                // console.log('trueDeep', trueDeep)
+
+                setInitCase(trueDeep);
             }
             else {
                 setnewCase(true)
@@ -144,7 +157,7 @@ function AddPeshiRow() {
                             retCase['next_proceedings'] = nextProceedings;
                             retCase['updated_by'] = value.user.email;
                                 
-                            value.addHearingEntry(payload).then(() => {
+                            value.addHearingEntry(payload, initCase).then(() => {
                                 //clear everything
                                 setFileNum("")
                                 setCourtCase("")
