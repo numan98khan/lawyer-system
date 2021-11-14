@@ -10,6 +10,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Title from "../../components/Title"
 import { Fragment } from "react";
+import FormControl from '@material-ui/core/FormControl';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
 import List from '@material-ui/core/List';
@@ -32,18 +33,19 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 
 
-
-
 import {
     MuiPickersUtilsProvider,
     KeyboardTimePicker,
     KeyboardDatePicker,
   } from '@material-ui/pickers';
-  
+
 
 function LogSheet() {
     const [casePath, setCasePath] = React.useState('0/0');
     const [filterDate, setdate] = React.useState(new Date())
+    const [timestampSearch, settimestampSearch] = React.useState(true)
+    const [keySearch, setkeySearch] = React.useState(true)
+    const [valueSearch, setvalueSearch] = React.useState(true)
     const location = useLocation()
 
     const contextValue = React.useContext(ProductContext);
@@ -85,9 +87,11 @@ function LogSheet() {
                 <Title title={"LOG SHEET " + casePath}/>
               </div>
               <div className="bg-light d-flex justify-content-between" style={{height:'100px', padding:'30px'}}>
+              <div className="d-flex align-items-center justify-content-between">
                 <MuiPickersUtilsProvider 
                     utils={DateFnsUtils}>
                         <KeyboardDatePicker
+                        disabled = {timestampSearch}
                         margin="normal"
                         id="date-picker-dialog"
                         // label="Date of birth"
@@ -99,22 +103,39 @@ function LogSheet() {
                         }}
                         />
                 </MuiPickersUtilsProvider>
-                <div>
+                <input onChange={(e)=>{settimestampSearch(!e.target.checked)}} type="checkbox" style={{height:'30x', width:'30px', marginLeft:'10px'}}/>
+                </div>
+                <div className="d-flex align-items-center justify-content-between">
 
-                <InputLabel>yo</InputLabel>
-                <Select style={{width:"20%"}}
-                value={''}
+                <Select 
+                variant='outlined'
+                style={{width:"300px", marginRight:'10px'}}
+                value={'Housing Law (Property & Conveyancing)'}
+                disabled={keySearch}
                 onChange={(e)=>{}}
                 >
-                <MenuItem value={'Housing Law (Property & Conveyancing)'}>Housing Law (Property & Conveyancing)</MenuItem>
+                  {
+                    Object.keys(caseValueMap).map((key,indx)=>{
+                      return(
+
+                        <MenuItem value={caseValueMap[key]}>{caseValueMap[key]}</MenuItem>
+                      )
+                    })
+                  }
                 </Select>
+                
+                <input onChange={(e)=>{setkeySearch(!e.target.checked)}} type="checkbox" style={{height:'30x', width:'30px'}}/>
                 </div>
-                <TextField style={{width:"20%"}} 
+                <div className="d-flex align-items-center justify-content-between">
+                <TextField style={{width:"100%", marginRight:'10px'}} 
+                        disabled={valueSearch}
                         color='primary'
                         id="outlined-basic" 
                         label="quick search" 
                         variant="outlined"
                         onChange={()=> {}} />
+                <input onChange={(e)=>{setvalueSearch(!e.target.checked)}} type="checkbox" style={{height:'30x', width:'30px'}}/>
+                </div>
               </div>
                 <TableContainer component={Paper}>
                   <Table className={classes.table} aria-label="simple table">

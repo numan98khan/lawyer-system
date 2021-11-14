@@ -355,13 +355,13 @@ class ProductProvider extends Component {
   
   //add hearing entry
   addHearingEntry = (details, initCase) => {
-    // console.log(details)
+    console.log(details)
     const {next_proceedings, next_proceedings_date, previous_proceedings, previous_proceedings_date, updated_by, ...remaining_keys} = details;
     // const {next_proceedings, next_proceedings_date, previous_proceedings, previous_proceedings_date, updated_by, ...remaining_init} = initCase;
     
     
     return new Promise((resolve, reject)=> {
-      console.log(remaining_keys);
+      console.log(initCase);
        
       // console.log(initCase)
       fire.getFire().database()
@@ -371,7 +371,6 @@ class ProductProvider extends Component {
         for (var key in remaining_keys) {
           if (remaining_keys.hasOwnProperty(key)) {
               if (remaining_keys[key] !== initCase[key]) {
-  
                 console.log(key + " -> " + remaining_keys[key], initCase[key]);
                 this.updateHearingField(remaining_keys['file_n']+'/'+remaining_keys['case_n'], snapshot.key, key, remaining_keys[key], initCase[key]);
                       
@@ -1301,7 +1300,8 @@ class ProductProvider extends Component {
           addClientAndCase :this.addClientAndCase, 
           addClientUser: this.addClientUser,
           updateHearing: this.updateHearing,
-          setLogSheet: this.setLogSheet
+          setLogSheet: this.setLogSheet,
+          updateHearingField: this.updateHearingField
         }}
       >
         {this.props.children}

@@ -161,7 +161,7 @@ function Tasks() {
                     return value.peshiList.filter((row) => {
                       return (row.next_proceedings_date === filterDate.toLocaleDateString('en-US'))
                     }
-                      ).map((row) => (
+                      ).map((row, idx) => (
                       // return llist.map((row) => (
             
                         <TableRow>
