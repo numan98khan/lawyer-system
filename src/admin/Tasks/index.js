@@ -163,30 +163,51 @@ function Tasks() {
                     }
                       ).map((row, idx) => (
                       // return llist.map((row) => (
-            
-                        <TableRow>
+                        // {row.isLast === true?xxxxx:
                         
+                        
+                        <TableRow className={`${row.isLast? 'highlightedRow' :''} `}>
+
                         <TableCell align="center">{row.id}</TableCell>
                         <TableCell align="center">{row.file_n}</TableCell>
                         <TableCell align="center">{row.case_n}</TableCell>
 
                         {/* <TableCell align="center">{row.court_case_n}</TableCell> */}
                       
-
+                        {row.isLast ? 
                         <EditableCellComp updateHearing={updateHearing} file_n={row.file_n} case_n={row.case_n} hearing_key={row.key} cell={"courtCaseNo"} value={row.courtCaseNo} > </EditableCellComp>
+                        : <TableCell align="center">{row.courtCaseNo}</TableCell>
+                        }
+
+                        {row.isLast ?
                         <EditableCellComp updateHearing={updateHearing} file_n={row.file_n} case_n={row.case_n} hearing_key={row.key} cell={"caseTitle"} value={row.caseTitle} > </EditableCellComp>
+                        : <TableCell align="center">{row.caseTitle}</TableCell>
+                        }
+
+                        {row.isLast ?
                         <EditableCellComp updateHearing={updateHearing} file_n={row.file_n} case_n={row.case_n} hearing_key={row.key} cell={"subCategory"} value={row.subCategory} > </EditableCellComp>
+                        : <TableCell align="center">{row.subCategory}</TableCell>
+                        }
 
                         <TableCell align="center">{row.category}</TableCell>
                         
                         {/* <TableCell align="center">{row.court}</TableCell> */}
+                        {row.isLast ?
                         <EditableCellComp updateHearing={updateHearing} file_n={row.file_n} case_n={row.case_n} hearing_key={row.key} cell={"court"} value={row.court} > </EditableCellComp>
+                        : <TableCell align="center">{row.court}</TableCell>
+                        }
 
                         {/* <TableCell align="center">{row.district}</TableCell> */}
+                        {row.isLast ?
                         <EditableCellComp updateHearing={updateHearing} file_n={row.file_n} case_n={row.case_n} hearing_key={row.key} cell={"district"} value={row.district} > </EditableCellComp>
+                        : <TableCell align="center">{row.district}</TableCell>
+                        }
 
                         {/* <TableCell align="center">{row.judge}</TableCell> */}
+                        {row.isLast ?
                         <EditableCellComp updateHearing={updateHearing} file_n={row.file_n} case_n={row.case_n} hearing_key={row.key} cell={"judge"} value={row.judge} > </EditableCellComp>
+                        : <TableCell align="center">{row.judge}</TableCell>
+                        }
 
                         <TableCell align="center">{row.previous_proceedings}</TableCell>
                         {/* <EditableCellComp value={row.} > </EditableCellComp> */}
@@ -196,26 +217,46 @@ function Tasks() {
                         <TableCell align="center">{row.next_proceedings}</TableCell>
                         
                         {/* <TableCell align="center">{row.remarks}</TableCell> */}
+                        {row.isLast ?
                         <EditableCellComp updateHearing={updateHearing} file_n={row.file_n} case_n={row.case_n} hearing_key={row.key} cell={"remarks"} value={row.remarks} > </EditableCellComp>
+                        : <TableCell align="center">{row.remarks}</TableCell>
+                        }
 
                         {/* <TableCell align="center">{row.caseSrc}</TableCell> */}
+                        
+                        {row.isLast ?
                         <EditableCellComp updateHearing={updateHearing} file_n={row.file_n} case_n={row.case_n} hearing_key={row.key} cell={"caseSrc"} value={row.caseSrc} > </EditableCellComp>
+                        : <TableCell align="center">{row.caseSrc}</TableCell>
+                        }
 
                         {/* <TableCell align="center">{row.caseSupervisor}</TableCell> */}
+                        {row.isLast ?
                         <EditableCellComp updateHearing={updateHearing} file_n={row.file_n} case_n={row.case_n} hearing_key={row.key} cell={"caseSupervisor"} value={row.caseSupervisor} > </EditableCellComp>
+                        : <TableCell align="center">{row.caseSupervisor}</TableCell>
+                        }
 
                         {/* <TableCell align="center">{row.caseWorker}</TableCell> */}
+                        {row.isLast ?
                         <EditableCellComp updateHearing={updateHearing} file_n={row.file_n} case_n={row.case_n} hearing_key={row.key} cell={"caseWorker"} value={row.caseWorker} > </EditableCellComp>
+                        : <TableCell align="center">{row.caseWorker}</TableCell>
+                        }
 
                         {/* <TableCell align="center">{row.case_clerk}</TableCell> */}
+                        {row.isLast ?
                         <EditableCellComp updateHearing={updateHearing} file_n={row.file_n} case_n={row.case_n} hearing_key={row.key} cell={"caseClerk"} value={row.caseClerk} > </EditableCellComp>
+                        : <TableCell align="center">{row.caseClerk}</TableCell>
+                        }
 
                         {/* <TableCell align="center">{row.other_party}</TableCell> */}
+                        {row.isLast ?
                         <EditableCellComp updateHearing={updateHearing} file_n={row.file_n} case_n={row.case_n} hearing_key={row.key} cell={"otherParty"} value={row.otherParty} > </EditableCellComp>
+                        : <TableCell align="center">{row.otherParty}</TableCell>
+                        }
 
                         <TableCell align="center">{row.updated_by}</TableCell>
                         
                       </TableRow>
+                      // }
                     ))
                     }}
                     </ProductConsumer>

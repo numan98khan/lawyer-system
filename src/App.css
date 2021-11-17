@@ -5,6 +5,11 @@
   --mainDark: #232528;
   --mainYellow: #ffa400;
   --mainPurple: #6600ff;
+  --highlightedPurple: #6600ff13;
+}
+
+.highlightedRow {
+  background-color: var(--highlightedPurple);
 }
 
 .App {

@@ -228,7 +228,7 @@ class ProductProvider extends Component {
           // return;
               // tempJSON['inCart'] = false
           
-          console.log(tempJSON);
+          // console.log(tempJSON);
           // for (item of tempJSON) {
           //   // ... do something with s ...
           //   // counter += 1 
@@ -237,7 +237,7 @@ class ProductProvider extends Component {
           // }
 
           for(var obj in tempJSON){
-            console.log(tempJSON[obj])
+            // console.log(tempJSON[obj])
           
             if (obj !== 'key'){
 
@@ -249,7 +249,7 @@ class ProductProvider extends Component {
         });
         // console.log('hires ', hires.filter(function(el){ return el.state === 'REQUESTED' }).length)
         
-        console.log("debug it")
+        console.log("DEBUG IT!")
         // console.log(new Date(peshis[0].next_proceedings_date))
         var peshisList = peshis.sort((a, b) => new Date(a.next_proceedings_date) - new Date(b.next_proceedings_date))
 
@@ -263,7 +263,6 @@ class ProductProvider extends Component {
 
         this.setState(
            { logSheetList: peshisList}
-           , ()=>{console.log(this.state.logSheetList)}
         );
 
         // console.log(this.state.clientsList)
@@ -295,7 +294,7 @@ class ProductProvider extends Component {
 
         });
         // console.log('hires ', hires.filter(function(el){ return el.state === 'REQUESTED' }).length)
-        
+
         console.log("debug it")
         // console.log(new Date(peshis[0].next_proceedings_date))
         var peshisList = peshis.sort((a, b) => new Date(a.next_proceedings_date) - new Date(b.next_proceedings_date))
@@ -307,6 +306,45 @@ class ProductProvider extends Component {
           counter += 1 
           item['id'] = counter
         }
+
+        // reduce iterates over each item, using accumulator
+        var orderedData = peshisList.reduce((acc, next) => {
+
+          // reusable product var
+          var nextProduct = next;
+          // find similar orders, and join them
+          var exist = acc.find(v => v.case_id === next.case_id);
+          if (exist) {
+
+            // order exists, update its products
+            exist.peshis.push(nextProduct);
+          } else {
+
+            // create new order
+            acc.push({
+              case_id: next.case_id,
+              peshis: [nextProduct]
+            })
+          }
+          return acc
+        }, [])
+
+        // console.log(orderedData);
+        for (item of orderedData) {
+          // ... do something with s ...
+          // counter += 1 
+          // item['id'] = counter
+          console.log(item.peshis.at(-1)); 
+          // const results = peshisList.filter(entry => entry === item.peshis.at(-1));
+          const index = peshisList.findIndex(x => x === item.peshis.at(-1));
+
+          // console.log(index); 
+          peshisList[index]['isLast'] = true;
+          console.log(peshisList[index]); 
+          
+        }
+
+
 
         this.setState(
            { peshiList: peshisList}
@@ -371,7 +409,7 @@ class ProductProvider extends Component {
         for (var key in remaining_keys) {
           if (remaining_keys.hasOwnProperty(key)) {
               if (remaining_keys[key] !== initCase[key]) {
-                console.log(key + " -> " + remaining_keys[key], initCase[key]);
+                // console.log(key + " -> " + remaining_keys[key], initCase[key]);
                 this.updateHearingField(remaining_keys['file_n']+'/'+remaining_keys['case_n'], snapshot.key, key, remaining_keys[key], initCase[key]);
                       
               }
