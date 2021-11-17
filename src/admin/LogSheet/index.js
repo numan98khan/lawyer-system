@@ -43,9 +43,11 @@ import {
 function LogSheet() {
     const [casePath, setCasePath] = React.useState('0/0');
     const [filterDate, setdate] = React.useState(new Date())
-    const [timestampSearch, settimestampSearch] = React.useState(true)
-    const [keySearch, setkeySearch] = React.useState(true)
-    const [valueSearch, setvalueSearch] = React.useState(true)
+    const [keyvalue, setkeyvalue] = React.useState('')
+    const [quicksearch, setquicksearch] = React.useState('')
+    // const [timestampSearch, settimestampSearch] = React.useState(true)
+    // const [keySearch, setkeySearch] = React.useState(true)
+    // const [valueSearch, setvalueSearch] = React.useState(true)
     const location = useLocation()
 
     const contextValue = React.useContext(ProductContext);
@@ -56,6 +58,10 @@ function LogSheet() {
     });
 
     const classes = useStyles();
+
+    function getKeyByValue(object, value) {
+      return Object.keys(object).find(key => object[key] === value);
+    }
 
     React.useEffect(() => {
       setCasePath(location.state)
@@ -77,6 +83,38 @@ function LogSheet() {
         // console.log(file_n,case_n);
       })
 
+      const filterFunc = (row) =>{
+        console.log(row, keyvalue)
+        // return true
+        if(filterDate===''){
+          return true
+        }
+        else if(quicksearch==='' && keyvalue===''){
+          let date = null
+          try {
+            date = filterDate.toLocaleDateString('en-US')
+          }
+          catch(e){
+            return true
+          }
+          return row.date === filterDate.toLocaleDateString('en-US')
+        }
+
+        else{
+          let date = null
+          try {
+            date = filterDate.toLocaleDateString('en-US')
+          }
+          catch(e){
+            return true
+          }
+          if(keyvalue === ''){
+            return (row.new_value.includes(quicksearch)|| row.prev_value.includes(quicksearch))
+          }
+          return (row.date === date && row.key===getKeyByValue(caseValueMap, keyvalue) && (row.new_value.includes(quicksearch)|| row.prev_value.includes(quicksearch)))
+        }
+      }
+
     return (
         <ProductConsumer>
           {value => {
@@ -91,7 +129,7 @@ function LogSheet() {
                 <MuiPickersUtilsProvider 
                     utils={DateFnsUtils}>
                         <KeyboardDatePicker
-                        disabled = {timestampSearch}
+                        // disabled = {timestampSearch}
                         margin="normal"
                         id="date-picker-dialog"
                         // label="Date of birth"
@@ -103,38 +141,42 @@ function LogSheet() {
                         }}
                         />
                 </MuiPickersUtilsProvider>
-                <input onChange={(e)=>{settimestampSearch(!e.target.checked)}} type="checkbox" style={{height:'30x', width:'30px', marginLeft:'10px'}}/>
+                {/* <input onChange={(e)=>{settimestampSearch(!e.target.checked)}} type="checkbox" style={{height:'30x', width:'30px', marginLeft:'10px'}}/> */}
                 </div>
                 <div className="d-flex align-items-center justify-content-between">
-
+                <FormControl className={classes.formControl}>
+                <InputLabel>key search</InputLabel>
                 <Select 
-                variant='outlined'
+                // variant='outlined'
                 style={{width:"300px", marginRight:'10px'}}
-                value={'Housing Law (Property & Conveyancing)'}
-                disabled={keySearch}
-                onChange={(e)=>{}}
+                value={keyvalue}
+                // disabled={keySearch}
+                onChange={(e)=>{setkeyvalue(e.target.value)}}
                 >
+                  <MenuItem className="text-primary" value={''}>ALL KEYS</MenuItem>
                   {
                     Object.keys(caseValueMap).map((key,indx)=>{
                       return(
 
                         <MenuItem value={caseValueMap[key]}>{caseValueMap[key]}</MenuItem>
-                      )
-                    })
-                  }
+                        )
+                      })
+                    }
                 </Select>
+                </FormControl>
                 
-                <input onChange={(e)=>{setkeySearch(!e.target.checked)}} type="checkbox" style={{height:'30x', width:'30px'}}/>
+                {/* <input onChange={(e)=>{setkeySearch(!e.target.checked)}} type="checkbox" style={{height:'30x', width:'30px'}}/> */}
                 </div>
                 <div className="d-flex align-items-center justify-content-between">
                 <TextField style={{width:"100%", marginRight:'10px'}} 
-                        disabled={valueSearch}
+                        // disabled={valueSearch}
                         color='primary'
                         id="outlined-basic" 
                         label="quick search" 
                         variant="outlined"
-                        onChange={()=> {}} />
-                <input onChange={(e)=>{setvalueSearch(!e.target.checked)}} type="checkbox" style={{height:'30x', width:'30px'}}/>
+                        value={quicksearch}
+                        onChange={(e)=> {setquicksearch(e.target.value)}} />
+                {/* <input onChange={(e)=>{setvalueSearch(!e.target.checked)}} type="checkbox" style={{height:'30x', width:'30px'}}/> */}
                 </div>
               </div>
                 <TableContainer component={Paper}>
@@ -143,10 +185,12 @@ function LogSheet() {
                       <TableRow>
                         {/* <TableCell align="center">Dessert (100g serving)</TableCell> */}
                         <TableCell align="center">#</TableCell>
-                        <TableCell align="center">TIMESTAMP</TableCell>
+                        <TableCell align="center">DATE</TableCell>
+                        <TableCell align="center">TIME</TableCell>
                         <TableCell align="center">KEY</TableCell>
                         <TableCell align="center">PREVIOUS VALUE</TableCell>
                         <TableCell align="center">NEW VALUE</TableCell>
+                        <TableCell align="center">UPDATED BY</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -157,20 +201,23 @@ function LogSheet() {
                         // return value.peshiList.filter((row) => {
                         //     return (row.next_proceedings_date === filterDate.toLocaleDateString('en-US'))
                         // })
-                        console.log(value.logSheetList);
-                        return value.logSheetList.map((row) => (
+                        // console.log(value.logSheetList);
+                        return value.logSheetList.filter((row)=>filterFunc(row)).map((row) => (
                             // return llist.map((row) => (
               
                             <TableRow>
                           
                                 <TableCell align="center">{row.id}</TableCell>
-                                <TableCell align="center">{row.time_stamp}</TableCell>
+                                <TableCell align="center">{row.date}</TableCell>
+                                
+                                <TableCell align="center">{row.time}</TableCell>
                                 <TableCell align="center">{caseValueMap[row.key]}</TableCell>
     
                                 {/* <TableCell align="center">{row.court_case_n}</TableCell> */}
                             
                                 <TableCell align="center">{row.prev_value}</TableCell>
                                 <TableCell align="center">{row.new_value}</TableCell>
+                                <TableCell align="center">{row.updated_by}</TableCell>
                             
                             </TableRow>
                       ))

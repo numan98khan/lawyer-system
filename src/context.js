@@ -329,12 +329,12 @@ class ProductProvider extends Component {
           return acc
         }, [])
 
-        // console.log(orderedData);
+        console.log(orderedData);
         for (item of orderedData) {
           // ... do something with s ...
           // counter += 1 
           // item['id'] = counter
-          console.log(item.peshis.at(-1)); 
+          console.log(item.peshis); 
           // const results = peshisList.filter(entry => entry === item.peshis.at(-1));
           const index = peshisList.findIndex(x => x === item.peshis.at(-1));
 
@@ -492,12 +492,15 @@ class ProductProvider extends Component {
     
   }
 
-  updateHearingField (case_path, key, cell, value, old_value) {
+  updateHearingField = (case_path, key, cell, value, old_value) => {
+    // console.log(this.state)
     fire.getFire().database()
       .ref("/hearing_logs/" + case_path + "/" + key + '/')
       .push(
         {
-          'time_stamp': new Date().toLocaleString(),
+          'date': new Date().toLocaleDateString('en-US'),
+          'time':new Date().toLocaleTimeString(),
+          'updated_by':this.state.user.email,
           'key': cell,
           'new_value': value,
           'prev_value': old_value
