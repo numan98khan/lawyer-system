@@ -8,7 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // import Default from "./components/Default";
 // import Modal from "./components/Modal";
 
-import { ProductConsumer } from "./context";
+import { ProductConsumer } from "./contexts/context.js";
 import AuthNav from "./navigation/AuthNav"
 import ClientDrawer from "./navigation/ClientDrawer"
 import Navbar from "./navigation/Navbar";

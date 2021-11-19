@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from "react";
 // import Product from "./Product";
 import Title from "../../components/Title";
-import { ProductConsumer } from "../../context";
+import { ProductConsumer } from "../../contexts/context.js";
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import { ProductContext } from "../../context";
+import { ProductContext } from "../../contexts/context.js";
 
 import clsx from 'clsx';
 // import { makeStyles } from '@material-ui/core/styles';

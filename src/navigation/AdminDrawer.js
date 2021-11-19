@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 // import Product from "./Product";
 // import Title from "./Title";
-import { ProductConsumer } from "../context";
+import { ProductConsumer } from "../contexts/context.js";
 import { withStyles } from '@material-ui/core/styles';
 import { Link, NavLink } from "react-router-dom";
 import clsx from 'clsx';

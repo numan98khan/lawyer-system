@@ -14,7 +14,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import countryList from 'react-select-country-list';
 import moment from 'moment';
 import ButtonContainer from '../../components/Button';
-import { ProductConsumer } from "../../context";
+import { ProductConsumer } from "../../contexts/context.js";
 import Title from "../../components/Title"
 
 import {

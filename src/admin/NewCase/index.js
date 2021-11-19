@@ -1,5 +1,5 @@
 import React, { Component, useState, Fragment } from "react";
-import { ProductConsumer } from "../../context";
+import { ProductConsumer } from "../../contexts/context.js";
 import Button from "../../components/Button";
 import {Link} from 'react-router-dom'
 import ListItemText from '@material-ui/core/ListItemText';

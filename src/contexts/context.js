@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { storeProducts, detailProduct } from "./data";
-import fire from  './fire';
+import { storeProducts, detailProduct } from "../data";
+import fire from  '../fire';
 
 const ProductContext = React.createContext();
 
@@ -399,7 +399,10 @@ class ProductProvider extends Component {
     
     
     return new Promise((resolve, reject)=> {
+      console.log("INSIDE PROMISE")
       console.log(initCase);
+      delete details["isLast"]; 
+      console.log(details);
        
       // console.log(initCase)
       fire.getFire().database()

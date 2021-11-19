@@ -1,5 +1,5 @@
 import React from 'react'
-import { ProductConsumer } from "../../context";
+import { ProductConsumer } from "../../contexts/context.js";
 
 function index() {
     return(

@@ -4,7 +4,7 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import fire from '../fire'
 import {Link} from "react-router-dom"
-import { ProductConsumer } from "../context";
+import { ProductConsumer } from "../contexts/context.js";
 import {useState} from 'react'
 
 import FileUploader from "react-firebase-file-uploader";

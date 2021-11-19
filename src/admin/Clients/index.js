@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 // import Product from "./Product";
 import Title from "../../components/Title";
-import { ProductConsumer } from "../../context";
+import { ProductConsumer } from "../../contexts/context.js";
 
 import clsx from 'clsx';
 // import { makeStyles } from '@material-ui/core/styles';

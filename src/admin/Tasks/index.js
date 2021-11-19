@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ProductConsumer } from "../../context";
+import { ProductConsumer } from "../../contexts/context.js";
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -23,7 +23,7 @@ import Field from '../../components/Field';
 import DateFnsUtils from '@date-io/date-fns';
 import ButtonContainer from '../../components/Button';
 import { useHistory } from "react-router-dom";
-import { ProductContext } from "../../context";
+import { ProductContext } from "../../contexts/context.js";
 import { LogIcon } from "../../../src/icons"
 
 

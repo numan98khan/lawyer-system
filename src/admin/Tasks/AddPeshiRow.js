@@ -6,7 +6,7 @@ import Field from '../../components/Field';
 import IconButton from '@material-ui/core/IconButton';
 import CreateIcon from '@material-ui/icons/Create';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import { ProductContext, ProductConsumer } from "../../context";
+import { ProductContext, ProductConsumer } from "../../contexts/context.js";
 import {
     MuiPickersUtilsProvider,
     KeyboardTimePicker,

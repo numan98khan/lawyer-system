@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ProductConsumer } from "../../context";
+import { ProductConsumer } from "../../contexts/context.js";
 
 class Home extends Component {
   
