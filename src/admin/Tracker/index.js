@@ -1,24 +1,42 @@
-import React from 'react'
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import React from "react"
+// AIzaSyDVtDW0vjeyc6t1NR5QYU4mkGKMeO-cxI8
+import GoogleMapReact from 'google-map-react';
+
+// import { MapConsumer } from "../../contexts/mapContext.js";
+import { ProductConsumer } from "../../contexts/context";
+
+const AnyReactComponent = ({ text }) => <div>{text}</div>;
+
 
 function Tracker() {
-
-    const position = [51.505, -0.09]
-        
+    
+    // {
+    //     top:0,
+    //     flexGrow: 1,
+    //     backgroundColor: '#6600ff',
+    //     color: '#6600ff'
+    //   }
     return (
-        // Important! Always set the container height explicitly
-        <MapContainer center={position} zoom={13} scrollWheelZoom={false}>
-            <TileLayer
-                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            <Marker position={position}>
-                <Popup>
-                    A pretty CSS3 popup. <br /> Easily customizable.
-                </Popup>
-            </Marker>
-        </MapContainer>
-    )
+        <div 
+        style={{ height: '100vh', width: '100%' }}
+        // style={{ flexGrow: 1 }}
+        >
+            <GoogleMapReact
+                bootstrapURLKeys={{ key: "AIzaSyDVtDW0vjeyc6t1NR5QYU4mkGKMeO-cxI8" }}
+                    defaultCenter={{
+                        lat: 59.95,
+                        lng: 30.33
+                    }}
+                    defaultZoom={11}
+            >
+                {/* <AnyReactComponent
+                    lat={59.955413}
+                    lng={30.337844}
+                    text="My Marker"
+                /> */}
+            </GoogleMapReact>
+        </div>
+        )
 }
 
 export default Tracker

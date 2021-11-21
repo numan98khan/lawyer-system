@@ -12,6 +12,10 @@
   background-color: var(--highlightedPurple);
 }
 
+.mapPanel {
+  background-color: var(--highlightedPurple);
+}
+
 .App {
   text-align: center;
 }

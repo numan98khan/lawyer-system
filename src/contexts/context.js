@@ -154,6 +154,8 @@ class ProductProvider extends Component {
 
     fire.getFire().auth().onAuthStateChanged(function(user) {
       if (user) {
+        
+        // this.setTracker();
         console.log("USER +> " + user.uid)
         this.setState({user:user})
         console.log(user)
@@ -192,6 +194,8 @@ class ProductProvider extends Component {
 
         this.setLogSheet('0/0');
 
+        this.setTracker();
+
       } else {
         // No user is signed in.
       }
@@ -208,6 +212,47 @@ class ProductProvider extends Component {
     // });
 
   }
+
+  setTracker = () => {
+    var fb=fire.getFire();
+    var workers = [];
+
+    console.log("sexy")
+
+    fb.database().ref('/')
+      .child('workers')
+      .on("value", function(snapshot) {
+        workers = []
+        console.log(snapshot)
+        snapshot.forEach((doc) => {
+          
+          // // console.log(doc.toJSON())
+          var tempJSON = doc.toJSON()  
+              tempJSON['id'] = doc.key
+              // tempJSON['inCart'] = false
+            
+              workers.push(tempJSON);
+              console.log(tempJSON)
+
+        });
+        // console.log('hires ', hires.filter(function(el){ return el.state === 'REQUESTED' }).length)
+        
+        // console.log(this.state.clientsList)
+        this.setState(
+          { workerCoords: workers}, 
+        );
+
+        // this.setState(() => {
+        //   { workerCoords: workers};
+        // },
+        //   ()=>{console.log('workers set!!!', this.state.workerCoords)}
+        // );
+
+        // console.log(this.state.clientsList)
+
+    }.bind(this));
+    
+}
 
   setLogSheet = (casePath) => {
     // console.log(this.state.user.email)
@@ -1339,6 +1384,8 @@ class ProductProvider extends Component {
           // removeItem: this.removeItem,
           // clearCart: this.clearCart,
           // checkoutCart: this.checkoutCart, 
+
+          setTracker: this.setTracker,
 
           // case function exports
           addClientAndCase :this.addClientAndCase, 

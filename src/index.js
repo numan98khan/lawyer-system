@@ -5,6 +5,8 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ProductProvider } from "./contexts/context.js";
+// import { MapProvider } from "./contexts/mapContext.js";
+
 
 // import { Provider } from "react-redux";
 // import configureStore from "./configureStore";
@@ -13,11 +15,13 @@ import { ProductProvider } from "./contexts/context.js";
 
 
 ReactDOM.render(
+  // <MapProvider>
     <ProductProvider>
       <Router>
         <App />
       </Router>
     </ProductProvider>
+    // </MapProvider>
   ,
   document.getElementById("root")
 );

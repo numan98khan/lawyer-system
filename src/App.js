@@ -9,12 +9,26 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // import Modal from "./components/Modal";
 
 import { ProductConsumer } from "./contexts/context.js";
+// import { MapConsumer } from "./contexts/mapContext.js";
 import AuthNav from "./navigation/AuthNav"
 import ClientDrawer from "./navigation/ClientDrawer"
 import Navbar from "./navigation/Navbar";
 import AdminDrawer from "./navigation/AdminDrawer"
 
 import AdminNav from "./navigation/AdminNav"
+
+import Tracker from "./admin/Tracker";
+
+// class App extends Component {
+//   render() {
+//     // const { isAuthenticated, isVerifying } = this.props;
+//     // // console.log("isAuthenticated +++ " + isAuthenticated)
+//     return (
+//       <Tracker/>
+//     );
+//   }
+// }
+
 
 class App extends Component {
   render() {
@@ -46,6 +60,7 @@ class App extends Component {
             }}
           </ProductConsumer>
 
+          {/* <MapConsumer> */}
           <ProductConsumer>
             {value => {
               if(value.user!=null){
@@ -57,12 +72,12 @@ class App extends Component {
                 return value.isSeller ?  <SellerNav /> : <BuyerNav />   
             }*/}
           </ProductConsumer>
+          {/* </MapConsumer> */}
         {/* <Modal /> */}
       </Fragment>
     );
   }
 }
-
 
 // <MainDrawer />
 // <BuyerNav />

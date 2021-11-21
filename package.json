@@ -14,9 +14,13 @@
     "bootstrap": "^4.2.1",
     "date-fns": "^2.23.0",
     "firebase": "^7.13.2",
+    "geofire-common": "^5.2.0",
+    "google-map-react": "^2.1.10",
     "jquery": "^3.6.0",
+    "leaflet": "^1.7.1",
     "material-ui": "^0.20.2",
     "moment": "^2.29.1",
+    "pigeon-maps": "^0.19.7",
     "popper.js": "^1.16.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -24,6 +28,7 @@
     "react-flow-player": "^1.2.1",
     "react-flv-player": "^1.0.9",
     "react-google-charts": "^3.0.15",
+    "react-map-gl": "^6.1.17",
     "react-material-ui-carousel": "^1.1.1",
     "react-native-nodemediaclient": "^0.1.6",
     "react-number-format": "^4.7.3",
@@ -57,6 +62,9 @@
     "production": [
       ">0.2%",
       "not dead",
+      "not ie 11",
+      "not chrome < 51",
+      "not safari < 10",
       "not op_mini all"
     ],
     "development": [

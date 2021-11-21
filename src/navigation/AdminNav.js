@@ -18,6 +18,8 @@ import ClientDetails from "../admin/Clients/DisplayItem";
 import CaseDetails from "../admin/Cases/DisplayItem";
 import LogSheet from "../admin/LogSheet";
 
+import Tracker from "../admin/Tracker";
+
 class AdminNav extends Component {
   render() {
     return (
@@ -39,6 +41,7 @@ class AdminNav extends Component {
           <Route exact path="/clients" component={Clients} />
           <Route exact path="/cases" component={Cases} />
           <Route exact path="/logsheet" component={LogSheet} />
+          <Route exact path="/tracker" component={Tracker} />
           
           {/* <Route exact path="/products" component={ProductList} />
           <Route component={Default} /> */}
