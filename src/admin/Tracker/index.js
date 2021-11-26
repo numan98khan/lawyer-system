@@ -17,8 +17,10 @@ function Tracker() {
     //     color: '#6600ff'
     //   }
     return (
+        <div style={{height:'100vh', width:'100vw',  display:'flex'}}>
+
         <div 
-        style={{ height: '100vh', width: '100%' }}
+        style={{ minheight: '100%', width: '100%'}}
         // style={{ flexGrow: 1 }}
         >
             <GoogleMapReact
@@ -35,6 +37,7 @@ function Tracker() {
                     text="My Marker"
                 /> */}
             </GoogleMapReact>
+        </div>
         </div>
         )
 }

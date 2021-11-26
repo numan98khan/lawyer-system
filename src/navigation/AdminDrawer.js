@@ -6,6 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { Link, NavLink } from "react-router-dom";
 import clsx from 'clsx';
 // import { makeStyles } from '@material-ui/core/styles';
+import TransferWithinAStationIcon from '@material-ui/icons/TransferWithinAStation';
 import Drawer from '@material-ui/core/Drawer';
 // import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
@@ -161,6 +162,34 @@ class MainDrawer extends Component {
               <ListItem button key={'Clients'}>
                   <ListItemIcon>{<GroupIcon></GroupIcon>}</ListItemIcon>
                   <ListItemText primary={'Clients'} />
+                </ListItem>
+              </NavLink>
+              <NavLink to='/workers'
+                      style={{
+                        color:'#000000',
+                        textDecoration: 'none',
+                      }}
+                      activeStyle={{
+                        fontWeight: "bold",
+                        color: "#6600ff",
+                      }}
+                      isActive={(match, location) => {
+                        if (!match) {
+                          // // console.log(match)
+                          return false;
+                        }
+                        
+                        // value.switchScreen(location.pathname)
+                        // // console.log(location.pathname)
+                        // // console.log(location)
+                        // only consider an event active if its event id is an odd number
+                        const eventID = parseInt(match.params.eventID);
+                        return !isNaN(eventID) && eventID % 2 === 1;
+                      }}
+                      >
+              <ListItem button key={'Manage workers'}>
+                  <ListItemIcon>{<TransferWithinAStationIcon></TransferWithinAStationIcon>}</ListItemIcon>
+                  <ListItemText primary={'Manage Workers'} />
                 </ListItem>
               </NavLink>
               <NavLink to='/cases'

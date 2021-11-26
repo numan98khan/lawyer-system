@@ -6,6 +6,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
+import ButtonContainer from '../../components/Button';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Title from "../../components/Title";
@@ -54,7 +56,7 @@ class NewCase extends Component {
             <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',width:'40%',paddingBottom:"2%"}}>
             <ProductConsumer>
               {value => {
-                  return <TextField style={{width:"50%"}} 
+                  return <TextField style={{width:"83%"}} 
                         color='primary'
                         id="outlined-basic" 
                         label="Search Clients" 
@@ -62,7 +64,12 @@ class NewCase extends Component {
                         onChange={(query)=> {this.setState({searchTerm:query.target.value.toLowerCase()})}} />;          
               }}
             </ProductConsumer>
-            <Link to="/addclient"><Button variant="contained" color="primary">Add new client</Button></Link>
+            
+            <Link to="/addclient">
+            <ButtonContainer style={{height:'55px', width:'55px', borderRadius:'3px'}}>
+            <AddCircleOutlineIcon color="purple" fontSize="large"></AddCircleOutlineIcon>
+            </ButtonContainer>
+            </Link>
             </div>
             <div className="row">
 

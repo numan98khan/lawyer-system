@@ -35,7 +35,7 @@ class App extends Component {
     // const { isAuthenticated, isVerifying } = this.props;
     // // console.log("isAuthenticated +++ " + isAuthenticated)
     return (
-      <Fragment>
+      <div className="d-flex flex-column">
         <ProductConsumer>
           {value => {
             if(value.user!==null){
@@ -74,7 +74,7 @@ class App extends Component {
           </ProductConsumer>
           {/* </MapConsumer> */}
         {/* <Modal /> */}
-      </Fragment>
+      </div>
     );
   }
 }

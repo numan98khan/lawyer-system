@@ -9,6 +9,7 @@ import Calender from "../admin/Calender";
 import Consultations from "../admin/Consultations";
 import NewCase from "../admin/NewCase";
 import Addclient from "../admin/NewCase/Addclient";
+import addWorker from "../admin/Workers/addWorker";
 import Tasks from "../admin/Tasks";
 import addcasedetails from "../admin/NewCase/casedetails";
 import PaymentOptions from "../admin/NewCase/PaymentOptions";
@@ -19,6 +20,7 @@ import CaseDetails from "../admin/Cases/DisplayItem";
 import LogSheet from "../admin/LogSheet";
 
 import Tracker from "../admin/Tracker";
+import Workers from "../admin/Workers";
 
 class AdminNav extends Component {
   render() {
@@ -34,6 +36,7 @@ class AdminNav extends Component {
           <Route exact path="/consultations" component={Consultations} />
           <Route exact path="/accounts" component={Accounts} />
           <Route exact path="/addclient" component={Addclient} />
+          <Route exact path="/addworker" component={addWorker} />
           <Route exact path="/addcasedetails" component={addcasedetails} />
           <Route exact path="/paymentoptions" component={PaymentOptions} />
           <Route exact path="/casedetails" component={CaseDetails} />
@@ -42,6 +45,7 @@ class AdminNav extends Component {
           <Route exact path="/cases" component={Cases} />
           <Route exact path="/logsheet" component={LogSheet} />
           <Route exact path="/tracker" component={Tracker} />
+          <Route exact path="/workers" component={Workers} />
           
           {/* <Route exact path="/products" component={ProductList} />
           <Route component={Default} /> */}

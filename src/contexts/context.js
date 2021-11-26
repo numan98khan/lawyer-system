@@ -29,6 +29,7 @@ class ProductProvider extends Component {
   state = {
     products: [],
     productsDup: [],
+    caseWorkers: [],
     // productsLive: [],
     categories: [],
     offers: [],
@@ -191,7 +192,7 @@ class ProductProvider extends Component {
 
         this.setFiles(); // TEMP BLOCK
         this.setPeshiList(); // TEMP BLOCK
-
+        this.setCaseWorkers();
         this.setLogSheet('0/0');
 
         this.setTracker();
@@ -428,6 +429,39 @@ class ProductProvider extends Component {
         this.setState(
            { filesList: files}
            , ()=>{console.log(this.state.filesList)}
+        );
+
+        // console.log(this.state.clientsList)
+
+    }.bind(this));
+  }
+  setCaseWorkers = () => {
+    console.log("setting case workers")
+    var fb=fire.getFire();
+    var workers = [];
+
+    fb.database().ref('/')
+      .child('CaseWorkers')
+      .on("value", function(snapshot) {
+        workers = []
+        snapshot.forEach((doc) => {
+          
+          // // console.log(doc.toJSON())
+          var tempJSON = doc.toJSON()  
+              tempJSON['id'] = doc.key
+              // tempJSON['inCart'] = false
+            
+              workers.push(tempJSON);
+              // console.log(tempJSON)
+
+        });
+        // console.log('hires ', hires.filter(function(el){ return el.state === 'REQUESTED' }).length)
+        
+        // console.log(this.state.clientsList)
+
+        this.setState(
+           { caseWorkers: workers}
+           , ()=>{console.log(this.state.caseWorkers)}
         );
 
         // console.log(this.state.clientsList)
@@ -1013,6 +1047,68 @@ class ProductProvider extends Component {
     //this.props.setUser(user)
 
   }
+  addWorker(payload)
+  {
+    const {username, email, firstName, lastName, password, nationality, country, town, zipcode, cnic, contactNumber, address, dob, title } = payload;
+    var dobstring = dob.toLocaleDateString('en-US')
+     
+    
+      var fb= fire.getFire();
+      return  new Promise((res, rej)=>{
+        fb.auth().createUserWithEmailAndPassword(email, password).then(function() {
+          // Update successful.
+          fb.auth().onAuthStateChanged(user => {
+            console.log('user image updated!!!')
+            console.log("user: " + user);
+            
+            user.updateProfile({
+              // photoURL: image,
+              displayName: username
+            }).then(function() {
+              // Update successful. Add to workers table
+              fb.database().ref("CaseWorkers/"+user.uid).set(
+                {
+                  displayName: username,
+                  email: email,
+                  firstName: firstName,
+                  lastName: lastName,
+                  nationality: nationality, 
+                  country: country, 
+                  town: town, 
+                  zipcode: zipcode, 
+                  cnic: cnic, 
+                  contactNumber: contactNumber, 
+                  address: address, 
+                  dob: dobstring, 
+                  title: title,
+                  type: 'worker'
+                }).then(function(){
+                  fb.database().ref("users/"+user.uid).set(
+                    {
+                      displayName: username,
+                      credit: 0,
+                      email:email,
+                      image:'',
+                      type:'worker'
+                    }).then(()=>{
+                      res()
+                    })
+                })
+  
+          }.bind(this));
+          
+        }).bind(this);
+          }.bind(this)
+        ).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        alert(errorMessage)
+        });
+      })
+      
+
+  }
 
   signOut = () => {
     // alert("SIGNED OUT")
@@ -1373,9 +1469,9 @@ class ProductProvider extends Component {
           handleDrawerOpen: this.handleDrawerOpen,
           switchScreen: this.switchScreen, // Register
           handleDetail: this.handleDetail,
-          
+          setCaseWorkers: this.setCaseWorkers,
           // addToCart: this.addToCart,
-          
+          addWorker: this.addWorker,
           openModal: this.openModal,
           closeModal: this.closeModal,
 

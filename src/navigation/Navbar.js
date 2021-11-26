@@ -197,7 +197,8 @@ export default function PrimarySearchAppBar() {
     {/*renderRedirect()*/}
       <AppBar
           style={{backgroundColor:'#6600ff', position:'fixed'}} 
-          position="static">
+          position="static"
+          >
         <Toolbar>
           <IconButton
             edge="start"
