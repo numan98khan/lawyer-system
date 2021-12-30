@@ -14,8 +14,11 @@ import AuthNav from "./navigation/AuthNav"
 import ClientDrawer from "./navigation/ClientDrawer"
 import Navbar from "./navigation/Navbar";
 import AdminDrawer from "./navigation/AdminDrawer"
+import WorkerDrawer from "./navigation/WorkerDrawer"
 
+import ClientNav from "./navigation/ClientNav"
 import AdminNav from "./navigation/AdminNav"
+import WorkerNav from "./navigation/WorkerNav"
 
 import Tracker from "./admin/Tracker";
 
@@ -50,9 +53,15 @@ class App extends Component {
           <ProductConsumer>
             {value => {
               // // console.log(value.user)
-              if(value.user!==null){
-              // return (<ClientDrawer />)   
-              return (<AdminDrawer />)   
+              if(value.user!==null && value.user.type === 'admin'){
+                return (<AdminDrawer />)   
+              }
+              else if(value.user!==null && value.user.type === 'worker'){
+                // return (<WorkerDrawer />)   
+                return (<WorkerDrawer />)   
+              }
+              else if(value.user!==null && value.user.type === 'client'){
+                return (<ClientDrawer />)   
             }
               else{
                 return (<AuthNav/>)
@@ -63,8 +72,14 @@ class App extends Component {
           {/* <MapConsumer> */}
           <ProductConsumer>
             {value => {
-              if(value.user!=null){
+              if(value.user!=null && value.user.type === 'admin'){
                 return <AdminNav/> 
+              }
+              else if(value.user!=null && value.user.type === 'worker'){
+                return <WorkerNav/>  
+              }
+              else if(value.user!=null && value.user.type === 'client'){
+                return (<ClientNav />)   
               }
 
             }}

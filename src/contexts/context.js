@@ -64,7 +64,7 @@ class ProductProvider extends Component {
     // uid: "uHrYlhp39KS7Bsl5FYsSQzm9m8x2",
     isRDetailsPopUp: false,
     user:null,
-    userData: [],
+    userData: null,
 
     // case vars
     clientsList: [],
@@ -155,9 +155,14 @@ class ProductProvider extends Component {
 
     fire.getFire().auth().onAuthStateChanged(function(user) {
       if (user) {
+
         
         // this.setTracker();
         console.log("USER +> " + user.uid)
+        this.setUserData(user.uid).then((userobj=>{
+          user['type'] = userobj.type
+        }));
+        
         this.setState({user:user})
         console.log(user)
         
@@ -168,7 +173,6 @@ class ProductProvider extends Component {
         // this.setProductOrders();
         // this.setSellerOrders();
         
-        this.setUserData();
         // this.setCategories();
         // this.cartFetchDB();
         // this.setHire();
@@ -382,7 +386,8 @@ class ProductProvider extends Component {
           // item['id'] = counter
           console.log(item.peshis); 
           // const results = peshisList.filter(entry => entry === item.peshis.at(-1));
-          const index = peshisList.findIndex(x => x === item.peshis.at(-1));
+          // const index = peshisList.findIndex(x => x === item.peshis.at(-1));
+          const index = peshisList.findIndex(x => x === item.peshis[item.peshis.length -1]);
 
           // console.log(index); 
           peshisList[index]['isLast'] = true;
@@ -676,7 +681,18 @@ class ProductProvider extends Component {
     console.log(email)
 
     var fb= fire.getFire();
-      fb.auth().createUserWithEmailAndPassword(email, '123456').then(function() {
+      fb.auth().createUserWithEmailAndPassword(email, '123456').then(function(userobj) {
+        const user = userobj.user
+        fb.database().ref("users/"+user.uid).set(
+          {
+            displayName: user.displayName,
+            credit: 0,
+            email:user.email,
+            image:'',
+            type:'client'
+          }).then(()=>{
+            // res()
+          })
         
       }.bind(this)
       ).catch(function(error) {
@@ -903,62 +919,59 @@ class ProductProvider extends Component {
     
     // // console.log("sign in", email, password);
     var USER=fire.getFire().auth().signInWithEmailAndPassword(email, password).then(
-      user => {
-        console.log("ewfew",user.uid);
-
-        fire.getFire().auth().onAuthStateChanged(function(user) {
-          if (user) {
-
-            fire.getFire().database()
-            .ref('/')
-            .child('blocks')
-            .orderByChild('userid')
-            .equalTo(user.uid)
-            .on("value", function(snapshot) {
-              // uHrYlhp39KS7Bsl5FYsSQzm9m8x2  
-            // console.log(snapshot);
-              var orderList = [];
-              // alert("DEBUG")
-              console.log('Debug 2')
-              console.log(user.uid)
-              console.log(snapshot.val())
-                
-              snapshot.forEach(function(data) {
-                console.log(data.val().userid)
-                if (data.val().userid === user.uid){
-                  // this.signOutUser()
-                  fire.getFire().auth().signOut();
-                  this.signOut();
-                  console.log("You are blocked!!!")
-                  // this.setState({ errorMessage: "You are blocked!!!" })
-                } else {
-                  this.setState(() => {
-                    return {
-                      user: user,
-                    };
-                  });
-                }
-                orderList.push(data.val());
-              }.bind(this));
-                // this.setState({orderList: orderList});
-                // this.countTotalSpending();
-                // this.orderProducts();
-                // console.log(orderList)
-          }.bind(this));
-
-          }
-        }.bind(this));
-
-        
-        // this.setState(() => {
-        //   return {
-        //     user: user,
-        //   };
-        // });
-      }
-    ).catch(error => {
-      console.error("Error signing in with password and email", error);
-    });
+      (user)=> {
+        if (user) {
+  
+          
+          // this.setTracker();
+          console.log("USER +> " + user.user.uid)
+          this.setUserData(user.user.uid).then((userobj=>{
+            user['type'] = userobj.type
+            this.setState({user:user})
+            console.log(user)
+          }));
+          
+          
+          // this.setProducts();
+          // this.setOffers();
+          // this.setProductReviews();
+          // this.setReviews();
+          // this.setProductOrders();
+          // this.setSellerOrders();
+          
+          // this.setCategories();
+          // this.cartFetchDB();
+          // this.setHire();
+          // this.setAds();
+          // this.setFeatured();
+          // this.setNotifData();
+  
+          // this.signOut();
+          // this.userGoLive();
+          // this.setState(() => {
+          //   return {
+          //     user: user,
+          //   };
+          // });
+          // User is signed in.
+  
+  
+          // case functions
+          // this.setClients();
+          // this.setCases();
+  
+          // this.setFiles(); // TEMP BLOCK
+          // this.setPeshiList(); // TEMP BLOCK
+          // this.setCaseWorkers();
+          // this.setLogSheet('0/0');
+  
+          // this.setTracker();
+  
+        } else {
+          // No user is signed in.
+        }
+        // // console.log("what", this.state.user)
+      });
   
   }
 
@@ -1122,30 +1135,27 @@ class ProductProvider extends Component {
   }
 
 
-  setUserData = () => {
-    var fb=fire.getFire();
-    var userData=[];
-
-    fb.database().ref('/')
-      .child('users')
-      // .orderByChild('buyerId')
-      // .equalTo(this.state.user.uid)
-      .once("value", function(snapshot) {
-        userData=[];
-        snapshot.forEach((doc) => {
-          var tempJSON = doc.toJSON()  
-              tempJSON['id'] = doc.key
-          // console.log(tempJSON)            
-          userData.push(tempJSON);
-        });
-        // // console.log(offers)
-        // // console.log(userData)
-
-        this.setState(() => {
-          return { userData: userData };
-        });
-
-    }.bind(this));
+  setUserData = (uid) => {
+    console.log(uid)
+    return new Promise(async (resolve, reject)=>{
+      var fb=fire.getFire();
+      // var userData=[];
+      fb.database().ref('/')
+        .child('users/'+uid)
+        // .orderByChild('')
+        // .equalTo(uid)
+        .once("value", function(snapshot) {
+          const userData = snapshot.val()
+  
+          this.setState({
+            userData: userData
+          },()=>{
+            return resolve(userData)
+          })
+  
+      }.bind(this));
+    })
+ 
   };
 
   // getProductReviewsByProductId
