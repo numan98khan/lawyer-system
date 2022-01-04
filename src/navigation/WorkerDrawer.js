@@ -108,7 +108,7 @@ class MainDrawer extends Component {
               </div>
               <List>
 
-              <NavLink to='/'
+              <NavLink to='/cases'
                       style={{
                         color:'#000000',
                         textDecoration: 'none',
@@ -136,7 +136,7 @@ class MainDrawer extends Component {
                   <ListItemText primary={'View Cases'} />
                 </ListItem>
               </NavLink>
-              <NavLink to='/'
+              <NavLink to='/clients'
                       style={{
                         color:'#000000',
                         textDecoration: 'none',

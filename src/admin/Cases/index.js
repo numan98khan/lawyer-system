@@ -104,11 +104,18 @@ class casesList extends Component {
     open: false,
     searchTerm:'',
     searchFilter:'category',
-    cases:[]
+    cases:[],
+    displayName:'',
+    type:''
   }
   
   static contextType = ProductContext;
 
+  // async componentDidMount(){
+  //   const type = this.context.user.type
+  //   const name = this.context.user.displayName
+  //   console.log(name)
+  // }
   componentDidUpdate(){
     const filesList = this.context.filesList
     const cases = []
@@ -148,7 +155,6 @@ class casesList extends Component {
   
   handleFilter = (Case) => {
 
-      // console.log(el)
       return Case[this.state.searchFilter].toLowerCase().indexOf(this.state.searchTerm) !== -1
       
   }
@@ -178,7 +184,11 @@ class casesList extends Component {
         <div className="py-5">
           <div className="container">
             <div style={{marginBottom:"5%"}}>
-              <Title title="Our Cases"/>
+            <ProductConsumer>
+              {value => {
+                return (<Title title={value.user.type === 'worker'?"My Cases":"Our Cases"}/>);
+              }}
+            </ProductConsumer>
             </div>
             <div style={{
               // backgroundColor:'blue',
@@ -227,10 +237,14 @@ class casesList extends Component {
               
             
 
-            {/* <ProductConsumer> */}
-              <List style={{width:'100%'}}>
+            <ProductConsumer>
+            {value => {
+              return (
+                <List style={{width:'100%'}}>
             {
-              this.state.cases.filter((Case)=> {return this.handleFilter(Case)}).map((Case, index)=>{
+              this.state.cases
+              .filter((Case)=> {return this.handleFilter(Case)})
+              .map((Case, index)=>{
                 return(
                   <ListItem 
                     button
@@ -267,7 +281,10 @@ class casesList extends Component {
               })
             }
             </List>
-            {/* </ProductConsumer> */}
+              )
+                     
+                    }}
+            </ProductConsumer>
 
             
 

@@ -418,25 +418,19 @@ class ProductProvider extends Component {
         files = []
         snapshot.forEach((doc) => {
           
-          // // console.log(doc.toJSON())
           var tempJSON = doc.toJSON()  
               tempJSON['id'] = doc.key
-              // tempJSON['inCart'] = false
-            
+              //filter the cases if user type is worker and then push
               files.push(tempJSON);
-              // console.log(tempJSON)
 
         });
-        // console.log('hires ', hires.filter(function(el){ return el.state === 'REQUESTED' }).length)
         
-        // console.log(this.state.clientsList)
 
         this.setState(
            { filesList: files}
            , ()=>{console.log(this.state.filesList)}
         );
 
-        // console.log(this.state.clientsList)
 
     }.bind(this));
   }
@@ -451,18 +445,12 @@ class ProductProvider extends Component {
         workers = []
         snapshot.forEach((doc) => {
           
-          // // console.log(doc.toJSON())
           var tempJSON = doc.toJSON()  
               tempJSON['id'] = doc.key
-              // tempJSON['inCart'] = false
             
               workers.push(tempJSON);
-              // console.log(tempJSON)
 
         });
-        // console.log('hires ', hires.filter(function(el){ return el.state === 'REQUESTED' }).length)
-        
-        // console.log(this.state.clientsList)
 
         this.setState(
            { caseWorkers: workers}
@@ -520,26 +508,19 @@ class ProductProvider extends Component {
         clients = []
         snapshot.forEach((doc) => {
           
-          // // console.log(doc.toJSON())
           var tempJSON = doc.toJSON()  
               tempJSON['id'] = doc.key
-              // tempJSON['inCart'] = false
-            
+              //if user type is worker then filter client ids according to case ids in files list
               clients.push(tempJSON);
-              // console.log(tempJSON)
 
         });
-        // console.log('hires ', hires.filter(function(el){ return el.state === 'REQUESTED' }).length)
         
-        // console.log(this.state.clientsList)
 
         this.setState(() => {
           return { clientsList: clients};
         },
-        // ()=>{console.log(this.state.clientsList)}
         );
 
-        // console.log(this.state.clientsList)
 
     }.bind(this));
     
@@ -927,6 +908,7 @@ class ProductProvider extends Component {
           console.log("USER +> " + user.user.uid)
           this.setUserData(user.user.uid).then((userobj=>{
             user['type'] = userobj.type
+            user['displayName'] = userobj.displayName
             this.setState({user:user})
             console.log(user)
           }));

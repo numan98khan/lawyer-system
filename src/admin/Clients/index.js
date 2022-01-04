@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 // import Product from "./Product";
 import Title from "../../components/Title";
 import { ProductConsumer } from "../../contexts/context.js";
+import { ProductContext } from "../../contexts/context.js";
 
 import clsx from 'clsx';
 // import { makeStyles } from '@material-ui/core/styles';
@@ -56,8 +57,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 class clientList extends Component {
 
+  state = {
+    searchTerm:'',
+    value:2,
+    open: false,
+    ids:[]
+  }
+  static contextType = ProductContext;
+
+  componentDidMount(){
+    if(this.context.user.type === 'worker'){
+      //get all cases of this worker
+      
+    }
+  }
   extractProduct(products, pid){
     var newArray = products.filter(function (el) {
       // console.log(el)
@@ -67,11 +83,6 @@ class clientList extends Component {
     return newArray[0];
   } 
 
-  state = {
-    searchTerm:'',
-    value:2,
-    open: false,
-  }
   handleClose = () => {
     this.setState({open: false});
   }
@@ -106,7 +117,11 @@ class clientList extends Component {
         <div className="py-5">
           <div className="container">
           <div style={{marginBottom:"5%"}}>
-              <Title title="Our Clients"/>
+          <ProductConsumer>
+              {value => {
+                return (<Title title={value.user.type === 'worker'?"My Clients":"Our Clients"}/>);
+              }}
+            </ProductConsumer>
           </div>
           <div style={{
               // backgroundColor:'blue',
@@ -133,7 +148,15 @@ class clientList extends Component {
               return <List style={{width:'100%'}}>
               {/* <ItemDetails review={value.reviewDetail} />   */}
                   
-              {value.clientsList.filter((client) => {
+              {value.clientsList
+              .filter((client)=>{
+                console.log(client.id.toString())
+                console.log(this.state.ids)
+                if(this.state.ids.includes(client.id)){
+                  console.log("here")
+                }           
+              })
+              .filter((client) => {
 
                 // console.log(el)
 
@@ -142,7 +165,8 @@ class clientList extends Component {
                       || client.lastName.toLowerCase().indexOf(this.state.searchTerm) !== -1
                       || client.email.toLowerCase().indexOf(this.state.searchTerm) !== -1
                       || client.cnic.toLowerCase().replace('-','').indexOf(this.state.searchTerm) !== -1
-                }).map((client) => {
+                })
+                .map((client) => {
                 // const labelId = `checkbox-list-secondary-label-${productReview}`;
                 // const fetchedProduct = this.extractProduct(value.products, productReview.productId)
                 // console.log(productReview.review)
