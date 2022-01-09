@@ -156,7 +156,8 @@ class ProductProvider extends Component {
     fire.getFire().auth().onAuthStateChanged(function(user) {
       if (user) {
 
-        
+        // fire.getFire().auth().signOut();
+        // console.log('LOGOUT')
         // this.setTracker();
         console.log("USER +> " + user.uid)
         this.setUserData(user.uid).then((userobj=>{
@@ -507,19 +508,26 @@ class ProductProvider extends Component {
       .on("value", function(snapshot) {
         clients = []
         snapshot.forEach((doc) => {
+
+          console.log("tempJSON");
           
           var tempJSON = doc.toJSON()  
               tempJSON['id'] = doc.key
+              console.log(tempJSON);
               //if user type is worker then filter client ids according to case ids in files list
               clients.push(tempJSON);
 
         });
-        
 
-        this.setState(() => {
-          return { clientsList: clients};
-        },
-        );
+        this.setState(
+          { clientsList: clients}
+          , ()=>{console.log(this.state.clientsList)}
+       );
+
+        // this.setState(() => {
+        //   return { clientsList: clients};
+        // },
+      // );
 
 
     }.bind(this));
@@ -536,6 +544,9 @@ class ProductProvider extends Component {
         cases = []
         snapshot.forEach((doc) => {
           
+            // console.log("cases tempsjon")
+
+
           // // console.log(doc.toJSON())
           var tempJSON = doc.toJSON()  
               tempJSON['id'] = doc.key

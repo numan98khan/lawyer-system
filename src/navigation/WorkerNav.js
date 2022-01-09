@@ -18,10 +18,10 @@ class WorkerNav extends Component {
           <Route exact path="/" component={Home} />
           
           {/*
-          peshi adding and editting
-          viewing peshis
-          view own cases
-          view own clients
+            peshi adding and editting
+            viewing peshis
+            view own cases
+            view own clients
           */}
 
           <Route exact path="/tasks" component={Tasks} />

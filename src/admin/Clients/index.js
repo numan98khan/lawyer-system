@@ -149,13 +149,19 @@ class clientList extends Component {
               {/* <ItemDetails review={value.reviewDetail} />   */}
                   
               {value.clientsList
-              .filter((client)=>{
-                console.log(client.id.toString())
-                console.log(this.state.ids)
-                if(this.state.ids.includes(client.id)){
-                  console.log("here")
-                }           
-              })
+              // .filter((client)=>{
+              //   // console.log(client.id.toString())
+              //   // console.log(this.state.ids)
+              //   // if(this.state.ids.includes(client.id)){
+              //   //   console.log("here")
+              //   // }
+                
+              //   return client.firstName.toLowerCase().indexOf(this.state.searchTerm) !== -1
+              //         || client.lastName.toLowerCase().indexOf(this.state.searchTerm) !== -1
+              //         || client.email.toLowerCase().indexOf(this.state.searchTerm) !== -1
+              //         || client.cnic.toLowerCase().replace('-','').indexOf(this.state.searchTerm) !== -1
+                
+              // })
               .filter((client) => {
 
                 // console.log(el)
