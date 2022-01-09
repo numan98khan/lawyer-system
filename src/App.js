@@ -2,12 +2,9 @@ import { Switch, Route } from "react-router-dom";
 import React, { Component, Fragment } from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-// import ProductList from "./components/Buyer/ProductList";
-// import Details from "./components/Details";
-// import Cart from "./components/Cart";
-// import Default from "./components/Default";
-// import Modal from "./components/Modal";
-
+import store from './store';
+import { loadUser } from "./actions/userActions";
+import { connect } from 'react-redux';
 import { ProductConsumer } from "./contexts/context.js";
 // import { MapConsumer } from "./contexts/mapContext.js";
 import AuthNav from "./navigation/AuthNav"
@@ -34,23 +31,40 @@ import Tracker from "./admin/Tracker";
 
 
 class App extends Component {
+  componentDidMount()
+  {
+    store.dispatch(loadUser());
+  }
+
   render() {
     // const { isAuthenticated, isVerifying } = this.props;
     // // console.log("isAuthenticated +++ " + isAuthenticated)
     return (
       <div className="d-flex flex-column">
-        <ProductConsumer>
-          {value => {
-            if(value.user!==null){
-              return <Navbar />   
-            }
-          }}
-          {/*value => {
-              return value.isSeller ?  <SellerDrawer /> : <BuyerDrawer />   
-          }*/}
-        </ProductConsumer>
-        
-          <ProductConsumer>
+        {
+          this.props.user.user!==null?
+          <Navbar/>:
+          null
+        }
+        {
+          this.props.user.user.type?null:
+          (
+            this.props.user.user.type === 'admin'?
+            <AdminDrawer/>:
+            (
+              this.props.user.user.type === 'worker'?
+              <WorkerDrawer/>
+              :
+              (
+                this.props.user.user.type === 'client'?
+                <ClientDrawer/>:
+                null
+                // console.log(this.props.user.user.type)
+              )
+            )
+          )
+        }
+          {/* <ProductConsumer>
             {value => {
               // // console.log(value.user)
               if(value.user!==null && value.user.type === 'admin'){
@@ -67,7 +81,7 @@ class App extends Component {
                 return (<AuthNav/>)
               }
             }}
-          </ProductConsumer>
+          </ProductConsumer> */}
 
           {/* <MapConsumer> */}
           <ProductConsumer>
@@ -107,4 +121,10 @@ class App extends Component {
 //         </Switch>
         
 
-export default App;
+const mapStateToProps = (state) => ({
+  user: state.user,
+  type: state.type
+});
+export default connect(mapStateToProps, { })(
+  App
+);

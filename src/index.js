@@ -5,6 +5,8 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ProductProvider } from "./contexts/context.js";
+import { Provider } from 'react-redux';
+import store from './store';
 // import { MapProvider } from "./contexts/mapContext.js";
 
 
@@ -18,7 +20,9 @@ ReactDOM.render(
   // <MapProvider>
     <ProductProvider>
       <Router>
+      <Provider store={store}>
         <App />
+      </Provider>
       </Router>
     </ProductProvider>
     // </MapProvider>

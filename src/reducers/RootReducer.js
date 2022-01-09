@@ -6,7 +6,7 @@ import { combineReducers } from 'redux';
 // import messagesReducer from './messagesReducer';
 // import socketReducer from './socketReducer';
 // import notificationReducer from './notificationsReducer';
-import adminReducer from './adminReducer';
+import userReducer from './userReducer';
 
 export default combineReducers({
 //   msg: msgReducer,
@@ -16,5 +16,5 @@ export default combineReducers({
 //   message: messagesReducer,
 //   socket: socketReducer,
 //   notification: notificationReducer,
-  admin: adminReducer
+  user: userReducer
 });
