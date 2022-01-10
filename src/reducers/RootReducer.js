@@ -7,6 +7,7 @@ import { combineReducers } from 'redux';
 // import socketReducer from './socketReducer';
 // import notificationReducer from './notificationsReducer';
 import userReducer from './userReducer';
+import caseReducer from './caseReducer';
 
 export default combineReducers({
 //   msg: msgReducer,
@@ -16,5 +17,6 @@ export default combineReducers({
 //   message: messagesReducer,
 //   socket: socketReducer,
 //   notification: notificationReducer,
-  user: userReducer
+  user: userReducer,
+  cases: caseReducer
 });

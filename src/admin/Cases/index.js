@@ -8,6 +8,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import { ProductContext } from "../../contexts/context.js";
 
+import { connect } from 'react-redux';
+
 import clsx from 'clsx';
 // import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -50,6 +52,9 @@ import Rating from '@material-ui/lab/Rating';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 import Paper from '@material-ui/core/Paper';
+
+
+import { loadCase } from "../../actions/caseActions";
 
 import ItemDetails from './DisplayItem';
 
@@ -111,29 +116,39 @@ class casesList extends Component {
   
   static contextType = ProductContext;
 
-  // async componentDidMount(){
-  //   const type = this.context.user.type
-  //   const name = this.context.user.displayName
-  //   console.log(name)
-  // }
+  componentDidMount(){
+    // const type = this.context.user.type
+    // const name = this.context.user.displayName
+    // console.log(name)
+    
+    console.log("App.js mounting")
+    console.log(this.props.userState.user.uid)
+
+    // if type is worker
+    // dispatch case filter with case worker uid
+    
+    // store.dispatch(loadCase());
+
+    this.props.loadCase();
+  }
   componentDidUpdate(){
-    const filesList = this.context.filesList
-    const cases = []
-    if(filesList.length > 0){
-      filesList.map((file, index)=>{
-        for(var key in Object.keys(file.cases)){
-          cases.push(file.cases[key])
-        }
-      })
-    if(cases.length !== this.state.cases.length){
-      this.setState({
-        cases:cases
-      },()=>{console.log(this.state.cases)})
-    }
+    // const filesList = this.context.filesList
+    // const cases = []
+    // if(filesList.length > 0){
+    //   filesList.map((file, index)=>{
+    //     for(var key in Object.keys(file.cases)){
+    //       cases.push(file.cases[key])
+    //     }
+    //   })
+    // if(cases.length !== this.state.cases.length){
+    //   this.setState({
+    //     cases:cases
+    //   },()=>{console.log(this.state.cases)})
+    // }
       // this.setState({
       //   filesList: filesList
       // },()=>console.log(this.state.filesList))
-    }
+    // }
   }
   extractProduct(products, pid){
     var newArray = products.filter(function (el) {
@@ -154,7 +169,6 @@ class casesList extends Component {
   }
   
   handleFilter = (Case) => {
-
       return Case[this.state.searchFilter].toLowerCase().indexOf(this.state.searchTerm) !== -1
       
   }
@@ -184,17 +198,15 @@ class casesList extends Component {
         <div className="py-5">
           <div className="container">
             <div style={{marginBottom:"5%"}}>
-            <ProductConsumer>
-              {value => {
-                return (<Title title={value.user.type === 'worker'?"My Cases":"Our Cases"}/>);
-              }}
-            </ProductConsumer>
+                {console.log(this.props.userState.user)}
+                <Title title={this.props.userState.user.type === 'worker'?"My Cases":"Our Cases"}/>
+              
             </div>
             <div style={{
               // backgroundColor:'blue',
             display:'flex',justifyContent:'space-between',width:'70%',alignItems:'center',paddingBottom:"2%"}}>
 
-            <ProductConsumer>
+            {/* <ProductConsumer>
               {value => {
                 return <TextField style={{}} 
                 color='primary'
@@ -203,8 +215,15 @@ class casesList extends Component {
                 variant="outlined"
                 onChange={(query)=> {this.setState({searchTerm:query.target.value.toLowerCase()})}} />;          
               }}
-            </ProductConsumer>
+            </ProductConsumer> */}
             
+            <TextField style={{}} 
+                color='primary'
+                id="outlined-basic" 
+                label="Search Cases" 
+                variant="outlined"
+                onChange={(query)=> {this.setState({searchTerm:query.target.value.toLowerCase()})}} />
+
             <FormControl style={{minWidth:"30vw"}}>
               {/* <InputLabel id="demo-simple-select-label">search filter</InputLabel> */}
                 <Select
@@ -221,28 +240,29 @@ class casesList extends Component {
                   }
                 </Select>
             </FormControl>
-            <ProductConsumer>
+            {/* <ProductConsumer>
               {value => {
 
-                return <h5>{this.state.cases
+                return <h5>{this.props.cases
                   .filter((Case)=> this.handleFilter(Case))
                   .length} case(s)</h5>
               }
 
               }
-            </ProductConsumer>
+            </ProductConsumer> */}
+            <h5>{this.props.casesState.cases
+                  .filter((Case)=> this.handleFilter(Case))
+                  .length} case(s)</h5>
+
               </div>
             <div className="row">
 
               
             
 
-            <ProductConsumer>
-            {value => {
-              return (
                 <List style={{width:'100%'}}>
             {
-              this.state.cases
+              this.props.casesState.cases
               .filter((Case)=> {return this.handleFilter(Case)})
               .map((Case, index)=>{
                 return(
@@ -281,10 +301,8 @@ class casesList extends Component {
               })
             }
             </List>
-              )
+              
                      
-                    }}
-            </ProductConsumer>
 
             
 
@@ -296,11 +314,15 @@ class casesList extends Component {
   }
 }
 
-export default withRouter(casesList);
+// export default withRouter(casesList);
 
-
-
-
+const mapStateToProps = (state) => ({
+  casesState: state.cases,
+  userState: state.user
+});
+export default connect(mapStateToProps, { loadCase })(
+  withRouter(casesList)
+);
 
 // <Paper elevation={3} >
                 

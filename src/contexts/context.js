@@ -223,13 +223,12 @@ class ProductProvider extends Component {
     var fb=fire.getFire();
     var workers = [];
 
-    console.log("sexy")
 
     fb.database().ref('/')
       .child('workers')
       .on("value", function(snapshot) {
         workers = []
-        console.log(snapshot)
+        // console.log(snapshot)
         snapshot.forEach((doc) => {
           
           // // console.log(doc.toJSON())
@@ -238,7 +237,7 @@ class ProductProvider extends Component {
               // tempJSON['inCart'] = false
             
               workers.push(tempJSON);
-              console.log(tempJSON)
+              // console.log(tempJSON)
 
         });
         // console.log('hires ', hires.filter(function(el){ return el.state === 'REQUESTED' }).length)
@@ -300,7 +299,7 @@ class ProductProvider extends Component {
         });
         // console.log('hires ', hires.filter(function(el){ return el.state === 'REQUESTED' }).length)
         
-        console.log("DEBUG IT!")
+        // console.log("DEBUG IT!")
         // console.log(new Date(peshis[0].next_proceedings_date))
         var peshisList = peshis.sort((a, b) => new Date(a.next_proceedings_date) - new Date(b.next_proceedings_date))
 
@@ -323,7 +322,7 @@ class ProductProvider extends Component {
 
   setPeshiList = () => {
     // console.log(this.state.user.email)
-    console.log("setting peshi list")
+    // console.log("setting peshi list")
     var fb = fire.getFire();
     var peshis = [];
 
@@ -346,7 +345,7 @@ class ProductProvider extends Component {
         });
         // console.log('hires ', hires.filter(function(el){ return el.state === 'REQUESTED' }).length)
 
-        console.log("debug it")
+        // console.log("debug it")
         // console.log(new Date(peshis[0].next_proceedings_date))
         var peshisList = peshis.sort((a, b) => new Date(a.next_proceedings_date) - new Date(b.next_proceedings_date))
 
@@ -380,19 +379,19 @@ class ProductProvider extends Component {
           return acc
         }, [])
 
-        console.log(orderedData);
+        // console.log(orderedData);
         for (item of orderedData) {
           // ... do something with s ...
           // counter += 1 
           // item['id'] = counter
-          console.log(item.peshis); 
+          // console.log(item.peshis); 
           // const results = peshisList.filter(entry => entry === item.peshis.at(-1));
           // const index = peshisList.findIndex(x => x === item.peshis.at(-1));
           const index = peshisList.findIndex(x => x === item.peshis[item.peshis.length -1]);
 
           // console.log(index); 
           peshisList[index]['isLast'] = true;
-          console.log(peshisList[index]); 
+          // console.log(peshisList[index]); 
           
         }
 
@@ -400,7 +399,7 @@ class ProductProvider extends Component {
 
         this.setState(
            { peshiList: peshisList}
-           , ()=>{console.log(this.state.peshiList)}
+          //  , ()=>{console.log(this.state.peshiList)}
         );
 
         // console.log(this.state.clientsList)
@@ -409,7 +408,7 @@ class ProductProvider extends Component {
   }
 
   setFiles = () => {
-    console.log("setting files")
+    // console.log("setting files")
     var fb=fire.getFire();
     var files = [];
 
@@ -429,14 +428,14 @@ class ProductProvider extends Component {
 
         this.setState(
            { filesList: files}
-           , ()=>{console.log(this.state.filesList)}
+          //  , ()=>{console.log(this.state.filesList)}
         );
 
 
     }.bind(this));
   }
   setCaseWorkers = () => {
-    console.log("setting case workers")
+    // console.log("setting case workers")
     var fb=fire.getFire();
     var workers = [];
 
@@ -455,7 +454,7 @@ class ProductProvider extends Component {
 
         this.setState(
            { caseWorkers: workers}
-           , ()=>{console.log(this.state.caseWorkers)}
+          //  , ()=>{console.log(this.state.caseWorkers)}
         );
 
         // console.log(this.state.clientsList)
@@ -466,22 +465,22 @@ class ProductProvider extends Component {
   
   //add hearing entry
   addHearingEntry = (details, initCase) => {
-    console.log(details)
+    // console.log(details)
     const {next_proceedings, next_proceedings_date, previous_proceedings, previous_proceedings_date, updated_by, ...remaining_keys} = details;
     // const {next_proceedings, next_proceedings_date, previous_proceedings, previous_proceedings_date, updated_by, ...remaining_init} = initCase;
     
     
     return new Promise((resolve, reject)=> {
-      console.log("INSIDE PROMISE")
-      console.log(initCase);
+      // console.log("INSIDE PROMISE")
+      // console.log(initCase);
       delete details["isLast"]; 
-      console.log(details);
+      // console.log(details);
        
       // console.log(initCase)
       fire.getFire().database()
       .ref("/hearings")
       .push(details).then((snapshot)=>{
-        console.log("added entry to hearings", snapshot.key);
+        // console.log("added entry to hearings", snapshot.key);
         for (var key in remaining_keys) {
           if (remaining_keys.hasOwnProperty(key)) {
               if (remaining_keys[key] !== initCase[key]) {
@@ -509,11 +508,11 @@ class ProductProvider extends Component {
         clients = []
         snapshot.forEach((doc) => {
 
-          console.log("tempJSON");
+          // console.log("tempJSON");
           
           var tempJSON = doc.toJSON()  
               tempJSON['id'] = doc.key
-              console.log(tempJSON);
+              // console.log(tempJSON);
               //if user type is worker then filter client ids according to case ids in files list
               clients.push(tempJSON);
 
@@ -608,6 +607,8 @@ class ProductProvider extends Component {
   // add case and payments to existing client
   addCaseAndPayments = (payload) => {
     payload.caseDetails.clientId = payload.clientDetails.id
+    
+    // fix: /cases additions they are redundant
     fire.getFire().database()
     .ref("/cases")
     .push(

@@ -16,10 +16,14 @@ import fire from  '../fire';
 
 export const loadUser = () => (dispatch, getState) => {
     // User loading
+    console.log("user loading");
     dispatch({ type: USER_LOADING });
     //set user
+    // var data_ = null;
     fire.getFire().auth().onAuthStateChanged(function(user) {
-        if (user) {
+        
+          var data_ = null;
+          if (user) {
             //get user from users table and set type property in user
             fire.getFire().database().ref('/')
               .child('users/'+user.uid)
@@ -28,12 +32,16 @@ export const loadUser = () => (dispatch, getState) => {
               .once("value", function(snapshot) {
                 const userData = snapshot.val()
         
+                // Loading needs to wait for type to get filled
                 user.type = userData.type;
+                // console.log(userData.type);
+                // data_ = {user: user, type_:userData.type}
         
-            })
-            dispatch({
+            }).then(()=>{
+              dispatch({
                 type: USER_LOADED,
                 payload: user
+            })
             })
         };
         // else {}

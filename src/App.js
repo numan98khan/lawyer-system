@@ -33,21 +33,24 @@ import Tracker from "./admin/Tracker";
 class App extends Component {
   componentDidMount()
   {
+    console.log("App.js mounting")
     store.dispatch(loadUser());
   }
 
   render() {
     // const { isAuthenticated, isVerifying } = this.props;
-    // // console.log("isAuthenticated +++ " + isAuthenticated)
+    console.log(this.props.user)
+    
     return (
       <div className="d-flex flex-column">
+        
         {
-          this.props.user.user!==null?
+          this.props.user.isLoading===false?
           <Navbar/>:
           null
         }
         {
-          this.props.user.user.type?null:
+          this.props.user.isLoading===false?
           (
             this.props.user.user.type === 'admin'?
             <AdminDrawer/>:
@@ -58,49 +61,33 @@ class App extends Component {
               (
                 this.props.user.user.type === 'client'?
                 <ClientDrawer/>:
-                null
-                // console.log(this.props.user.user.type)
+                // <ClientDrawer/>
+                // null
+                console.log(this.props.user.user.type )
               )
             )
-          )
+          ):null
         }
-          {/* <ProductConsumer>
-            {value => {
-              // // console.log(value.user)
-              if(value.user!==null && value.user.type === 'admin'){
-                return (<AdminDrawer />)   
-              }
-              else if(value.user!==null && value.user.type === 'worker'){
-                // return (<WorkerDrawer />)   
-                return (<WorkerDrawer />)   
-              }
-              else if(value.user!==null && value.user.type === 'client'){
-                return (<ClientDrawer />)   
-            }
-              else{
-                return (<AuthNav/>)
-              }
-            }}
-          </ProductConsumer> */}
 
-          {/* <MapConsumer> */}
-          <ProductConsumer>
-            {value => {
-              if(value.user!=null && value.user.type === 'admin'){
-                return <AdminNav/> 
-              }
-              else if(value.user!=null && value.user.type === 'worker'){
-                return <WorkerNav/>  
-              }
-              else if(value.user!=null && value.user.type === 'client'){
-                return (<ClientNav />)   
-              }
-
-            }}
-            {/*value => {
-                return value.isSeller ?  <SellerNav /> : <BuyerNav />   
-            }*/}
-          </ProductConsumer>
+{
+          this.props.user.isLoading===false?
+          (
+            this.props.user.user.type === 'admin'?
+            <AdminNav/> :
+            (
+              this.props.user.user.type === 'worker'?
+              <WorkerNav/> 
+              :
+              (
+                this.props.user.user.type === 'client'?
+                <ClientNav />:
+                // <ClientDrawer/>
+                // null
+                console.log(this.props.user.user.type )
+              )
+            )
+          ):null
+        }
           {/* </MapConsumer> */}
         {/* <Modal /> */}
       </div>
