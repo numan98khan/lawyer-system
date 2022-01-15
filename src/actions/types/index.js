@@ -13,3 +13,15 @@ export const CASES_LOADING = "CASES_LOADING";
 export const CASES_LOADED = "CASES_LOADED";
 export const DELETE_CASE = "DELETE_CASE";
 export const ADD_CASE = "ADD_CASE";
+
+//client types
+export const CLIENTS_LOADED = 'CLIENTS_LOADED';
+export const CLIENTS_LOADING = 'CLIENTS_LOADING';
+export const DELETE_CLIENT = 'DELETE_CLIENT';
+export const ADD_CLIENT = 'ADD_CLIENT';
+
+//hearing types
+export const HEARINGS_LOADED = 'HEARINGS_LOADED';
+export const HEARINGS_LOADING = 'HEARINGS_LOADING';
+export const DELETE_HEARING = 'DELETE_HEARING';
+export const ADD_HEARING = 'ADD_HEARING';

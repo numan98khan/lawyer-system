@@ -4,6 +4,8 @@ import React from 'react';
 import {Link} from 'react-router-dom'
 import Button from '@material-ui/core/Button';
 import fire from '../fire'
+import {login} from "../actions/userActions";
+import { connect } from 'react-redux';
 import { ProductConsumer } from "../contexts/context.js";
 import {useState} from 'react'
 
@@ -57,16 +59,17 @@ render() {
               style={{marginBottom: '5%'}}
             />
             <br style={{marginBottom: '5%'}}></br>
-            <ProductConsumer>
-            {value => {
-              return <div><div><Button variant="contained" color="primary" onClick={()=>{value.signIn(this.state.email,this.state.password)}}>
+            <div><div><Button variant="contained" color="primary" onClick={()=>{
+              this.props.login({
+                email: this.state.email,
+                password: this.state.password
+              })
+            }}>
               Sign In
              </Button></div>
              <div style={{paddingTop:"15px"}}><Link to="/SignUp"><Button variant="contained" color="primary">
              Sign Up
             </Button></Link></div></div>
-            }}
-          </ProductConsumer>
             
          </div>
          </MuiThemeProvider>
@@ -75,4 +78,9 @@ render() {
   }
 }
 
-export default SignIn;
+const mapStateToProps = (state) => ({
+
+});
+export default connect(mapStateToProps, { login })(
+  SignIn
+);

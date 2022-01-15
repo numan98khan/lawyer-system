@@ -3,7 +3,7 @@ import React, { Component, Fragment } from "react";
 import Title from "../../components/Title";
 import { ProductConsumer } from "../../contexts/context.js";
 import { ProductContext } from "../../contexts/context.js";
-
+import { connect } from 'react-redux';
 import clsx from 'clsx';
 // import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -31,7 +31,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Checkbox from '@material-ui/core/Checkbox';
 import Avatar from '@material-ui/core/Avatar';
-
+import {loadClients} from "../../actions/clientActions";
 // import {useHistory} from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 
@@ -69,10 +69,8 @@ class clientList extends Component {
   static contextType = ProductContext;
 
   componentDidMount(){
-    if(this.context.user.type === 'worker'){
-      //get all cases of this worker
-      
-    }
+    //get the clients into redux state
+    this.props.loadClients()
   }
   extractProduct(products, pid){
     var newArray = products.filter(function (el) {
@@ -143,12 +141,10 @@ class clientList extends Component {
               
             
 
-            <ProductConsumer>
-            {value => {
-              return <List style={{width:'100%'}}>
+              <List style={{width:'100%'}}>
               {/* <ItemDetails review={value.reviewDetail} />   */}
                   
-              {value.clientsList
+              {this.props.client.clients
               // .filter((client)=>{
               //   // console.log(client.id.toString())
               //   // console.log(this.state.ids)
@@ -220,8 +216,6 @@ class clientList extends Component {
                 
             
               </List>
-            }}
-            </ProductConsumer>
 
             
 
@@ -233,7 +227,13 @@ class clientList extends Component {
   }
 }
 
-export default withRouter(clientList);
+const mapStateToProps = (state) => ({
+  client: state.client,
+  // type: state.type
+});
+export default connect(mapStateToProps, { loadClients })(
+  clientList
+);
 
 
 

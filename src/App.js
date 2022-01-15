@@ -43,14 +43,21 @@ class App extends Component {
     
     return (
       <div className="d-flex flex-column">
-        
         {
-          this.props.user.isLoading===false?
+          this.props.user.isLoading===true?
+          <div>
+            LOADING...
+          </div>
+          :
+          null
+        }
+        {
+          this.props.user.user && this.props.user.isLoading===false?
           <Navbar/>:
           null
         }
         {
-          this.props.user.isLoading===false?
+          this.props.user.user && this.props.user.isLoading===false?
           (
             this.props.user.user.type === 'admin'?
             <AdminDrawer/>:
@@ -62,15 +69,14 @@ class App extends Component {
                 this.props.user.user.type === 'client'?
                 <ClientDrawer/>:
                 // <ClientDrawer/>
-                // null
-                console.log(this.props.user.user.type )
+                null
               )
             )
           ):null
         }
 
 {
-          this.props.user.isLoading===false?
+          this.props.user.user && this.props.user.isLoading===false?
           (
             this.props.user.user.type === 'admin'?
             <AdminNav/> :
@@ -82,11 +88,15 @@ class App extends Component {
                 this.props.user.user.type === 'client'?
                 <ClientNav />:
                 // <ClientDrawer/>
-                // null
-                console.log(this.props.user.user.type )
+                null
+                // console.log(this.props.user.user.type )
               )
             )
-          ):null
+          ):
+          (
+            //auth nav here
+            <AuthNav/>
+          )
         }
           {/* </MapConsumer> */}
         {/* <Modal /> */}

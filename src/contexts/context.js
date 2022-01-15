@@ -910,62 +910,7 @@ class ProductProvider extends Component {
   {
     
     
-    // // console.log("sign in", email, password);
-    var USER=fire.getFire().auth().signInWithEmailAndPassword(email, password).then(
-      (user)=> {
-        if (user) {
-  
-          
-          // this.setTracker();
-          console.log("USER +> " + user.user.uid)
-          this.setUserData(user.user.uid).then((userobj=>{
-            user['type'] = userobj.type
-            user['displayName'] = userobj.displayName
-            this.setState({user:user})
-            console.log(user)
-          }));
-          
-          
-          // this.setProducts();
-          // this.setOffers();
-          // this.setProductReviews();
-          // this.setReviews();
-          // this.setProductOrders();
-          // this.setSellerOrders();
-          
-          // this.setCategories();
-          // this.cartFetchDB();
-          // this.setHire();
-          // this.setAds();
-          // this.setFeatured();
-          // this.setNotifData();
-  
-          // this.signOut();
-          // this.userGoLive();
-          // this.setState(() => {
-          //   return {
-          //     user: user,
-          //   };
-          // });
-          // User is signed in.
-  
-  
-          // case functions
-          // this.setClients();
-          // this.setCases();
-  
-          // this.setFiles(); // TEMP BLOCK
-          // this.setPeshiList(); // TEMP BLOCK
-          // this.setCaseWorkers();
-          // this.setLogSheet('0/0');
-  
-          // this.setTracker();
-  
-        } else {
-          // No user is signed in.
-        }
-        // // console.log("what", this.state.user)
-      });
+    
   
   }
 

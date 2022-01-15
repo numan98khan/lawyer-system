@@ -8,16 +8,17 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAIL
 } from '../actions/types';
+
 // import history from '../components/history';
 
 const initialState = {
-  isAuthenticated: null,
-  isLoading: true,
+  isLoading: false,
   user: null,
   privileges:[]
 };
 
 export default function(state = initialState, action) {
+  
   switch (action.type) {
     case USER_LOADING:
       return {
@@ -25,10 +26,8 @@ export default function(state = initialState, action) {
         isLoading: true
       };
     case USER_LOADED:
-      console.log(action.payload)
       return {
         ...state,
-        isAuthenticated: true,
         isLoading: false,
         user: action.payload
       };
@@ -37,7 +36,6 @@ export default function(state = initialState, action) {
       //set user here
       return {
         ...state,
-        isAuthenticated: true,
         isLoading: false
       };
     case AUTH_ERROR:
@@ -46,9 +44,7 @@ export default function(state = initialState, action) {
     case REGISTER_FAIL:
       return {
         ...state,
-        token: null,
         user: null,
-        isAuthenticated: false,
         isLoading: false
       };
     default:

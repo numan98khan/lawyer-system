@@ -13,16 +13,13 @@ import {
 } from './types';
 import fire from  '../fire';
 
-
 export const loadUser = () => (dispatch, getState) => {
     // User loading
     console.log("user loading");
     dispatch({ type: USER_LOADING });
     //set user
     // var data_ = null;
-    fire.getFire().auth().onAuthStateChanged(function(user) {
-        
-          var data_ = null;
+    fire.getFire().auth().onAuthStateChanged(function(user) {        
           if (user) {
             //get user from users table and set type property in user
             fire.getFire().database().ref('/')
@@ -43,8 +40,12 @@ export const loadUser = () => (dispatch, getState) => {
                 payload: user
             })
             })
-        };
-        // else {}
+        }
+        else {
+          dispatch({
+            type: LOGIN_FAIL
+        })
+        }
 })
 }
 
@@ -56,10 +57,47 @@ export const register = (user) => (
     
   };
 
+const getUserData = (uid) => {
+    return new Promise(async (resolve, reject)=>{
+      var fb=fire.getFire();
+      // var userData=[];
+      fb.database().ref('/')
+        .child('users/'+uid)
+        // .orderByChild('')
+        // .equalTo(uid)
+        .once("value", function(snapshot) {
+          const userData = snapshot.val()
+          
+          return resolve(userData)
+      });
+    })
+ 
+  };
   // Login User
 export const login = ({ email, password }) => (
   dispatch
 ) => {
+  dispatch({ type: USER_LOADING });
+  fire.getFire().auth().signInWithEmailAndPassword(email, password).then(
+    (user)=> {
+      if (user) {
+        console.log("USER +> " + user.user.uid)
+        getUserData(user.user.uid).then((userobj=>{
+          user['type'] = userobj.type
+          user['displayName'] = userobj.displayName
+        }));
+      //   dispatch({
+      //     type: LOGIN_SUCCESS,
+      //     payload: user
+      // })
+
+      } else {
+        // No user is signed in.
+        dispatch({
+          type: LOGIN_FAIL
+      })
+      }
+    });
   
 };
   // Login Admin
@@ -71,7 +109,16 @@ export const loginAdmin = ({ email, password }) => (
 
 // Logout User
 export const logout = () => (dispatch, getState) => {
-  dispatch({
-    type: LOGOUT_SUCCESS,
+  return new Promise((res, rej) => {
+    fire.getFire().auth().signOut().then(()=>{
+      dispatch({
+        type: LOGOUT_SUCCESS,
+      })
+  
+      res()
+    }).
+    catch(()=>{
+      console.log("error logging out")
+    })
   })
 };

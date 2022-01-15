@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
+import { connect } from 'react-redux';
 import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
@@ -14,9 +15,9 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
-
+import {logout} from '../actions/userActions';
 import { ProductConsumer } from "../contexts/context.js";
-
+import {useHistory} from 'react-router-dom';
 import { NavLink, Link, Redirect } from "react-router-dom";
 
 import fire from "../fire";
@@ -88,7 +89,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PrimarySearchAppBar() {
+function PrimarySearchAppBar(props) {
+  const history = useHistory();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -137,12 +139,11 @@ export default function PrimarySearchAppBar() {
       onClose={handleMenuClose}
     >
       <NavLink to="/">
-
-      <ProductConsumer>
-              {value => {
-                  return   <MenuItem onClick={value.signOut}>Logout</MenuItem>;          
-              }}
-            </ProductConsumer>
+      <MenuItem onClick={()=>{
+        props.logout().then(()=>{
+          history.push('/')
+        })
+      }}>Logout</MenuItem>
         {/* <MenuItem onClick={handleMenuCloseLogout}>Logout</MenuItem> */}
       </NavLink>
     </Menu>
@@ -280,4 +281,12 @@ export default function PrimarySearchAppBar() {
     </div>
   );
 }
+
+const mapStateToProps = (state) => ({
+  // user: state.user,
+  // type: state.type
+});
+export default connect(mapStateToProps, { logout })(
+  PrimarySearchAppBar
+);
 

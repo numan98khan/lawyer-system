@@ -6,6 +6,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
+import { connect } from 'react-redux';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Title from "../../components/Title"
@@ -25,7 +26,7 @@ import ButtonContainer from '../../components/Button';
 import { useHistory } from "react-router-dom";
 import { ProductContext } from "../../contexts/context.js";
 import { LogIcon } from "../../../src/icons"
-
+import {loadHearings} from "../../actions/hearingActions"
 
 
 import AddPeshiRow from "./AddPeshiRow";
@@ -39,7 +40,7 @@ import {
 } from '@material-ui/pickers';
 
 
-function Tasks() {
+function Tasks(props) {
   const [searchterm, setsearchterm] = React.useState('');
   const [filterDate, setdate] = React.useState(new Date())
   const [file_n, setfile_n] = React.useState(-1);
@@ -55,8 +56,6 @@ function Tasks() {
   const contextValue = React.useContext(ProductContext);
 
   const history = useHistory();
-
-  
 
     const useStyles = makeStyles({
       table: {
@@ -81,6 +80,10 @@ function Tasks() {
       console.log(file_n,case_n);
     })
 
+    React.useEffect(() => {
+      props.loadHearings()
+    }, [])
+
     function updateHearing(cell, value, key, old_value, case_path){
       contextValue.updateHearing(cell, value, key, old_value, case_path)
     }
@@ -100,6 +103,8 @@ function Tasks() {
         }
       }
     }
+
+    
     return (
       <ProductConsumer>
         {value => {
@@ -394,8 +399,15 @@ function Tasks() {
 
       </ProductConsumer>
     );
-}
-export default Tasks;
+      };
+
+const mapStateToProps = (state) => ({
+  user: state.user,
+  type: state.type
+});
+export default connect(mapStateToProps, { loadHearings })(
+  Tasks
+);
 
 
 
