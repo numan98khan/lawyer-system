@@ -91,7 +91,6 @@ function AddPeshiRow() {
 
         setFileNum(tempVal);
         
-        // e.target.value.replace(/\D/,'')  
         console.log(fileNum.length);
 
         // getCaseData(0, 0)
@@ -104,8 +103,6 @@ function AddPeshiRow() {
     };
 
     const handleChangeCourtCase = e => {
-        // console.log('huee')
-        // console.log(e.target.value);
         
         
         var tempVal = e.target.value.replace(/\D/,'')

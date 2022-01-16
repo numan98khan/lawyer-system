@@ -1,11 +1,19 @@
-import React from "react"
+import React, { useState, useEffect } from 'react';
 // AIzaSyDVtDW0vjeyc6t1NR5QYU4mkGKMeO-cxI8
+
+import styled from 'styled-components';
 import GoogleMapReact from 'google-map-react';
 
 // import { MapConsumer } from "../../contexts/mapContext.js";
-import { ProductConsumer } from "../../contexts/context";
+// import { ProductConsumer } from "../../contexts/context";
+
+import Marker from './Marker';
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
+const Wrapper = styled.main`
+  width: 100%;
+  height: 100%;
+`;
 
 
 function Tracker() {
@@ -16,6 +24,24 @@ function Tracker() {
     //     backgroundColor: '#6600ff',
     //     color: '#6600ff'
     //   }
+
+    const [places, setPlaces] = useState([])
+
+    const fetchPlaces = async () => {
+      fetch('places.json')
+      .then((response) => response.json())
+      .then((data) => setPlaces(data.results))
+    }
+  
+    useEffect(() => {
+      fetchPlaces();
+    }, [])
+  
+    if (!places || places.length === 0) {
+      return null;
+    }
+
+    
     return (
         <div style={{height:'100vh', width:'100vw',  display:'flex'}}>
 
@@ -23,20 +49,21 @@ function Tracker() {
         style={{ minheight: '100%', width: '100%'}}
         // style={{ flexGrow: 1 }}
         >
+            <Wrapper>
             <GoogleMapReact
-                bootstrapURLKeys={{ key: "AIzaSyDVtDW0vjeyc6t1NR5QYU4mkGKMeO-cxI8" }}
-                    defaultCenter={{
-                        lat: 59.95,
-                        lng: 30.33
-                    }}
-                    defaultZoom={11}
+                defaultZoom={10}
+                defaultCenter={[34.0522, -118.2437]}
             >
-                {/* <AnyReactComponent
-                    lat={59.955413}
-                    lng={30.337844}
-                    text="My Marker"
-                /> */}
+                {places.map((place) => (
+                <Marker
+                    key={place.id}
+                    text={place.name}
+                    lat={place.geometry.location.lat}
+                    lng={place.geometry.location.lng}
+                />
+                ))}
             </GoogleMapReact>
+            </Wrapper>
         </div>
         </div>
         )

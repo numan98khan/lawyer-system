@@ -5,8 +5,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import store from './store';
 import { loadUser } from "./actions/userActions";
 import { connect } from 'react-redux';
-import { ProductConsumer } from "./contexts/context.js";
-// import { MapConsumer } from "./contexts/mapContext.js";
 import AuthNav from "./navigation/AuthNav"
 import ClientDrawer from "./navigation/ClientDrawer"
 import Navbar from "./navigation/Navbar";
