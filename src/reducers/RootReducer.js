@@ -10,6 +10,8 @@ import userReducer from './userReducer';
 import caseReducer from './caseReducer';
 import clientReducer from './clientReducer';
 import hearingReducer from './hearingReducer'
+import logsReducer from './logsReducer';
+import caseWorkerReducer from './caseWorkersReducer';
 
 export default combineReducers({
 //   msg: msgReducer,
@@ -22,5 +24,7 @@ export default combineReducers({
   client: clientReducer,
   user: userReducer,
   cases: caseReducer,
-  hearing: hearingReducer
+  hearing: hearingReducer,
+  log: logsReducer,
+  caseworker: caseWorkerReducer
 });

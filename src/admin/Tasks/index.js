@@ -7,7 +7,9 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import { connect } from 'react-redux';
+import { loadCase } from "../../actions/caseActions";
 import TableRow from '@material-ui/core/TableRow';
+import {loadClients} from "../../actions/clientActions";
 import Paper from '@material-ui/core/Paper';
 import Title from "../../components/Title"
 import { Fragment } from "react";
@@ -82,6 +84,8 @@ function Tasks(props) {
 
     React.useEffect(() => {
       props.loadHearings()
+      props.loadCase();
+      props.loadClients();
     }, [])
 
     function updateHearing(cell, value, key, old_value, case_path){
@@ -106,9 +110,6 @@ function Tasks(props) {
 
     
     return (
-      <ProductConsumer>
-        {value => {
-          return (
             <div className="py-5 pl-4 pr-4">
               <div className="mb-5" style={{minWidth:"1000px"}} >
               <div style={{marginBottom:"5%"}}>
@@ -160,10 +161,7 @@ function Tasks(props) {
                   </TableHead>
                   <TableBody>
                     {/* show hearings data here */}
-                    <ProductConsumer>
-                    
-                    {value => {
-                    return value.peshiList.filter((row) => {
+                    {props.hearing.hearings.filter((row) => {
                       return (row.next_proceedings_date === filterDate.toLocaleDateString('en-US'))
                     }
                       ).map((row, idx) => (
@@ -263,8 +261,7 @@ function Tasks(props) {
                       </TableRow>
                       // }
                     ))
-                    }}
-                    </ProductConsumer>
+                    }
 
 
                     <AddPeshiRow/>
@@ -292,7 +289,7 @@ function Tasks(props) {
 
               <div className="search-results">
                 {
-                  value.filesList
+                  props.cases.files
                   .filter((file)=> 
                   {
                     if(file_n > -1){
@@ -340,7 +337,7 @@ function Tasks(props) {
                                         // className={classes.inline}
                                         color="textPrimary"
                                       >
-                                      {getName(value.clientsList,file,key)}
+                                      {getName(props.client.clients,file,key)}
                                       </Typography>
                                       <Typography
                                         component="span"
@@ -393,19 +390,16 @@ function Tasks(props) {
                 }
               </div>
             </div>
-           
-          );
-        }}
-
-      </ProductConsumer>
     );
       };
 
 const mapStateToProps = (state) => ({
   user: state.user,
-  type: state.type
+  hearing: state.hearing,
+  cases: state.cases,
+  client: state.client
 });
-export default connect(mapStateToProps, { loadHearings })(
+export default connect(mapStateToProps, { loadHearings, loadCase, loadClients })(
   Tasks
 );
 

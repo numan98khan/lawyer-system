@@ -5,6 +5,8 @@ import { ProductConsumer } from "../../contexts/context.js";
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ButtonContainer from '../../components/Button';
 import clsx from 'clsx';
+import { connect } from 'react-redux';
+import {loadCaseWorkers} from "../../actions/caseWorkersActions";
 // import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 // import Button from '@material-ui/core/Button';
@@ -57,9 +59,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function Workers() {
+function Workers(props) {
   const history = useHistory()
   const [searchTerm, setsearchTerm] = React.useState('')
+
+  React.useEffect(() => {
+    props.loadCaseWorkers();
+  }, [])
     return (
         <Fragment>
       
@@ -96,14 +102,10 @@ export default function Workers() {
             </ButtonContainer>
             </div>
             </div>
-            <ProductConsumer>
-            {value => {
-              return <List style={{width:'100%'}}>
-              {/* <ItemDetails review={value.reviewDetail} />   */}
-                  
-              {value.caseWorkers.filter((worker) => {
-
-                // console.log(el)
+            <List style={{width:'100%'}}>
+            {                  
+              props.worker.caseWorkers.filter((worker) => {
+                
                 return worker.firstName.toLowerCase().indexOf(searchTerm) !== -1
                       || worker.lastName.toLowerCase().indexOf(searchTerm) !== -1
                       || worker.displayName.toLowerCase().indexOf(searchTerm) !== -1
@@ -157,8 +159,6 @@ export default function Workers() {
                 
             
               </List>
-            }}
-            </ProductConsumer>
             
 
           </div>
@@ -166,4 +166,11 @@ export default function Workers() {
       </Fragment>
     )
 }
+
+const mapStateToProps = (state) => ({
+  worker: state.caseworker
+});
+export default connect(mapStateToProps, { loadCaseWorkers })(
+  Workers
+);
 

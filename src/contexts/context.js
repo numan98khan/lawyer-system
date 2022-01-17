@@ -148,74 +148,7 @@ class ProductProvider extends Component {
 
 
   componentWillMount() {
-    // this.setProducts();
-    // this.setOffers();
-    // this.setProductReviews();
-    // this.setProductOrders();
-
-    fire.getFire().auth().onAuthStateChanged(function(user) {
-      if (user) {
-
-        // fire.getFire().auth().signOut();
-        // console.log('LOGOUT')
-        // this.setTracker();
-        console.log("USER +> " + user.uid)
-        this.setUserData(user.uid).then((userobj=>{
-          user['type'] = userobj.type
-        }));
-        
-        this.setState({user:user})
-        console.log(user)
-        
-        // this.setProducts();
-        // this.setOffers();
-        // this.setProductReviews();
-        // this.setReviews();
-        // this.setProductOrders();
-        // this.setSellerOrders();
-        
-        // this.setCategories();
-        // this.cartFetchDB();
-        // this.setHire();
-        // this.setAds();
-        // this.setFeatured();
-        // this.setNotifData();
-
-        // this.signOut();
-        // this.userGoLive();
-        // this.setState(() => {
-        //   return {
-        //     user: user,
-        //   };
-        // });
-        // User is signed in.
-
-
-        // case functions
-        this.setClients();
-        this.setCases();
-
-        this.setFiles(); // TEMP BLOCK
-        this.setPeshiList(); // TEMP BLOCK
-        this.setCaseWorkers();
-        this.setLogSheet('0/0');
-
-        this.setTracker();
-
-      } else {
-        // No user is signed in.
-      }
-      // // console.log("what", this.state.user)
-    }.bind(this));
-
-
-
-
-    // fire.getFire().auth().signOut().then(function() {
-    //   // Sign-out successful.
-    // }).catch(function(error) {
-    //   // An error happened.
-    // });
+    
 
   }
 
@@ -268,9 +201,7 @@ class ProductProvider extends Component {
     fb.database().ref('/')
       .child('hearing_logs/' + casePath + '/')
       .on("value", function(snapshot) {
-        peshis = []
         snapshot.forEach((doc) => {
-          
           // // console.log(doc.toJSON())
           var tempJSON = doc.toJSON()
           tempJSON['key'] = doc.key
@@ -1074,28 +1005,28 @@ class ProductProvider extends Component {
   }
 
 
-  setUserData = (uid) => {
-    console.log(uid)
-    return new Promise(async (resolve, reject)=>{
-      var fb=fire.getFire();
-      // var userData=[];
-      fb.database().ref('/')
-        .child('users/'+uid)
-        // .orderByChild('')
-        // .equalTo(uid)
-        .once("value", function(snapshot) {
-          const userData = snapshot.val()
+  // setUserData = (uid) => {
+  //   console.log(uid)
+  //   return new Promise(async (resolve, reject)=>{
+  //     var fb=fire.getFire();
+  //     // var userData=[];
+  //     fb.database().ref('/')
+  //       .child('users/'+uid)
+  //       // .orderByChild('')
+  //       // .equalTo(uid)
+  //       .once("value", function(snapshot) {
+  //         const userData = snapshot.val()
   
-          this.setState({
-            userData: userData
-          },()=>{
-            return resolve(userData)
-          })
+  //         this.setState({
+  //           userData: userData
+  //         },()=>{
+  //           return resolve(userData)
+  //         })
   
-      }.bind(this));
-    })
+  //     }.bind(this));
+  //   })
  
-  };
+  // };
 
   // getProductReviewsByProductId
 
@@ -1394,41 +1325,18 @@ class ProductProvider extends Component {
       <ProductContext.Provider
         value={{
           ...this.state,
-          // userGoLive: this.userGoLive,
-          // updateLiveP: this.updateLiveP,
-          
-          getProduct: this.getProduct,
-          
-          // pushProductOffer: this.pushProductOffer,
-          // pushProductReview: this.pushProductReview,
           
           signIn: this.signIn,
           signUp: this.signUp,
-          storeInDatabase: this.storeInDatabase,
           signOut: this.signOut,
+
           addHearingEntry: this.addHearingEntry,
-          handleRDetailClose: this.handleRDetailClose,
-          handleRDetailToggle: this.handleRDetailToggle,
           
-          // searchProducts: this.searchProducts,
-          searchClients: this.searchClients,
-          
-          toggleAppMode: this.toggleAppMode,
           handleDrawerClose: this.handleDrawerClose,
           handleDrawerOpen: this.handleDrawerOpen,
-          switchScreen: this.switchScreen, // Register
-          handleDetail: this.handleDetail,
-          setCaseWorkers: this.setCaseWorkers,
-          // addToCart: this.addToCart,
+          
           addWorker: this.addWorker,
-          openModal: this.openModal,
-          closeModal: this.closeModal,
 
-          // increment: this.increment,
-          // decrement: this.decrement,
-          // removeItem: this.removeItem,
-          // clearCart: this.clearCart,
-          // checkoutCart: this.checkoutCart, 
 
           setTracker: this.setTracker,
 
@@ -1436,7 +1344,6 @@ class ProductProvider extends Component {
           addClientAndCase :this.addClientAndCase, 
           addClientUser: this.addClientUser,
           updateHearing: this.updateHearing,
-          setLogSheet: this.setLogSheet,
           updateHearingField: this.updateHearingField
         }}
       >

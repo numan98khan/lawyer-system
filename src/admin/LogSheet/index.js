@@ -6,6 +6,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
+import { connect } from 'react-redux';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Title from "../../components/Title"
@@ -31,6 +32,7 @@ import { caseValueMap} from '../NewCase/lists'
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
+import {loadLogs} from "../../actions/logActions";
 
 
 import {
@@ -40,7 +42,7 @@ import {
   } from '@material-ui/pickers';
 
 
-function LogSheet() {
+function LogSheet(props) {
     const [casePath, setCasePath] = React.useState('0/0');
     const [filterDate, setdate] = React.useState(new Date())
     const [keyvalue, setkeyvalue] = React.useState('')
@@ -50,6 +52,9 @@ function LogSheet() {
     // const [valueSearch, setvalueSearch] = React.useState(true)
     const location = useLocation()
 
+    React.useEffect(() => {
+      props.loadLogs(location.state)
+    }, [])
     const contextValue = React.useContext(ProductContext);
     const useStyles = makeStyles({
       table: {
@@ -116,9 +121,6 @@ function LogSheet() {
       }
 
     return (
-        <ProductConsumer>
-          {value => {
-            return (
               <div className="py-5 pl-4 pr-4">
                 <div className="mb-5" style={{minWidth:"1000px"}} >
                 <div style={{marginBottom:"5%"}}>
@@ -232,12 +234,12 @@ function LogSheet() {
                 {/* {openEntry && <Entry Details={entryDetails} closeEntry={()=>{setopenEntry(false)}}/>} */}
                 
               </div>
-             
-            );
-          }}
-  
-        </ProductConsumer>
       );
 }
 
-export default LogSheet;
+const mapStateToProps = (state) => ({
+  log: state.log
+});
+export default connect(mapStateToProps, { loadLogs })(
+  LogSheet
+);

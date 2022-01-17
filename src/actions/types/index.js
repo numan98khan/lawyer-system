@@ -25,3 +25,15 @@ export const HEARINGS_LOADED = 'HEARINGS_LOADED';
 export const HEARINGS_LOADING = 'HEARINGS_LOADING';
 export const DELETE_HEARING = 'DELETE_HEARING';
 export const ADD_HEARING = 'ADD_HEARING';
+
+//hearing logs
+export const LOGS_LOADED = 'LOGS_LOADED';
+export const LOGS_LOADING = 'LOGS_LOADING';
+export const ADD_LOG = 'ADD_LOG';
+export const DELETE_LOG = 'DELETE_LOG';
+
+//case worker
+export const CASEWORKERS_LOADED = 'CASEWORKERS_LOADED';
+export const CASEWORKERS_LOADING = 'CASEWORKERS_LOADING';
+export const ADD_CASEWORKER = 'ADD_CASEWORKER';
+export const DELETE_CASEWORKER = 'DELETE_CASEWORKER';

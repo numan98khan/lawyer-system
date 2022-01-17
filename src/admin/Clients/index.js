@@ -117,7 +117,7 @@ class clientList extends Component {
           <div style={{marginBottom:"5%"}}>
           <ProductConsumer>
               {value => {
-                return (<Title title={value.user.type === 'worker'?"My Clients":"Our Clients"}/>);
+                return (<Title title={this.props.user.user.type === 'worker'?"My Clients":"Our Clients"}/>);
               }}
             </ProductConsumer>
           </div>
@@ -229,6 +229,7 @@ class clientList extends Component {
 
 const mapStateToProps = (state) => ({
   client: state.client,
+  user: state.user,
   // type: state.type
 });
 export default connect(mapStateToProps, { loadClients })(
