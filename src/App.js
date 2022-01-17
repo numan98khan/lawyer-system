@@ -4,6 +4,9 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import store from './store';
 import { loadUser } from "./actions/userActions";
+import { loadClients } from "./actions/clientActions";
+import { loadCase } from "./actions/caseActions";
+
 import { connect } from 'react-redux';
 import AuthNav from "./navigation/AuthNav"
 import ClientDrawer from "./navigation/ClientDrawer"
@@ -33,6 +36,9 @@ class App extends Component {
   {
     console.log("App.js mounting")
     store.dispatch(loadUser());
+    store.dispatch(loadClients());
+    store.dispatch(loadCase());
+    
   }
 
   render() {

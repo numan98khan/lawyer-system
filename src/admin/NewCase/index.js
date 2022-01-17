@@ -15,7 +15,9 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
 import CreateIcon from '@material-ui/icons/Create';
 
-
+import { loadClients } from "../../actions/clientActions";
+import { connect } from 'react-redux';
+import store from '../../store';
 
 const styles = {
 
@@ -31,19 +33,14 @@ class NewCase extends Component {
       searchTerm:''
     }
 
+    componentDidMount()
+    {
+      // console.log("App.js mounting")
+      store.dispatch(loadClients());
+    }
+
     render() {
-    // const newClient = (
-    //   <div style={styles.newClient}>
-    //     <p>If you want to add a new client....</p>
-    //   <Link to="/addclient"><Button variant="contained" color="primary">Add client</Button></Link>
-    //   </div>
-    // )
-    // const newMatter = (
-    //   <div style={styles.newMatter}>
-    //       <p>Make case for existing client</p>
-    //       <Link to="/casedetails"><Button variant="contained" color="primary">case details</Button></Link>
-    //   </div>
-    // )
+    
 
     return (
       <Fragment>
@@ -81,7 +78,7 @@ class NewCase extends Component {
               return <List style={{width:'100%'}}>
               {/* <ItemDetails review={value.reviewDetail} />   */}
                   
-              {value.clientsList.filter((client) => {
+              {this.props.clients.filter((client) => {
 
                 // console.log(el)
 
@@ -160,12 +157,17 @@ class NewCase extends Component {
     );
   }
 }
-export default NewCase;
+
+// export default NewCase;
 
 
-
-
-
-
+const mapStateToProps = (state) => ({
+  // user: state.user,
+  // type: state.type
+  clients:state.client.clients
+});
+export default connect(mapStateToProps, { loadClients })(
+  NewCase
+);
 
 

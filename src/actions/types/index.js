@@ -25,6 +25,7 @@ export const HEARINGS_LOADED = 'HEARINGS_LOADED';
 export const HEARINGS_LOADING = 'HEARINGS_LOADING';
 export const DELETE_HEARING = 'DELETE_HEARING';
 export const ADD_HEARING = 'ADD_HEARING';
+export const ADD_HEARING_FAILED = 'ADD_HEARING_FAILED';
 
 //hearing logs
 export const LOGS_LOADED = 'LOGS_LOADED';

@@ -160,8 +160,13 @@ function Tasks(props) {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {/* show hearings data here */}
-                    {props.hearing.hearings.filter((row) => {
+                    {/* show hearings data here
+                      Error in code not showing
+                    */}
+                    {
+                    // console.log()
+                    props.hearings && props.hearings.hearings.filter((row) => {
+                      console.log(props.hearings)
                       return (row.next_proceedings_date === filterDate.toLocaleDateString('en-US'))
                     }
                       ).map((row, idx) => (
@@ -395,7 +400,7 @@ function Tasks(props) {
 
 const mapStateToProps = (state) => ({
   user: state.user,
-  hearing: state.hearing,
+  hearings: state.hearing,
   cases: state.cases,
   client: state.client
 });

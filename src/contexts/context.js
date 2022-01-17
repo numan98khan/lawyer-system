@@ -654,175 +654,68 @@ class ProductProvider extends Component {
   }
 
   uploadPayload = (payload) => {
-  //add client and make new client user
+    //add client and make new client user
 
-  var currentdate = new Date(); 
-  var datetime = currentdate.getDate() + "/"
-                  + (currentdate.getMonth()+1)  + "/" 
-                  + currentdate.getFullYear() + " @ "  
-                  + currentdate.getHours() + ":"  
-                  + currentdate.getMinutes() + ":" 
-                  + currentdate.getSeconds();
+    var currentdate = new Date(); 
+    var datetime = currentdate.getDate() + "/"
+                    + (currentdate.getMonth()+1)  + "/" 
+                    + currentdate.getFullYear() + " @ "  
+                    + currentdate.getHours() + ":"  
+                    + currentdate.getMinutes() + ":" 
+                    + currentdate.getSeconds();
 
-  payload.clientDetails['registration_time'] = datetime;
+    payload.clientDetails['registration_time'] = datetime;
 
-  fire.getFire().database()
-  .ref("/clients")
-  .push(
-    payload.clientDetails)
-    .then((snap)=> {
-      // Update successful.
-      var client_key = snap.key;
-      payload.caseDetails.clientId = client_key;
-      fire.getFire().database()
-      .ref("/cases")
-      .push(
-        payload.caseDetails)
-        .then((snap)=> {
-          var case_key = snap.key;
-          var client_key = payload.caseDetails.clientId;
+    fire.getFire().database()
+    .ref("/clients")
+    .push(
+      payload.clientDetails)
+      .then((snap)=> {
+        // Update successful.
+        var client_key = snap.key;
+        payload.caseDetails.clientId = client_key;
+        fire.getFire().database()
+        .ref("/cases")
+        .push(
+          payload.caseDetails)
+          .then((snap)=> {
+            var case_key = snap.key;
+            var client_key = payload.caseDetails.clientId;
 
 
-          // fire.getFire().database().ref("files/"+case_key).once("value")
-
-          /*
-          fire.getFire().database().ref("files").orderByChild("case_id").equalTo(case_key).once("value",snapshot => {
-            // console.log("checking this", snapshot.val());
-            if (snapshot.exists()){
-                
-                const userData = snapshot.val();
-                // console.log("exists!", Object.keys(snapshot.toJSON())[0]);
-                
-                var file_key = Object.keys(snapshot.toJSON())[0];
-                fire.getFire().database().ref("files/" + file_key.toString() + "/").transaction(function(file_) {
-                  console.log("transact!");
-                  if (file_) {
-                    
-                    file_.no++;
-                     
-                  }
-                  // console.log("post:" , post);
-                  // console.log("liked: ", liked);
-                  return file_;
-                });
-                // liked = false;
-              }
-          });
-          //*/
-          
-          // Code for new client and file creation
-          //*
-          console.log("debug!"); 
-          payload.caseDetails.case_id = case_key;
-          fire.getFire().database().ref("/files").once("value")
-              .then(function(snapshot) {
-                console.log("doin somethin"); 
-                console.log(snapshot.numChildren()); 
-                fire.getFire().database()
-                .ref("/files")
-                .child(snapshot.numChildren())
-                .set({cases:{0:payload.caseDetails}, client_id:client_key})
-            });
-
-          //*/
-          // Code for case addition to the same client file
-          /*
-          client_key = "-MjQPM-yOQGsKRb79SII"
-
-          fire.getFire().database()
-          .ref("files")
-          .orderByChild("client_id")
-          .equalTo(client_key)
-          .once("value",snapshot => {
             
-            console.log("searching!");
-            if (snapshot.exists()){
-              console.log("found it!");
-              var file_key = Object.keys(snapshot.toJSON())[0];
-
-              console.log(file_key);
-              
-              fire.getFire().database().ref("files/" + file_key.toString() + "/cases/").once("value")
-              .then(function(snapshot) {
-                console.log("num of children");
-                console.log(snapshot.numChildren()); 
-
-                fire.getFire().database().ref("files/" + file_key.toString() + "/cases/")
-                .child(snapshot.numChildren())
-                .set({case_id: case_key})
-            
+            // Code for new client and file creation
+            //*
+            console.log("debug!"); 
+            payload.caseDetails.case_id = case_key;
+            fire.getFire().database().ref("/files").once("value")
+                .then(function(snapshot) {
+                  console.log("doin somethin"); 
+                  console.log(snapshot.numChildren()); 
+                  fire.getFire().database()
+                  .ref("/files")
+                  .child(snapshot.numChildren())
+                  .set({cases:{0:payload.caseDetails}, client_id:client_key})
               });
 
-                // fire.getFire().database().ref("files/" + file_key.toString() + "/cases/").child
-            }
-          });
-
-          //*/
-
-          /*
-          fire.getFire().database().ref("files/"+client_key).once("value")
-            .then(function(snapshot) {
-              var a = snapshot.exists();  // true
-              console.log(a);
-              
-              if (a) {
-                console.log(case_key)
-                
-                // fire.getFire().database()
-                // .ref("/files")
-                // .child().set()
-              } else {
-                
-                fire.getFire().database().ref("/files").once("value")
-                  .then(function(snapshot) {
-                    // console.log(snapshot.numChildren()); 
-                      
-                    fire.getFire().database().ref("/files").once("value")
-                      .then(function(snapshot) {
-                        
-                    });
-
-                    fire.getFire().database()
-                    .ref("/files")
-                    .child(client_key).set({no:0, case_id:case_key})
-                    .then(function(snapshot) { 
-                      fire.getFire().database()
-                      .ref("/files")
-                      .child(client_key).set({no:0, case_id:case_key})
-                    })
-
-                    // console.log(ref_file.numChildren())
-
-                  });
-
-              }
-            });
             //*/
-
-            // console.log(a);
-
-          // fire.getFire().database()
-          // .ref("/cases")
-          // .push()
-          // console.log(snap.doc)
-          
-          payload.paymentOptions.clientid = client_key;
-          payload.paymentOptions.caseid = case_key;
-          fire.getFire().database()
-          .ref("/invoice")
-          .push(
-            payload.paymentOptions)
-            .then((snap)=> {
-              // Update successful.
-              console.log("case, client and payment options added successfully");
-              this.addClientUser(payload.clientDetails.email);
-              console.log("case and client added successfully");
-              
+            
+            payload.paymentOptions.clientid = client_key;
+            payload.paymentOptions.caseid = case_key;
+            fire.getFire().database()
+            .ref("/invoice")
+            .push(
+              payload.paymentOptions)
+              .then((snap)=> {
+                // Update successful.
+                console.log("case, client and payment options added successfully");
+                this.addClientUser(payload.clientDetails.email);
+                console.log("case and client added successfully");
+                
       
-  });  
-      
-  });  
-  });  
+        });
+      });  
+    });  
   }
 
 
@@ -1330,19 +1223,22 @@ class ProductProvider extends Component {
           signUp: this.signUp,
           signOut: this.signOut,
 
-          addHearingEntry: this.addHearingEntry,
+          // addHearingEntry: this.addHearingEntry,
           
           handleDrawerClose: this.handleDrawerClose,
           handleDrawerOpen: this.handleDrawerOpen,
           
-          addWorker: this.addWorker,
+          // addWorker: this.addWorker,
 
 
           setTracker: this.setTracker,
 
           // case function exports
           addClientAndCase :this.addClientAndCase, 
+
+          // this is a utility function 
           addClientUser: this.addClientUser,
+
           updateHearing: this.updateHearing,
           updateHearingField: this.updateHearingField
         }}

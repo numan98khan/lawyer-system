@@ -15,9 +15,13 @@ import {
 import DateFnsUtils from '@date-io/date-fns';
 import EditableCell from '../../components/EditableNewCellComp'
 
+import {addHearingEntry, loadHearings} from '../../actions/hearingActions';
+import { connect } from 'react-redux';
+
+
 import _ from "lodash";
 
-function AddPeshiRow() {
+function AddPeshiRow(props) {
     const [fileNum, setFileNum] = React.useState("0");
     const [courtCase, setCourtCase] = React.useState("0");
     const [retCase, setRetCase] = React.useState(null);
@@ -28,26 +32,38 @@ function AddPeshiRow() {
     const [dob, setdob] = React.useState(new Date())
     const [newCase, setnewCase] = React.useState(null)
     
-    const contextValue = React.useContext(ProductContext);
-        
+    // const contextValue = React.useContext(ProductContext);
+    
+    React.useEffect(() => {
+        props.loadHearings().then(() => {
+            console.log('mount it!');
+            getCaseData('0', '0');
+
+            console.log(props.hearings)
+        });
+    
+      }, []);
+
     function getCaseData(fnum, cnum) {
         //check if case is new or hearing exists already
         //if hearing exists, get data from hearing
 
-        //else get it from cases table
-        if (contextValue.filesList.length === 0){
+        //else get it from cases table ::: contextValue.filesList
+        if (props.cases.files.length === 0){
             return;
         }
 
-        var cases = contextValue.filesList.find(x => x.id === fnum).cases;
+        var cases = props.cases.files.find(x => x.id === fnum).cases;
         var retCase = null;
         var peshiData = null;
 
         
         // console.log(cases);
-        
-        if (cases[cnum] !== undefined) {
-            peshiData = contextValue.peshiList.filter(x => x.case_id === cases[cnum].case_id)
+        console.log(props.hearings)
+        // ::: contextValue.peshiList
+        if (cases[cnum] !== undefined && props.hearings) {
+            
+            peshiData = props.hearings.hearings.filter(x => x.case_id === cases[cnum].case_id)
 
             if(peshiData.length > 0){
                 setnewCase(false)
@@ -70,7 +86,7 @@ function AddPeshiRow() {
                 retCase['case_n'] = cnum;
                 // retCase['updated_by'] = 'noman';
             }
-            retCase['updated_by'] = contextValue.user.email;
+            retCase['updated_by'] = props.user.email;
             
             setRetCase(retCase)
             console.log(retCase);
@@ -117,11 +133,7 @@ function AddPeshiRow() {
         }
     };
 
-    React.useEffect(() => {
-        console.log('mount it!');
-        getCaseData('0', '0')
-
-      }, []);
+    
     function ChangeCellValue(cell, value){
         retCase[cell] = value
         console.log(cell, value)
@@ -152,10 +164,11 @@ function AddPeshiRow() {
 
                             retCase['next_proceedings_date'] = dob.toLocaleDateString('en-US');
                             retCase['next_proceedings'] = nextProceedings;
-                            retCase['updated_by'] = value.user.email;
+                            retCase['updated_by'] = props.user.email;
                                 
-                            value.addHearingEntry(payload, initCase).then(() => {
-                                //clear everything
+                            // value.addHearingEntry(payload, initCase).then(() => {
+                            props.addHearingEntry(payload, initCase).then(() => {
+                                    //clear everything
                                 setFileNum("")
                                 setCourtCase("")
                                 setRetCase(null)
@@ -166,6 +179,8 @@ function AddPeshiRow() {
                             }).catch((error) => {
                                 console.log(error)
                             })
+
+
                             // file["cases"][key]["file_n"] = file["id"]
                             // file["cases"][key]["case_n"] = key
                             // setentryDetails(file["cases"][key])
@@ -320,4 +335,14 @@ function AddPeshiRow() {
     )
 }
 
-export default AddPeshiRow
+// export default AddPeshiRow
+
+
+const mapStateToProps = (state) => ({
+    cases: state.cases,
+    hearings: state.hearing,
+    user: state.user.user
+});
+export default connect(mapStateToProps, {addHearingEntry, loadHearings})(
+    AddPeshiRow
+);

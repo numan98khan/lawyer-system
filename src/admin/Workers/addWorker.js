@@ -23,6 +23,9 @@ import Input from '@material-ui/core/Input';
 import { ProductConsumer } from '../../contexts/context';
 
 
+import { addWorker } from "../../actions/caseWorkersActions";
+import { connect } from 'react-redux';
+
 const countries = countryList().getData();
 countries.unshift({value:"",label:""});
 const useStyles = makeStyles((theme) => ({
@@ -55,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
     inputRef: PropTypes.func.isRequired,
   };
 
-function Addclient() {
+function Addclient(props) {
     const history = useHistory();
     const classes = useStyles();
     const [title, settitle] = useState('')
@@ -216,8 +219,10 @@ function Addclient() {
                         return(
                         <FormControl className={classes.formControl}>
                             <ButtonContainer  onClick={()=>{
-                                value.addWorker(payload).then(()=>{
-                                    history.push('/')
+                                // value.addWorker(payload).then(()=>{
+                                props.addWorker(payload).then(()=>{
+                                    // uncomment to take effect  
+                                  // history.push('/')
                                 })
                                 }}>Save worker</ButtonContainer>
                         </FormControl>
@@ -230,4 +235,12 @@ function Addclient() {
     )
 }
 
-export default Addclient
+// export default Addclient
+
+
+const mapStateToProps = (state) => ({
+});
+
+export default connect(mapStateToProps, { addWorker })(
+  Addclient
+);

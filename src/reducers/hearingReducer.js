@@ -40,7 +40,7 @@ export default function(state = initialState, action) {
     case ADD_HEARING:
       return {
         ...state,
-        hearings: action.payload
+        // hearings: action.payload
 
         // CLIENTS: CLIENTS.push(action.payload)
         // isLoading: true

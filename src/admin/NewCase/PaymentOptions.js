@@ -17,6 +17,10 @@ import ButtonContainer from '../../components/Button';
 import { ProductConsumer } from "../../contexts/context.js";
 import Title from "../../components/Title"
 
+
+import { addClientAndCase } from "../../actions/caseActions";
+import { connect } from 'react-redux';
+
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
@@ -62,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent:'center',
     }
   }));
-function PaymentOptions() {
+function PaymentOptions(props) {
    const [installmentcount, setinstallmentcount] = useState(0)
     const [FeeType,setFeeType] = useState('Fixed Fee')
     const classes = useStyles();
@@ -206,7 +210,7 @@ function PaymentOptions() {
                 {value => {
                     location.state.paymentOptions = payload;
                     return (<ButtonContainer onClick={()=>{
-                        value.addClientAndCase(location.state);
+                        props.addClientAndCase(location.state);
                         // console.log(payload)
                         // history.push('/')
                 }}>Save payment options</ButtonContainer>)
@@ -219,4 +223,14 @@ function PaymentOptions() {
     )
 }
 
-export default PaymentOptions
+// export default PaymentOptions
+
+
+const mapStateToProps = (state) => ({
+    // user: state.user,
+    // type: state.type
+});
+export default connect(mapStateToProps, { addClientAndCase })(
+    PaymentOptions
+);
+  
