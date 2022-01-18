@@ -43,7 +43,8 @@ export default function(state = initialState, action) {
     case ADD_CASE:
       return {
         ...state,
-        cases: action.payload
+        cases: action.payload.cases,
+        files: action.payload.files
 
         // cases: cases.push(action.payload)
         // isLoading: true

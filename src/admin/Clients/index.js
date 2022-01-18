@@ -31,7 +31,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Checkbox from '@material-ui/core/Checkbox';
 import Avatar from '@material-ui/core/Avatar';
-import {loadClients} from "../../actions/clientActions";
 // import {useHistory} from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 
@@ -70,7 +69,6 @@ class clientList extends Component {
 
   componentDidMount(){
     //get the clients into redux state
-    this.props.loadClients()
   }
   extractProduct(products, pid){
     var newArray = products.filter(function (el) {
@@ -232,7 +230,7 @@ const mapStateToProps = (state) => ({
   user: state.user,
   // type: state.type
 });
-export default connect(mapStateToProps, { loadClients })(
+export default connect(mapStateToProps, { })(
   clientList
 );
 

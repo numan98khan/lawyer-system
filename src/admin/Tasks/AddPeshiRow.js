@@ -39,7 +39,7 @@ function AddPeshiRow(props) {
             console.log('mount it!');
             getCaseData('0', '0');
 
-            console.log(props.hearings)
+            // console.log(props.hearings)
         });
     
       }, []);
@@ -53,7 +53,7 @@ function AddPeshiRow(props) {
             return;
         }
 
-        var cases = props.cases.files.find(x => x.id === fnum).cases;
+        var cases = props.cases.files[fnum].cases;
         var retCase = null;
         var peshiData = null;
 
@@ -143,9 +143,7 @@ function AddPeshiRow(props) {
     return (
         <TableRow>
             <TableCell align="center">
-            <ProductConsumer>
-            {value => {
-            return (<IconButton 
+            <IconButton 
                     edge="end" 
                     aria-label="delete" 
                     onClick={
@@ -188,8 +186,7 @@ function AddPeshiRow(props) {
                         }
                     }>
                     <AddCircleOutlineIcon />
-                </IconButton>)}}
-            </ProductConsumer>
+                </IconButton>
             </TableCell>
             
             <TableCell align="center">

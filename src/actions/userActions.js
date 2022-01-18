@@ -21,6 +21,7 @@ export const loadUser = () => (dispatch, getState) => {
     // var data_ = null;
     fire.getFire().auth().onAuthStateChanged(function(user) {        
           if (user) {
+            console.log(user)
             //get user from users table and set type property in user
             fire.getFire().database().ref('/')
               .child('users/'+user.uid)
@@ -28,7 +29,6 @@ export const loadUser = () => (dispatch, getState) => {
               // .equalTo(uid)
               .once("value", function(snapshot) {
                 const userData = snapshot.val()
-        
                 // Loading needs to wait for type to get filled
                 user.type = userData.type;
                 // console.log(userData.type);

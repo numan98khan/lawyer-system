@@ -7,9 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import { connect } from 'react-redux';
-import { loadCase } from "../../actions/caseActions";
 import TableRow from '@material-ui/core/TableRow';
-import {loadClients} from "../../actions/clientActions";
 import Paper from '@material-ui/core/Paper';
 import Title from "../../components/Title"
 import { Fragment } from "react";
@@ -29,6 +27,7 @@ import { useHistory } from "react-router-dom";
 import { ProductContext } from "../../contexts/context.js";
 import { LogIcon } from "../../../src/icons"
 import {loadHearings} from "../../actions/hearingActions"
+import {loadLogs} from "../../actions/logActions"
 
 
 import AddPeshiRow from "./AddPeshiRow";
@@ -84,8 +83,6 @@ function Tasks(props) {
 
     React.useEffect(() => {
       props.loadHearings()
-      props.loadCase();
-      props.loadClients();
     }, [])
 
     function updateHearing(cell, value, key, old_value, case_path){
@@ -93,16 +90,18 @@ function Tasks(props) {
     }
 
     function openLogSheet(case_path){
-      contextValue.setLogSheet(case_path)
-      history.push({
-          pathname:'/logsheet',
-          state: case_path
+      props.loadLogs(case_path).then(()=>{
+        history.push({
+            pathname:'/logsheet',
+            state: case_path
+        })
       })
     }
 
-    function getName(clientsList,file,key){
+    function getName(clientsList,file){
       for (var i = 0; i<clientsList.length; i++){
-        if (clientsList[i.toString()]["id"] === file["cases"][key].clientId){
+        if (clientsList[i]["id"] === file.client_id){
+          console.log(clientsList[i.toString()]["title"] + ' ' + clientsList[i.toString()]["firstName"])
           return clientsList[i.toString()]["title"] + ' ' + clientsList[i.toString()]["firstName"]
         }
       }
@@ -294,12 +293,12 @@ function Tasks(props) {
 
               <div className="search-results">
                 {
-                  props.cases.files
-                  .filter((file)=> 
+                  Object.keys(props.cases.files)
+                  .filter((file_key)=> 
                   {
                     if(file_n > -1){
 
-                      return file["id"]===file_n.toString()
+                      return file_key===file_n.toString()
                     }
                     else{
                       
@@ -307,12 +306,12 @@ function Tasks(props) {
                     }
                   }
                   )
-                  .map((file,idx)=>{
+                  .map((file_key,idx)=>{
                     return(
                       <Fragment key={idx}>
                         <List style={{minWidth:'1000px'}}>
                         {
-                          Object.keys(file["cases"])
+                          Object.keys(props.cases.files[file_key]["cases"])
                           .filter((key, index)=> 
                           {
                             if(case_n > -1){
@@ -333,7 +332,7 @@ function Tasks(props) {
                                 // file["cases"][key].caseTitle
                                 alignItems="flex-start">
                                 <ListItemText
-                                  primary={file["cases"][key].caseTitle}
+                                  primary={props.cases.files[file_key]["cases"][key].caseTitle}
                                   secondary={
                                     <React.Fragment>
                                        <Typography
@@ -342,7 +341,7 @@ function Tasks(props) {
                                         // className={classes.inline}
                                         color="textPrimary"
                                       >
-                                      {getName(props.client.clients,file,key)}
+                                      {getName(props.client.clients,props.cases.files[file_key])}
                                       </Typography>
                                       <Typography
                                         component="span"
@@ -350,7 +349,7 @@ function Tasks(props) {
                                         // className={classes.inline}
                                         color="textPrimary"
                                       >
-                                      {" — "} {file["id"]}
+                                      {" — "} {file_key}
                                       {" — "} {key}
                                       </Typography>
                                     </React.Fragment>
@@ -404,7 +403,7 @@ const mapStateToProps = (state) => ({
   cases: state.cases,
   client: state.client
 });
-export default connect(mapStateToProps, { loadHearings, loadCase, loadClients })(
+export default connect(mapStateToProps, { loadHearings, loadLogs })(
   Tasks
 );
 

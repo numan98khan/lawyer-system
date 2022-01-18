@@ -49,12 +49,13 @@ export const addHearingEntry = (details, initCase) => (
     fire.getFire().database()
     .ref("/hearings")
     .push(details).then((snapshot)=>{
-      // console.log("added entry to hearings", snapshot.key);
+      console.log("added entry to hearings", snapshot);
+      console.log(initCase)
       for (var key in remaining_keys) {
         if (remaining_keys.hasOwnProperty(key)) {
             if (remaining_keys[key] !== initCase[key]) {
               // console.log(key + " -> " + remaining_keys[key], initCase[key]);
-              updateHearingField(remaining_keys['file_n']+'/'+remaining_keys['case_n'], snapshot.key, key, remaining_keys[key], initCase[key]);
+              // updateHearingField(remaining_keys['file_n']+'/'+remaining_keys['case_n'], snapshot.key, key, remaining_keys[key], initCase[key]);
                     
             }
         }
@@ -64,6 +65,7 @@ export const addHearingEntry = (details, initCase) => (
 
     })
     .catch((err)=>{
+      console.log(err)
       dispatch({ type: ADD_HEARING_FAILED });
       
       reject(err)

@@ -54,7 +54,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 
 
-import { loadCase } from "../../actions/caseActions";
+// import { loadCase } from "../../actions/caseActions";
 
 import ItemDetails from './DisplayItem';
 
@@ -129,7 +129,6 @@ class casesList extends Component {
     
     // store.dispatch(loadCase());
 
-    this.props.loadCase();
   }
   componentDidUpdate(){
     // const filesList = this.context.filesList
@@ -320,7 +319,7 @@ const mapStateToProps = (state) => ({
   casesState: state.cases,
   userState: state.user
 });
-export default connect(mapStateToProps, { loadCase })(
+export default connect(mapStateToProps, { })(
   withRouter(casesList)
 );
 

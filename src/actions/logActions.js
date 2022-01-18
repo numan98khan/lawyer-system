@@ -17,10 +17,10 @@ import fire from  '../fire';
   export const loadLogs = (casePath) => (
     dispatch, getState
   ) => {
-
     dispatch({ type: LOGS_LOADING });
     
-    var peshis = []
+    return new Promise((res,rej)=>{
+      var peshis = []
     var fb=fire.getFire();
     fb.database().ref('/')
       .child('hearing_logs/' + casePath + '/')
@@ -53,9 +53,11 @@ import fire from  '../fire';
           type: LOGS_LOADED,
           payload: peshisList
         });
+        res()
 
     });
 
+    })
     
   };
 

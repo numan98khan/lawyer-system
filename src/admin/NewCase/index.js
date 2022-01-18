@@ -15,7 +15,6 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
 import CreateIcon from '@material-ui/icons/Create';
 
-import { loadClients } from "../../actions/clientActions";
 import { connect } from 'react-redux';
 import store from '../../store';
 
@@ -36,7 +35,6 @@ class NewCase extends Component {
     componentDidMount()
     {
       // console.log("App.js mounting")
-      store.dispatch(loadClients());
     }
 
     render() {
@@ -166,7 +164,7 @@ const mapStateToProps = (state) => ({
   // type: state.type
   clients:state.client.clients
 });
-export default connect(mapStateToProps, { loadClients })(
+export default connect(mapStateToProps, {  })(
   NewCase
 );
 
