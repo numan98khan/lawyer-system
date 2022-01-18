@@ -1234,13 +1234,15 @@ class ProductProvider extends Component {
           setTracker: this.setTracker,
 
           // case function exports
-          addClientAndCase :this.addClientAndCase, 
+          // addClientAndCase :this.addClientAndCase, 
 
           // this is a utility function 
-          addClientUser: this.addClientUser,
+          // addClientUser: this.addClientUser,
 
+          // update this in the task index.js
           updateHearing: this.updateHearing,
-          updateHearingField: this.updateHearingField
+          
+          // updateHearingField: this.updateHearingField
         }}
       >
         {this.props.children}

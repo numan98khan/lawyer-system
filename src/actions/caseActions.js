@@ -230,6 +230,8 @@ const addClientUser = (email) => {
       alert(errorMessage)
       // ...
     });
+
+  fb.delete();
 }
 
 // Register User

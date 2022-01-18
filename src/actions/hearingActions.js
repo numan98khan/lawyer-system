@@ -52,7 +52,7 @@ export const addHearingEntry = (details, initCase) => (
       console.log("added entry to hearings", snapshot);
       console.log(initCase)
       for (var key in remaining_keys) {
-        if (remaining_keys.hasOwnProperty(key)) {
+        if (initCase && initCase.hasOwnProperty(key)) {
             if (remaining_keys[key] !== initCase[key]) {
               // console.log(key + " -> " + remaining_keys[key], initCase[key]);
               // updateHearingField(remaining_keys['file_n']+'/'+remaining_keys['case_n'], snapshot.key, key, remaining_keys[key], initCase[key]);
@@ -78,15 +78,16 @@ export const addHearingEntry = (details, initCase) => (
   export const loadHearings = () => (
     dispatch, getState
   ) => {
-
+    var peshis = []
     dispatch({ type: HEARINGS_LOADING });
     return new Promise((resolve, reject)=> {
       var fb=fire.getFire();
-      var peshis = []
+      
 
       fb.database().ref('/')
         .child('hearings')
         .on("value", function(snapshot) {
+          peshis = []
           snapshot.forEach((doc) => {
             
             // // console.log(doc.toJSON())
@@ -106,6 +107,8 @@ export const addHearingEntry = (details, initCase) => (
           // console.log(new Date(peshis[0].next_proceedings_date))
           var peshisList = peshis.sort((a, b) => new Date(a.next_proceedings_date) - new Date(b.next_proceedings_date))
 
+          // console.log(peshisList)
+
           var counter = 0;
           var item;
           for (item of peshisList) {
@@ -120,7 +123,7 @@ export const addHearingEntry = (details, initCase) => (
             // reusable product var
             var nextProduct = next;
             // find similar orders, and join them
-            var exist = acc.find(v => v.case_id === next.case_id);
+            var exist = acc.find(v => v.case_n === next.case_n && v.file_n === next.file_n);
             if (exist) {
 
               // order exists, update its products
@@ -129,7 +132,8 @@ export const addHearingEntry = (details, initCase) => (
 
               // create new order
               acc.push({
-                case_id: next.case_id,
+                case_n: next.case_n,
+                file_n: next.file_n,
                 peshis: [nextProduct]
               })
             }
@@ -149,9 +153,11 @@ export const addHearingEntry = (details, initCase) => (
             console.log(index); 
             peshisList[index]['isLast'] = true;
             console.log(peshisList[index]); 
-            
           }
 
+          console.log('box');  
+          console.log(peshisList); 
+          
           dispatch({ 
             type: HEARINGS_LOADED,
             payload: peshisList

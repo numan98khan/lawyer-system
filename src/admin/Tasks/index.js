@@ -87,6 +87,7 @@ function Tasks(props) {
 
     function updateHearing(cell, value, key, old_value, case_path){
       contextValue.updateHearing(cell, value, key, old_value, case_path)
+
     }
 
     function openLogSheet(case_path){

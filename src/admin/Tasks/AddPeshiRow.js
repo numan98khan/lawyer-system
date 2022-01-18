@@ -37,7 +37,7 @@ function AddPeshiRow(props) {
     React.useEffect(() => {
         props.loadHearings().then(() => {
             console.log('mount it!');
-            getCaseData('0', '0');
+            // getCaseData('0', '0');
 
             // console.log(props.hearings)
         });
@@ -57,13 +57,19 @@ function AddPeshiRow(props) {
         var retCase = null;
         var peshiData = null;
 
-        
+
         // console.log(cases);
         console.log(props.hearings)
+        console.log(cases[cnum])
         // ::: contextValue.peshiList
         if (cases[cnum] !== undefined && props.hearings) {
             
-            peshiData = props.hearings.hearings.filter(x => x.case_id === cases[cnum].case_id)
+            console.log('fnum', fnum, cnum)
+            
+            peshiData = props.hearings.hearings.filter(x => x.case_no === cnum)
+
+            // console.log()    
+            console.log('what', peshiData)
 
             if(peshiData.length > 0){
                 setnewCase(false)
@@ -73,7 +79,7 @@ function AddPeshiRow(props) {
 
                 var trueDeep = _.cloneDeep(retCase);
 
-                // console.log('trueDeep', trueDeep)
+                console.log('trueDeep', trueDeep)
 
                 setInitCase(trueDeep);
             }
