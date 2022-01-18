@@ -8,7 +8,9 @@ import {
   DELETE_CASEWORKER
   // FILTER_CASE
 } from '../actions/types';
-import fire from  '../fire';
+import fire,{firebaseConfig} from  '../fire';
+import firebase from 'firebase';
+
 
 
 
@@ -64,8 +66,8 @@ import fire from  '../fire';
     const userid = state.user.user.uid; 
 
     
-      var fb= fire.getFire();
-      return  new Promise((res, rej)=>{
+    var fb = firebase.initializeApp(firebaseConfig, "Secondary");
+    return  new Promise((res, rej)=>{
 
         fb.auth().createUserWithEmailAndPassword(email, password).then(function() {
           // Update successful.
@@ -110,7 +112,7 @@ import fire from  '../fire';
                 })
 
               // */
-  
+              fb.auth().signOut();
           });
         });
       }).catch(function(error) {
@@ -120,6 +122,5 @@ import fire from  '../fire';
           alert(errorMessage)
         });
       })
-      
-
+      fb.delete()
   }

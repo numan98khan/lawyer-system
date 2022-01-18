@@ -26,7 +26,7 @@ import ButtonContainer from '../../components/Button';
 import { useHistory } from "react-router-dom";
 import { ProductContext } from "../../contexts/context.js";
 import { LogIcon } from "../../../src/icons"
-import {loadHearings} from "../../actions/hearingActions"
+import {loadHearings, updateHearing} from "../../actions/hearingActions"
 import {loadLogs} from "../../actions/logActions"
 
 
@@ -86,7 +86,7 @@ function Tasks(props) {
     }, [])
 
     function updateHearing(cell, value, key, old_value, case_path){
-      contextValue.updateHearing(cell, value, key, old_value, case_path)
+      props.updateHearing(cell, value, key, old_value, case_path)
 
     }
 
@@ -404,7 +404,7 @@ const mapStateToProps = (state) => ({
   cases: state.cases,
   client: state.client
 });
-export default connect(mapStateToProps, { loadHearings, loadLogs })(
+export default connect(mapStateToProps, { loadHearings, loadLogs, updateHearing})(
   Tasks
 );
 

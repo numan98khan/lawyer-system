@@ -55,7 +55,6 @@ function LogSheet(props) {
     React.useEffect(() => {
       props.loadLogs(location.state)
     }, [])
-    const contextValue = React.useContext(ProductContext);
     const useStyles = makeStyles({
       table: {
         minWidth: '900px',
@@ -70,22 +69,6 @@ function LogSheet(props) {
 
     React.useEffect(() => {
       setCasePath(location.state)
-        // contextValue.setLogSheet(casePath);
-
-        // var case_number='';
-        // var file_number='';
-        // [file_number, case_number] = searchterm.split('/')
-        // if(file_number !== '' && case_number !== undefined){
-  
-        //   setfile_n(parseInt(file_number,10));
-        //   setcase_n(parseInt(case_number,10));
-        // }
-        // if(searchterm==="haaaaah"){
-  
-        //   setfile_n(-1)
-        //   setcase_n(-1)
-        // }
-        // console.log(file_n,case_n);
       })
 
       const filterFunc = (row) =>{
@@ -197,14 +180,10 @@ function LogSheet(props) {
                     </TableHead>
                     <TableBody>
                         {/* show hearings data here */}
-                        <ProductConsumer>
-                        
-                        {value => {
-                        // return value.peshiList.filter((row) => {
-                        //     return (row.next_proceedings_date === filterDate.toLocaleDateString('en-US'))
-                        // })
-                        // console.log(value.logSheetList);
-                        return value.logSheetList.filter((row)=>filterFunc(row)).map((row) => (
+                        {
+                        props.log.hearingsLogs
+                        .filter((row)=>filterFunc(row))
+                        .map((row) => (
                             // return llist.map((row) => (
               
                             <TableRow>
@@ -223,9 +202,7 @@ function LogSheet(props) {
                             
                             </TableRow>
                       ))
-                      }}
-                      </ProductConsumer>
-
+                      }
                     </TableBody>
                   </Table>
                 </TableContainer>

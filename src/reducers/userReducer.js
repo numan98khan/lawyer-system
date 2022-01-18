@@ -6,7 +6,8 @@ import {
   LOGIN_FAIL,
   LOGOUT_SUCCESS,
   REGISTER_SUCCESS,
-  REGISTER_FAIL
+  REGISTER_FAIL,
+  TOGGLE_DRAWER
 } from '../actions/types';
 
 // import history from '../components/history';
@@ -14,7 +15,8 @@ import {
 const initialState = {
   isLoading: false,
   user: null,
-  privileges:[]
+  privileges:[],
+  isDrawerVisible: false
 };
 
 export default function(state = initialState, action) {
@@ -31,6 +33,11 @@ export default function(state = initialState, action) {
         isLoading: false,
         user: action.payload
       };
+    case TOGGLE_DRAWER:
+      return {
+        ...state,
+        isDrawerVisible: !state.isDrawerVisible
+      }
     case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
       //set user here

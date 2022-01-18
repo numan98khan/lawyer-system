@@ -7,6 +7,7 @@ export const LOGIN_FAIL = "LOGIN_FAIL";
 export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const REGISTER_FAIL = "REGISTER_FAIL";
+export const TOGGLE_DRAWER = "TOGGLE_DRAWER";
 
 // Case types
 export const CASES_LOADING = "CASES_LOADING";
@@ -32,6 +33,7 @@ export const LOGS_LOADED = 'LOGS_LOADED';
 export const LOGS_LOADING = 'LOGS_LOADING';
 export const ADD_LOG = 'ADD_LOG';
 export const DELETE_LOG = 'DELETE_LOG';
+export const UPDATE_HEARING = 'UPDATE_HEARING';
 
 //case worker
 export const CASEWORKERS_LOADED = 'CASEWORKERS_LOADED';

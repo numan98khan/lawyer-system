@@ -6,17 +6,20 @@ import {
   HEARINGS_LOADING,
   ADD_HEARING,
   DELETE_HEARING,
-  ADD_HEARING_FAILED
+  ADD_HEARING_FAILED,
+  UPDATE_HEARING
 } from './types';
 import fire from  '../fire';
+
 
 const updateHearingField = (case_path, key, cell, value, old_value) => (
   dispatch, getState
 ) => {
-  const state = getState();
-  const user_email = state.user.user.email;
-  // console.log(this.state)
-  fire.getFire().database()
+  return new Promise((resolve, reject)=>{
+
+    const state = getState();
+    const user_email = state.user.user.email;
+    fire.getFire().database()
     .ref("/hearing_logs/" + case_path + "/" + key + '/')
     .push(
       {
@@ -27,8 +30,35 @@ const updateHearingField = (case_path, key, cell, value, old_value) => (
         'new_value': value,
         'prev_value': old_value
       }
-    )
+    ).then(()=>{
+      dispatch({
+        type: UPDATE_HEARING
+      })
+      resolve()
+    })
+  })
+  
 }
+
+export const updateHearing = (cell, value, key, old_value, case_path) => (
+  dispatch, getState
+)=>
+{
+  var update = {}
+
+  update[cell] = value
+
+  // console.log(update, temp)
+  console.log("update!",cell, value, key, old_value)
+  fire.getFire().database()
+              .ref("/hearings/" + key + '/')
+              .update(update).then(
+                (snap)=> {
+                  dispatch(updateHearingField(case_path, key, cell, value, old_value))
+                }
+              )
+}
+
 
 //add hearing entry
 export const addHearingEntry = (details, initCase) => (
@@ -55,7 +85,7 @@ export const addHearingEntry = (details, initCase) => (
         if (initCase && initCase.hasOwnProperty(key)) {
             if (remaining_keys[key] !== initCase[key]) {
               // console.log(key + " -> " + remaining_keys[key], initCase[key]);
-              // updateHearingField(remaining_keys['file_n']+'/'+remaining_keys['case_n'], snapshot.key, key, remaining_keys[key], initCase[key]);
+              dispatch(updateHearingField(remaining_keys['file_n']+'/'+remaining_keys['case_n'], snapshot.key, key, remaining_keys[key], initCase[key]));
                     
             }
         }

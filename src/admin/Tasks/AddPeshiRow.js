@@ -47,7 +47,6 @@ function AddPeshiRow(props) {
     function getCaseData(fnum, cnum) {
         //check if case is new or hearing exists already
         //if hearing exists, get data from hearing
-
         //else get it from cases table ::: contextValue.filesList
         if (props.cases.files.length === 0){
             return;
@@ -66,8 +65,10 @@ function AddPeshiRow(props) {
             
             console.log('fnum', fnum, cnum)
             
-            peshiData = props.hearings.hearings.filter(x => x.case_no === cnum)
-
+            peshiData = props.hearings.hearings
+            .filter(x => x.case_n === cnum)
+            .filter(x => x.file_n === fnum)
+            
             // console.log()    
             console.log('what', peshiData)
 

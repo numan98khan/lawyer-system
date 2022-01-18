@@ -9,10 +9,16 @@ import {
   LOGIN_FAIL,
   LOGOUT_SUCCESS,
   REGISTER_SUCCESS,
-  REGISTER_FAIL
+  REGISTER_FAIL,
+  TOGGLE_DRAWER
 } from './types';
 import fire from  '../fire';
 
+export const toggleDrawer = () => (dispatch, getState) => {
+  dispatch({
+    type: TOGGLE_DRAWER
+  })
+}
 export const loadUser = () => (dispatch, getState) => {
     // User loading
     console.log("user loading");

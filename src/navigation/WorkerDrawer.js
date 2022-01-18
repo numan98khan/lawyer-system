@@ -11,6 +11,8 @@ import Drawer from '@material-ui/core/Drawer';
 // import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 // import Divider from '@material-ui/core/Divider';
+import {toggleDrawer} from "../actions/userActions";
+import { connect } from 'react-redux';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -84,7 +86,7 @@ class MainDrawer extends Component {
       <Fragment>
       <ProductConsumer>
       {value => {
-      return <Drawer open={value.isDrawerVisible} onClose={value.handleDrawerClose}>
+      return <Drawer open={this.props.user.isDrawerVisible} onClose={this.props.toggleDrawer}>
             <div style={{width:250}}>  
               <div style={{
                           display: 'flex',
@@ -98,11 +100,11 @@ class MainDrawer extends Component {
                 
                 
                 <Link to='/'>
-                <IconButton onClick={value.handleDrawerClose}>
+                <IconButton onClick={this.props.toggleDrawer}>
                   <HomeIcon style={{color:'#6600ff'}} />
                 </IconButton>
                 </Link>
-                <IconButton onClick={value.handleDrawerClose}>
+                <IconButton onClick={this.props.toggleDrawer}>
                   <ChevronLeftIcon />
                 </IconButton>
               </div>
@@ -232,4 +234,10 @@ class MainDrawer extends Component {
     );
   }
 }
-export default MainDrawer;
+const mapStateToProps = (state) => ({
+  user: state.user,
+  // type: state.type
+});
+export default connect(mapStateToProps, { toggleDrawer })(
+  MainDrawer
+);

@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
+import {toggleDrawer} from "../actions/userActions"
 import { connect } from 'react-redux';
 import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -207,11 +208,9 @@ function PrimarySearchAppBar(props) {
             color="inherit"
             aria-label="open drawer"
           >
-            <ProductConsumer>
-              {value => {
-                  return <MenuIcon style={{color:'white'}} onClick={value.handleDrawerOpen} />;          
-              }}
-            </ProductConsumer>
+                  <MenuIcon style={{color:'white'}} onClick={()=>{
+                    props.toggleDrawer()
+                  }} />        
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
             Case Management
@@ -283,10 +282,10 @@ function PrimarySearchAppBar(props) {
 }
 
 const mapStateToProps = (state) => ({
-  // user: state.user,
+  user: state.user,
   // type: state.type
 });
-export default connect(mapStateToProps, { logout })(
+export default connect(mapStateToProps, { logout, toggleDrawer })(
   PrimarySearchAppBar
 );
 
