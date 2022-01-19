@@ -4,10 +4,8 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter as Router } from "react-router-dom";
-import { ProductProvider } from "./contexts/context.js";
 import { Provider } from 'react-redux';
 import store from './store';
-// import { MapProvider } from "./contexts/mapContext.js";
 
 
 // import { Provider } from "react-redux";
@@ -17,15 +15,11 @@ import store from './store';
 
 
 ReactDOM.render(
-  // <MapProvider>
-    <ProductProvider>
-      <Router>
+    <Router>
       <Provider store={store}>
         <App />
       </Provider>
       </Router>
-    </ProductProvider>
-    // </MapProvider>
   ,
   document.getElementById("root")
 );

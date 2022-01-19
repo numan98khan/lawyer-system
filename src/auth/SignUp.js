@@ -4,7 +4,6 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import fire from '../fire'
 import {Link} from "react-router-dom"
-import { ProductConsumer } from "../contexts/context.js";
 import {useState} from 'react'
 
 import FileUploader from "react-firebase-file-uploader";
@@ -79,6 +78,13 @@ constructor(props){
     };
 
 render() {
+  var isDisabled = true;
+              if (this.state.itemImage !== '' && this.state.password !== '' && this.state.email !== '' && this.state.displayName !== ''){
+                if (this.state.password === this.state.passRep) {
+                  isDisabled = false;
+                }
+              } 
+
     return (
       <div style={{display:'flex', justifyContent:'center', alignItems:'center', paddingTop:230}}>
         <MuiThemeProvider>
@@ -166,26 +172,6 @@ render() {
                />
 
             <br></br>
-            <ProductConsumer>
-            {value => {
-              var isDisabled = true;
-              if (this.state.itemImage !== '' && this.state.password !== '' && this.state.email !== '' && this.state.displayName !== ''){
-                if (this.state.password === this.state.passRep) {
-                  isDisabled = false;
-                }
-              } 
-
-              // console.log(isDisabled)
-              // console.log('bih ', this.state.email, this.state.displayName, this.state.password)
-              return (<div><div><Button disabled={isDisabled} variant="contained" color="primary" onClick={()=>{value.signUp(this.state.email,this.state.displayName,this.state.password, this.state.itemImage)}}>
-              Sign Up
-             </Button></div>
-             <div style={{paddingTop:"15px"}}><Link to="/"><Button variant="contained" color="primary">
-             Sign In
-            </Button></Link></div></div>
-             )
-            }}
-          </ProductConsumer>
          </div>
          </MuiThemeProvider>
       </div>

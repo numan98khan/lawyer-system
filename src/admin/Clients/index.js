@@ -1,8 +1,6 @@
 import React, { Component, Fragment } from "react";
 // import Product from "./Product";
 import Title from "../../components/Title";
-import { ProductConsumer } from "../../contexts/context.js";
-import { ProductContext } from "../../contexts/context.js";
 import { connect } from 'react-redux';
 import clsx from 'clsx';
 // import { makeStyles } from '@material-ui/core/styles';
@@ -65,7 +63,7 @@ class clientList extends Component {
     open: false,
     ids:[]
   }
-  static contextType = ProductContext;
+  // static contextType = ProductContext;
 
   componentDidMount(){
     //get the clients into redux state
@@ -113,26 +111,19 @@ class clientList extends Component {
         <div className="py-5">
           <div className="container">
           <div style={{marginBottom:"5%"}}>
-          <ProductConsumer>
-              {value => {
-                return (<Title title={this.props.user.user.type === 'worker'?"My Clients":"Our Clients"}/>);
-              }}
-            </ProductConsumer>
+          
+                <Title title={this.props.user.user.type === 'worker'?"My Clients":"Our Clients"}/>
           </div>
           <div style={{
               // backgroundColor:'blue',
             display:'flex',justifyContent:'space-between',width:'40%',alignItems:'center',paddingBottom:"2%"}}>
 
-            <ProductConsumer>
-              {value => {
-                return <TextField style={{width:"100%"}}
+                <TextField style={{width:"100%"}}
                 color='primary'
                 id="outlined-basic" 
                 label="Search Clients" 
                 variant="outlined"
-                onChange={(query)=> {this.setState({searchTerm:query.target.value.toLowerCase()})}} />;          
-              }}
-            </ProductConsumer>
+                onChange={(query)=> {this.setState({searchTerm:query.target.value.toLowerCase()})}} />
             </div>
             <div className="row">
 

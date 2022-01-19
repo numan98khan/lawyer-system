@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from "react";
 // import Product from "./Product";
 // import Title from "./Title";
-import { ProductConsumer } from "../contexts/context.js";
 import { withStyles } from '@material-ui/core/styles';
 import { Link, NavLink } from "react-router-dom";
 import clsx from 'clsx';
@@ -84,9 +83,7 @@ class MainDrawer extends Component {
   render() {
     return (
       <Fragment>
-      <ProductConsumer>
-      {value => {
-      return <Drawer open={this.props.user.isDrawerVisible} onClose={this.props.toggleDrawer}>
+      <Drawer open={this.props.user.isDrawerVisible} onClose={this.props.toggleDrawer}>
             <div style={{width:250}}>  
               <div style={{
                           display: 'flex',
@@ -287,9 +284,7 @@ class MainDrawer extends Component {
 
                 </List>
               </div>
-            </Drawer>}}
-
-        </ProductConsumer>
+            </Drawer>
       </Fragment>
     );
   }

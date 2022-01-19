@@ -1,12 +1,10 @@
 import React, { Component, Fragment } from "react";
 // import Product from "./Product";
 import Title from "../../components/Title";
-import { ProductConsumer } from "../../contexts/context.js";
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import { ProductContext } from "../../contexts/context.js";
 
 import { connect } from 'react-redux';
 
@@ -113,8 +111,6 @@ class casesList extends Component {
     displayName:'',
     type:''
   }
-  
-  static contextType = ProductContext;
 
   componentDidMount(){
     // const type = this.context.user.type
@@ -205,16 +201,6 @@ class casesList extends Component {
               // backgroundColor:'blue',
             display:'flex',justifyContent:'space-between',width:'70%',alignItems:'center',paddingBottom:"2%"}}>
 
-            {/* <ProductConsumer>
-              {value => {
-                return <TextField style={{}} 
-                color='primary'
-                id="outlined-basic" 
-                label="Search Cases" 
-                variant="outlined"
-                onChange={(query)=> {this.setState({searchTerm:query.target.value.toLowerCase()})}} />;          
-              }}
-            </ProductConsumer> */}
             
             <TextField style={{}} 
                 color='primary'
@@ -239,16 +225,6 @@ class casesList extends Component {
                   }
                 </Select>
             </FormControl>
-            {/* <ProductConsumer>
-              {value => {
-
-                return <h5>{this.props.cases
-                  .filter((Case)=> this.handleFilter(Case))
-                  .length} case(s)</h5>
-              }
-
-              }
-            </ProductConsumer> */}
             <h5>{this.props.casesState.cases
                   .filter((Case)=> this.handleFilter(Case))
                   .length} case(s)</h5>

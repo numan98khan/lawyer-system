@@ -4,8 +4,6 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import GoogleMapReact from 'google-map-react';
 
-// import { MapConsumer } from "../../contexts/mapContext.js";
-// import { ProductConsumer } from "../../contexts/context";
 
 import Marker from './Marker';
 

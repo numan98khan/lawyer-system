@@ -17,7 +17,6 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import {logout} from '../actions/userActions';
-import { ProductConsumer } from "../contexts/context.js";
 import {useHistory} from 'react-router-dom';
 import { NavLink, Link, Redirect } from "react-router-dom";
 
@@ -232,22 +231,18 @@ function PrimarySearchAppBar(props) {
           <div className={classes.sectionDesktop}>
             <IconButton aria-label="show 17 new notifications" color="inherit">
             {
-            <ProductConsumer>
-            {value => {
-              return <Link to='/notifications'
+              <Link to='/notifications'
                         style={{
                           marginBottom: '30%',
                           color:'#FFFFFF',
                           textDecoration: 'none',
                         }}
                         >
-                      <Badge badgeContent={value.offerCount+value.hireCount} 
+                      {/* <Badge badgeContent={value.offerCount+value.hireCount} 
                               color="secondary">
                         <NotificationsIcon />
-                      </Badge>
+                      </Badge> */}
                       </Link>
-            }}
-            </ProductConsumer>
           }
               
             </IconButton>

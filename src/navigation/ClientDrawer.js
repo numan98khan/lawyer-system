@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from "react";
 // import Product from "./Product";
 // import Title from "./Title";
-import { ProductConsumer } from "../contexts/context.js";
 import { withStyles } from '@material-ui/core/styles';
 import { Link, NavLink } from "react-router-dom";
 import clsx from 'clsx';
@@ -82,9 +81,7 @@ class MainDrawer extends Component {
   render() {
     return (
       <Fragment>
-      <ProductConsumer>
-      {value => {
-      return <Drawer open={this.props.user.isDrawerVisible} onClose={this.props.toggleDrawer}>
+      <Drawer open={this.props.user.isDrawerVisible} onClose={this.props.toggleDrawer}>
             <div style={{width:250}}>  
               <div style={{
                           display: 'flex',
@@ -103,7 +100,8 @@ class MainDrawer extends Component {
                   // ...theme.mixins.toolbar,
                   justifyContent: 'flex-end',
                 }}>
-                  <p style={{fontSize:12, 
+                  
+                  {/* <p style={{fontSize:12, 
                     marginTop:'16%', 
                     marginRight:'10%',
                     color: value.isSeller ? 'grey':'#6600ff'}}>BUYER</p>
@@ -111,7 +109,7 @@ class MainDrawer extends Component {
                   <p style={{fontSize:12, 
                     marginTop:'16%', 
                     marginLeft:'10%',
-                    color: value.isSeller ? '#6600ff':'grey'}}>SELLER</p>
+                    color: value.isSeller ? '#6600ff':'grey'}}>SELLER</p> */}
                   
                 </div>
                 <Link to='/'>
@@ -232,9 +230,7 @@ class MainDrawer extends Component {
 
                 </List>
               </div>
-            </Drawer>}}
-
-        </ProductConsumer>
+            </Drawer>
       </Fragment>
     );
   }

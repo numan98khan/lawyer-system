@@ -14,7 +14,6 @@ import DateFnsUtils from '@date-io/date-fns';
 import countryList from 'react-select-country-list';
 import moment from 'moment';
 import ButtonContainer from '../../components/Button';
-import { ProductConsumer } from "../../contexts/context.js";
 import Title from "../../components/Title"
 
 
@@ -90,6 +89,9 @@ function PaymentOptions(props) {
     const handleAdd = () => {
 
     }
+
+    location.state.paymentOptions = payload;
+                    
     return (
         <div className="App-screen">
             <div style={{marginBottom:"5%"}}>
@@ -206,18 +208,12 @@ function PaymentOptions(props) {
            </div>
             <br></br>
             <FormControl className={classes.formControl}>
-            <ProductConsumer>
-                {value => {
-                    location.state.paymentOptions = payload;
-                    return (<ButtonContainer onClick={()=>{
+                    <ButtonContainer onClick={()=>{
                         props.addClientAndCase(location.state);
                         // console.log(payload)
                         // history.push('/')
-                }}>Save payment options</ButtonContainer>)
-            
-                }}  
-            </ProductConsumer>
-          
+                }}>Save payment options</ButtonContainer>
+
             </FormControl>
         </div>
     )

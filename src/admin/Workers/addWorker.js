@@ -20,7 +20,6 @@ import {
 import PropTypes from 'prop-types';
 import MaskedInput from 'react-text-mask';
 import Input from '@material-ui/core/Input';
-import { ProductConsumer } from '../../contexts/context';
 
 
 import { addWorker } from "../../actions/caseWorkersActions";
@@ -213,24 +212,16 @@ function Addclient(props) {
             <FormControl className={classes.formControl}>
                 <TextField type="password" onChange={(e)=>{setpassword(e.target.value)}} label="password"></TextField>
             </FormControl>
-            <ProductConsumer>
-                {
-                    value=>{
-                        return(
-                        <FormControl className={classes.formControl}>
-                            <ButtonContainer  onClick={()=>{
-                                // value.addWorker(payload).then(()=>{
-                                props.addWorker(payload).then(()=>{
-                                    // uncomment to take effect  
-                                  // history.push('/')
-                                })
-                                }}>Save worker</ButtonContainer>
-                        </FormControl>
-                        )
-                    }
-                }
-            </ProductConsumer>
-
+            <FormControl className={classes.formControl}>
+                <ButtonContainer  onClick={()=>{
+                    // value.addWorker(payload).then(()=>{
+                    props.addWorker(payload).then(()=>{
+                        // uncomment to take effect  
+                      history.push('/')
+                    })
+                    }}>Save worker</ButtonContainer>
+            </FormControl>
+            
         </div>
     )
 }

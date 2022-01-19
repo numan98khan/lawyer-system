@@ -1,5 +1,4 @@
 import React, { Component, useState, Fragment } from "react";
-import { ProductConsumer } from "../../contexts/context.js";
 import Button from "../../components/Button";
 import {Link} from 'react-router-dom'
 import ListItemText from '@material-ui/core/ListItemText';
@@ -49,17 +48,13 @@ class NewCase extends Component {
               <Title title="Make new Case"/>
           </div>
             <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',width:'40%',paddingBottom:"2%"}}>
-            <ProductConsumer>
-              {value => {
-                  return <TextField style={{width:"83%"}} 
+              <TextField style={{width:"83%"}} 
                         color='primary'
                         id="outlined-basic" 
                         label="Search Clients" 
                         variant="outlined"
-                        onChange={(query)=> {this.setState({searchTerm:query.target.value.toLowerCase()})}} />;          
-              }}
-            </ProductConsumer>
-            
+                        onChange={(query)=> {this.setState({searchTerm:query.target.value.toLowerCase()})}} />
+              
             <Link to="/addclient">
             <ButtonContainer style={{height:'55px', width:'55px', borderRadius:'3px'}}>
             <AddCircleOutlineIcon color="purple" fontSize="large"></AddCircleOutlineIcon>
@@ -71,9 +66,7 @@ class NewCase extends Component {
               
             
 
-            <ProductConsumer>
-            {value => {
-              return <List style={{width:'100%'}}>
+              <List style={{width:'100%'}}>
               {/* <ItemDetails review={value.reviewDetail} />   */}
                   
               {this.props.clients.filter((client) => {
@@ -143,8 +136,6 @@ class NewCase extends Component {
                 
             
               </List>
-            }}
-            </ProductConsumer>
 
             
 

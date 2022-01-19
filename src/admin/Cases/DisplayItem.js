@@ -1,5 +1,4 @@
 import React, { Component, useContext } from "react";
-import { ProductConsumer, ProductContext } from "../../contexts/context.js";
 import { Link } from "react-router-dom";
 
 // import { ButtonContainer } from "../../Button";
@@ -20,12 +19,10 @@ import Rating from '@material-ui/lab/Rating';
 
 class Details extends Component {
 
-  static contextType = ProductContext
+  // static contextType = ProductContext
 
   constructor(props){
     super(props)
-    // const contextValue = useContext(ProductConsumer);
-    
   
     // // console.log("skeet ", this.props)
   }
@@ -35,31 +32,6 @@ class Details extends Component {
     isFetched: false
   }
 
-  getReviews(reviews, id, userData){
-    
-    // console.log("skeet ", id, this.state.isFetched)
-    // if (this.state.isFetched === false){
-      // console.log('ok we are here')
-      var newArray = reviews.filter(function (el) {
-        return el.productId === id 
-      });
-      
-      var i;
-      for (i = 0; i < newArray.length; ++i){
-        // console.log('userData', userData)
-        newArray[i]['username'] = userData.filter(function (el) {
-          return el.id === newArray[i].buyerId 
-        })[0].FirstName
-        // console.log('username', newArray[i]['username'])
-      }
-
-      // console.log(reviews)
-
-      this.setState({reviews: newArray})
-      this.setState({isFetched: true})
-      // console.log("dsgwif",this.state.reviews)
-    // }
-  }
 
   componentDidMount(){
     // // console.log(this.context)
@@ -68,25 +40,11 @@ class Details extends Component {
 
   render() {
     // this.getReviews()
-    return (
-      <ProductConsumer>
-        {value => {
-        // // console.log(value.detailProduct)
-        //   const {
-        //     id,
-        //     company,
-        //     img,
-        //     info,
-        //     price,
-        //     title,
-        //     inCart
-        //   } = value.detailProduct;
-          
-        const detailsObj = this.props.location.state.caseDetails
+    const detailsObj = this.props.location.state.caseDetails
         
-        console.log(detailsObj)
+    console.log(detailsObj)
 
-        return (
+    return (
             <div className="container py-5">
               <div className="row">
                 <div className="col-10 mx-auto text-center text-slanted text-blue my-5">
@@ -173,9 +131,6 @@ class Details extends Component {
                 }
               
             </div>
-          );
-        }}
-      </ProductConsumer>
     );
   }
 }

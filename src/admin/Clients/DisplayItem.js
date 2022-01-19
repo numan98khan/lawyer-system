@@ -1,5 +1,4 @@
 import React, { Component, useContext } from "react";
-import { ProductConsumer, ProductContext } from "../../contexts/context.js";
 import { Link } from "react-router-dom";
 
 // import { ButtonContainer } from "../../Button";
@@ -20,11 +19,10 @@ import Rating from '@material-ui/lab/Rating';
 
 class Details extends Component {
 
-  static contextType = ProductContext
+  // static contextType = ProductContext
 
   constructor(props){
     super(props)
-    // const contextValue = useContext(ProductConsumer);
     
   
     // // console.log("skeet ", this.props)
@@ -68,25 +66,12 @@ class Details extends Component {
 
   render() {
     // this.getReviews()
-    return (
-      <ProductConsumer>
-        {value => {
-        // // console.log(value.detailProduct)
-        //   const {
-        //     id,
-        //     company,
-        //     img,
-        //     info,
-        //     price,
-        //     title,
-        //     inCart
-        //   } = value.detailProduct;
-          
-        const detailsObj = this.props.location.state.clientDetails
+    
+    const detailsObj = this.props.location.state.clientDetails
         
-        console.log(detailsObj)
+    console.log(detailsObj)
 
-        return (
+    return (
             <div className="container py-5">
               <div className="row">
                 <div className="col-10 mx-auto text-center text-slanted text-blue my-5">
@@ -173,9 +158,6 @@ class Details extends Component {
                 }
               
             </div>
-          );
-        }}
-      </ProductConsumer>
     );
   }
 }

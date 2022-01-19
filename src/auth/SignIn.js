@@ -6,7 +6,6 @@ import Button from '@material-ui/core/Button';
 import fire from '../fire'
 import {login} from "../actions/userActions";
 import { connect } from 'react-redux';
-import { ProductConsumer } from "../contexts/context.js";
 import {useState} from 'react'
 
 class SignIn extends React.Component {

@@ -1,7 +1,5 @@
 import React,{Fragment} from "react"
-// import { MapConsumer } from "../../contexts/mapContext.js";
 import Title from "../../components/Title";
-import { ProductConsumer } from "../../contexts/context.js";
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ButtonContainer from '../../components/Button';
 import clsx from 'clsx';
@@ -77,10 +75,7 @@ function Workers(props) {
           <div style={{
               // backgroundColor:'blue',
             display:'flex',justifyContent:'space-between',width:'40%',alignItems:'center',paddingBottom:"2%"}}>
-
-            <ProductConsumer>
-              {value => {
-                return <div style={{width:"83%"}}>
+            <div style={{width:"83%"}}>
                     <TextField
                 className="w-100"
                 color='primary'
@@ -88,9 +83,7 @@ function Workers(props) {
                 label="Search workers" 
                 variant="outlined"
                 onChange={(query)=> {setsearchTerm(query.target.value.toLowerCase())}} />
-                    </div>;          
-              }}
-            </ProductConsumer>
+                    </div>
             <div>
 
             <ButtonContainer style={{height:'55px', width:'55px', borderRadius:'3px'}} onClick={()=>{

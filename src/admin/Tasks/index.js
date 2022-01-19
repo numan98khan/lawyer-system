@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { ProductConsumer } from "../../contexts/context.js";
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -24,7 +23,6 @@ import Field from '../../components/Field';
 import DateFnsUtils from '@date-io/date-fns';
 import ButtonContainer from '../../components/Button';
 import { useHistory } from "react-router-dom";
-import { ProductContext } from "../../contexts/context.js";
 import { LogIcon } from "../../../src/icons"
 import {loadHearings, updateHearing} from "../../actions/hearingActions"
 import {loadLogs} from "../../actions/logActions"
@@ -54,8 +52,7 @@ function Tasks(props) {
 
   // const [openEntry, setopenEntry] = React.useState(false)
   // const [entryDetails, setentryDetails] = React.useState([])
-  const contextValue = React.useContext(ProductContext);
-
+  
   const history = useHistory();
 
     const useStyles = makeStyles({
