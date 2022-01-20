@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Component } from 'react';
 // AIzaSyDVtDW0vjeyc6t1NR5QYU4mkGKMeO-cxI8
 
 import styled from 'styled-components';
 // import GoogleMapReact from 'google-map-react';
 
 
-import { GoogleMap, Marker } from "react-google-maps"
+// import { GoogleMap, Marker } from "react-google-maps"
+import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 
 
 // import Marker from './Marker';
@@ -22,96 +23,50 @@ const Wrapper = styled.main`
 `;
 
 
-function Tracker(props) {
-    
-    // {
-    //     top:0,
-    //     flexGrow: 1,
-    //     backgroundColor: '#6600ff',
-    //     color: '#6600ff'
-    //   }
-    // 33.6844, 73.0479
+class Tracker extends Component {
 
-    // const [places, setPlaces] = useState([{currLocation: {lat:'33.6844', long:'73.0479'}}])
-    const [places, setPlaces] = useState([])
-
-    const fetchPlaces = async () => {
-      fetch('places.json')
-      .then((response) => response.json())
-      .then((data) => setPlaces(data.results))
-    }
-  
-    useEffect(() => {
-      // fetchPlaces();
-
-      // setPlaces(props.caseWorkers)
-      
-
-      // console.log(props.caseWorkers)
-
-      // console.log(places)
-
-      props.caseWorkers.map((place) => {
-        setPlaces(places => [...places, place]);
-
-      })
-
-
-    }, [])
-  
-    if (!places || places.length === 0) {
-      return null;
-    }
-
-    
+  state={
+    places:[]
+  }
+  componentDidMount(){
+    const places = []
+    this.props.caseWorkers.map((worker) => {
+      places.push(worker.currLocation)
+    })
+    this.setState({
+      places: places
+    },()=>console.log(this.state.places))
+  }
+  render() {
     return (
-        <div style={{height:'100vh', width:'100vw',  display:'flex'}}>
-
-        <div 
-        style={{ minheight: '100%', width: '100%'}}
-        // style={{ flexGrow: 1 }}
-        >
-
-      <Wrapper>
-            <GoogleMap
-                defaultZoom={10}
-                defaultCenter={[33.6844, 73.0479]}
-            >
-                {places.length > 0 && places.map((place, index) => (
-                  // console.log(place['currLocation']['lat'])
-                  <Marker
-                    // key={index}
-                    // text={'place.name'}
-                    // lat={place['currLocation']['lat']}
-                    // lng={place['currLocation']['long']}
-
-                    position={{ 
-                              lat: place['currLocation']['lat'], 
-                              lng: place['currLocation']['long'] 
-                            }}
-
-                    // lat={'33.6844'}
-                    // lng={'73.0479'}
-
-                />
-                ))}
-            </GoogleMap>
-            </Wrapper>
-        
-         </div>
-        </div>
-        )
+      <Map google={this.props.google} zoom={14}>
+        {
+          this.state.places.length > 0 &&
+          this.state.places.map((place)=>{
+            return(
+              <Marker onClick={this.onMarkerClick}
+                      name={'Current location'}
+                      position={{lat: place.lat, lng: place.long}} 
+                      />
+            )
+          })
+        }
+      </Map>
+    );
+  }
 }
-
-// export default Tracker
-
-
 const mapStateToProps = (state) => ({
   // user: state.user,
   // type: state.type
   caseWorkers: state.caseworker.caseWorkers
 });
 
-export default connect(mapStateToProps, { })(
+const TrackerContainer = connect(mapStateToProps, { })(
   Tracker
 );
+
+export default GoogleApiWrapper({
+  apiKey: ("AIzaSyDVtDW0vjeyc6t1NR5QYU4mkGKMeO-cxI8")
+})(TrackerContainer)
+
+
