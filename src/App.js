@@ -6,6 +6,7 @@ import store from './store';
 import { loadUser } from "./actions/userActions";
 import { loadClients } from "./actions/clientActions";
 import { loadCase } from "./actions/caseActions";
+import {loadCaseWorkers} from "./actions/caseWorkersActions"
 
 import { connect } from 'react-redux';
 import AuthNav from "./navigation/AuthNav"
@@ -38,6 +39,7 @@ class App extends Component {
     store.dispatch(loadUser());
     store.dispatch(loadClients());
     store.dispatch(loadCase());
+    store.dispatch(loadCaseWorkers());
     
   }
 
@@ -124,7 +126,8 @@ class App extends Component {
 
 const mapStateToProps = (state) => ({
   user: state.user,
-  type: state.type
+  type: state.type,
+  // caseWorkers
 });
 export default connect(mapStateToProps, { })(
   App

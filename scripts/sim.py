@@ -9,15 +9,18 @@ default_app = firebase_admin.initialize_app(cred_obj, {
 	})
 
 # As an admin, the app has access to read and write all data, regradless of Security Rules
-ref = db.reference('/workers')
+ref = db.reference('/CaseWorkers')
 
-print(list(DATA.keys()))
+# print(list(DATA.keys()))
 
 ref_dict = {}
 for i in list(DATA.keys()):
-    ref_dict[i] = ref.child(i)
+    ref_dict[i] = ref.child(i).child('currLocation')
+    print(ref_dict[i].__dir__())
 
-print(ref_dict)
+    print(ref_dict[i].path)
+
+# print(ref_dict.__dir__)
 
 # exit()
 
@@ -30,6 +33,8 @@ while counter < 20:
 
         # print(DATA[i][counter])
         try:
+
+
 
             ref_dict[i].set({
                 'lat': DATA[i][counter][0],

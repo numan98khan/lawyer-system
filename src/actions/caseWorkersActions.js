@@ -63,7 +63,7 @@ import firebase from 'firebase';
     var dobstring = dob.toLocaleDateString('en-US')
       
     const state = getState();
-    const userid = state.user.user.uid; 
+    // const userid = state.user.user.uid; 
 
     
     var fb = firebase.initializeApp(firebaseConfig, "Secondary");
@@ -71,6 +71,7 @@ import firebase from 'firebase';
 
         fb.auth().createUserWithEmailAndPassword(email, password).then(function() {
           // Update successful.
+
           fb.auth().onAuthStateChanged(user => {
             console.log('user image updated!!!')
             console.log("user: " + user);
@@ -82,7 +83,7 @@ import firebase from 'firebase';
               console.log("add worker code deployed")
               // Update successful. Add to workers table
               // /* 
-              fb.database().ref("CaseWorkers/"+userid).set(
+              fb.database().ref("CaseWorkers/"+user.uid).set(
                 {
                   displayName: username,
                   email: email,
@@ -97,7 +98,11 @@ import firebase from 'firebase';
                   address: address, 
                   dob: dobstring, 
                   title: title,
-                  type: 'worker'
+                  type: 'worker',
+                  currLocation: {
+                    lat:'',
+                    long:''
+                  }
                 }).then(function(){
                   fb.database().ref("users/"+user.uid).set(
                     {
@@ -112,15 +117,24 @@ import firebase from 'firebase';
                 })
 
               // */
-              fb.auth().signOut();
-          });
+       
+              fb.auth().signOut().then(() => {
+                fb.delete()
+        
+              });
+              // fb.delete()
+            });
         });
+  
       }).catch(function(error) {
         // Handle Errors here.
+          if (fb) {
+            fb.delete()
+          }
           var errorCode = error.code;
           var errorMessage = error.message;
           alert(errorMessage)
         });
+        
       })
-      fb.delete()
   }
