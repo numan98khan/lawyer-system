@@ -3,6 +3,8 @@ from firebase_admin import db
 
 from data import DATA
 
+import time
+
 cred_obj = firebase_admin.credentials.Certificate('fyp-19-35-firebase-adminsdk-3sibw-e108e73876.json')
 default_app = firebase_admin.initialize_app(cred_obj, {
 	'databaseURL': 'https://fyp-19-35.firebaseio.com/'
@@ -20,6 +22,8 @@ for i in list(DATA.keys()):
 
     print(ref_dict[i].path)
 
+    break
+
 # print(ref_dict.__dir__)
 
 # exit()
@@ -29,6 +33,8 @@ while counter < 20:
     print(counter)
     is_quit = True
 
+    time.sleep(2)
+
     for i in ref_dict:
 
         # print(DATA[i][counter])
@@ -37,8 +43,8 @@ while counter < 20:
 
 
             ref_dict[i].set({
-                'lat': DATA[i][counter][0],
-                'long': DATA[i][counter][1]
+                'lat': DATA[i][counter][1],
+                'long': DATA[i][counter][0]
             })
             is_quit = False
         

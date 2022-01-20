@@ -37,9 +37,38 @@ class Tracker extends Component {
       places: places
     },()=>console.log(this.state.places))
   }
+
+  componentDidUpdate(){
+    var isChanged = false;
+    this.props.caseWorkers.map((worker, index) => {
+      if (this.state.places[index] != worker.currLocation){
+        isChanged = true;
+        // break;
+      }
+      // places.push(worker.currLocation)
+    })
+
+    if (isChanged) {
+      const places = []
+      this.props.caseWorkers.map((worker) => {
+        places.push(worker.currLocation)
+      })
+      this.setState({
+        places: places
+      },()=>console.log(this.state.places))
+    
+    }
+  }
+
+
   render() {
     return (
-      <Map google={this.props.google} zoom={14}>
+      <Map google={this.props.google} 
+        initialCenter={{
+          lat: 33.68939,
+          lng: 73.02054
+        }}
+       zoom={12}>
         {
           this.state.places.length > 0 &&
           this.state.places.map((place)=>{
