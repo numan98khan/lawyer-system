@@ -25,7 +25,7 @@ import fire from "../fire";
 const useStyles = makeStyles((theme) => ({
   grow: {
     top:0,
-    flexGrow: 1,
+    flexGrow: 3,
     backgroundColor: '#6600ff',
     color: '#6600ff'
   },
@@ -198,7 +198,8 @@ function PrimarySearchAppBar(props) {
     {/*renderRedirect()*/}
       <AppBar
           style={{backgroundColor:'#6600ff', position:'fixed'}} 
-          position="static"
+          // position="static"
+          position="sticky"
           >
         <Toolbar>
           <IconButton
@@ -270,6 +271,7 @@ function PrimarySearchAppBar(props) {
           </div>
         </Toolbar>
       </AppBar>
+      <Toolbar />
       {renderMobileMenu}
       {renderMenu}
     </div>

@@ -111,18 +111,6 @@ class App extends Component {
   }
 }
 
-// <MainDrawer />
-// <BuyerNav />
-
-// <Switch>
-//           <Route exact path="/" component={ProductList} />
-//           <Route exact path="/products" component={ProductList} />
-//           <Route exact path="/categories" component={ProductList} />
-//           <Route exact path="/details" component={Details} />
-//           <Route exact path="/cart" component={Cart} />
-//           <Route component={Default} />
-//         </Switch>
-        
 
 const mapStateToProps = (state) => ({
   user: state.user,
