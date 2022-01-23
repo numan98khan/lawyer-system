@@ -6,6 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
+import { connect } from 'react-redux';
 import countryList from 'react-select-country-list';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import ButtonContainer from '../../components/Button';
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
       marginTop: theme.spacing(2),
     },
   }));
-function casedetails() {
+function casedetails(props) {
     const location = useLocation();
     const history = useHistory();
     const classes = useStyles();
@@ -198,25 +199,28 @@ function casedetails() {
                 <InputLabel>case supervisor</InputLabel>
                 <Select
                 value={caseSupervisor}
-                onChange={(e)=>{setCaseSupervisor(e.target.value)}}
+                onChange={(e)=>{
+                    setCaseSupervisor(e.target.value)}}
                 >
                 {
-                    optionsCaseSupervisor.map((options,index)=>{
+                    props.worker.caseWorkers.map((options,index)=>{
                             
-                        return <MenuItem key={index} value={options.value}>{options.name}</MenuItem>
-                })}
+                        return <MenuItem key={index} value={options.firstName + ' ' + options.lastName}>{options.firstName} {options.lastName}</MenuItem>
+                })
+                }
                 </Select>
             </FormControl>
             <FormControl className={classes.formControl}>
                 <InputLabel>case worker</InputLabel>
                 <Select
                 value={caseWorker}
-                onChange={(e)=>{setCaseWorker(e.target.value)}}
+                onChange={(e)=>{
+                    setCaseWorker(e.target.value)}}
                 >
                 {
-                    optionsCaseWorker.map((options,index)=>{
+                    props.worker.caseWorkers.map((options,index)=>{
                             
-                        return <MenuItem key={index} value={options.value}>{options.name}</MenuItem>
+                        return <MenuItem key={index} value={options.firstName + ' ' + options.lastName}>{options.firstName} {options.lastName}</MenuItem>
                 })
                 }
                 </Select>
@@ -308,7 +312,13 @@ function casedetails() {
     )
 }
 
-export default casedetails
+const mapStateToProps = (state) => ({
+    worker: state.caseworker
+
+  });
+  export default connect(mapStateToProps, {})(
+    casedetails
+  );
 
 //remarks
 //next proceeding date

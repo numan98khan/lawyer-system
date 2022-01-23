@@ -209,9 +209,11 @@ function PaymentOptions(props) {
             <br></br>
             <FormControl className={classes.formControl}>
                     <ButtonContainer onClick={()=>{
-                        props.addClientAndCase(location.state);
+                        props.addClientAndCase(location.state).then(()=>{
+                            alert("case added successfully")
+                            history.push('/')
+                        });
                         // console.log(payload)
-                        // history.push('/')
                 }}>Save payment options</ButtonContainer>
 
             </FormControl>

@@ -203,14 +203,15 @@ function PrimarySearchAppBar(props) {
           >
         <Toolbar>
           <IconButton
+          onClick={()=>{
+            props.toggleDrawer()
+          }}
             edge="start"
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
           >
-                  <MenuIcon style={{color:'white'}} onClick={()=>{
-                    props.toggleDrawer()
-                  }} />        
+                  <MenuIcon style={{color:'white'}} />        
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
             Case Management
@@ -239,10 +240,11 @@ function PrimarySearchAppBar(props) {
                           textDecoration: 'none',
                         }}
                         >
-                      {/* <Badge badgeContent={value.offerCount+value.hireCount} 
+                      <Badge 
+                      // badgeContent={} 
                               color="secondary">
                         <NotificationsIcon />
-                      </Badge> */}
+                      </Badge>
                       </Link>
           }
               

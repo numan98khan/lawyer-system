@@ -42,10 +42,10 @@ import {
 
 function LogSheet(props) {
     const [casePath, setCasePath] = React.useState('0/0');
-    const [filterDate, setdate] = React.useState(new Date())
-    const [keyvalue, setkeyvalue] = React.useState('')
+    const [filterDate, setdate] = React.useState()
+    const [keyvalue, setkeyvalue] = React.useState('ALL KEYS')
     const [quicksearch, setquicksearch] = React.useState('')
-    // const [timestampSearch, settimestampSearch] = React.useState(true)
+    const [timestampSearch, settimestampSearch] = React.useState(true)
     // const [keySearch, setkeySearch] = React.useState(true)
     // const [valueSearch, setvalueSearch] = React.useState(true)
     const location = useLocation()
@@ -70,35 +70,22 @@ function LogSheet(props) {
       })
 
       const filterFunc = (row) =>{
-        console.log(row, keyvalue)
-        // return true
-        if(filterDate===''){
-          return true
-        }
-        else if(quicksearch==='' && keyvalue===''){
-          let date = null
-          try {
-            date = filterDate.toLocaleDateString('en-US')
+        console.log(keyvalue)
+        if(filterDate instanceof Date){
+          if(keyvalue==='ALL KEYS'){
+            return row.date === filterDate.toLocaleDateString('en-US') && (row.new_value.toLowerCase().includes(quicksearch.toLowerCase())|| row.prev_value.toLowerCase().includes(quicksearch.toLowerCase()))
           }
-          catch(e){
-            return true
-          }
-          return row.date === filterDate.toLocaleDateString('en-US')
+          return row.date === filterDate.toLocaleDateString('en-US') && row.key===getKeyByValue(caseValueMap, keyvalue) && (row.new_value.toLowerCase().includes(quicksearch.toLowerCase())|| row.prev_value.toLowerCase().includes(quicksearch.toLowerCase()))
         }
-
         else{
-          let date = null
-          try {
-            date = filterDate.toLocaleDateString('en-US')
+          if(keyvalue==='ALL KEYS'){
+            return (row.new_value.toLowerCase().includes(quicksearch.toLowerCase())|| row.prev_value.toLowerCase().includes(quicksearch.toLowerCase()))
           }
-          catch(e){
-            return true
-          }
-          if(keyvalue === ''){
-            return (row.new_value.includes(quicksearch)|| row.prev_value.includes(quicksearch))
-          }
-          return (row.date === date && row.key===getKeyByValue(caseValueMap, keyvalue) && (row.new_value.includes(quicksearch)|| row.prev_value.includes(quicksearch)))
+          return row.key===getKeyByValue(caseValueMap, keyvalue) && (row.toLowerCase().new_value.includes(quicksearch.toLowerCase())|| row.prev_value.toLowerCase().includes(quicksearch.toLowerCase()))
         }
+          // return row.date === filterDate.toLocaleDateString('en-US')
+        // return (row.new_value.includes(quicksearch)|| row.prev_value.includes(quicksearch))
+        // return (row.date === date && row.key===getKeyByValue(caseValueMap, keyvalue) && (row.new_value.includes(quicksearch)|| row.prev_value.includes(quicksearch)))
       }
 
     return (
@@ -108,11 +95,11 @@ function LogSheet(props) {
                 <Title title={"LOG SHEET " + casePath}/>
               </div>
               <div className="bg-light d-flex justify-content-between" style={{height:'100px', padding:'30px'}}>
-              <div className="d-flex align-items-center justify-content-between">
+              <div className="d-flex align-items-center justify-content-between align-items-center">
                 <MuiPickersUtilsProvider 
                     utils={DateFnsUtils}>
                         <KeyboardDatePicker
-                        // disabled = {timestampSearch}
+                        disabled = {timestampSearch}
                         margin="normal"
                         id="date-picker-dialog"
                         // label="Date of birth"
@@ -124,7 +111,16 @@ function LogSheet(props) {
                         }}
                         />
                 </MuiPickersUtilsProvider>
-                {/* <input onChange={(e)=>{settimestampSearch(!e.target.checked)}} type="checkbox" style={{height:'30x', width:'30px', marginLeft:'10px'}}/> */}
+                <input onChange={(e)=>{
+                  settimestampSearch(!e.target.checked)
+                  if(!timestampSearch){
+                    setdate()
+                  }
+                  else{
+                    let date = new Date()
+                    setdate(date)
+                  }
+                  }} type="checkbox" style={{height:'50x', width:'50px', marginLeft:'10px', marginTop:'17px'}}/>
                 </div>
                 <div className="d-flex align-items-center justify-content-between">
                 <FormControl className={classes.formControl}>
@@ -136,7 +132,7 @@ function LogSheet(props) {
                 // disabled={keySearch}
                 onChange={(e)=>{setkeyvalue(e.target.value)}}
                 >
-                  <MenuItem className="text-primary" value={''}>ALL KEYS</MenuItem>
+                  <MenuItem className="text-primary" value={'ALL KEYS'}>ALL KEYS</MenuItem>
                   {
                     Object.keys(caseValueMap).map((key,indx)=>{
                       return(

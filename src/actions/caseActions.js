@@ -123,7 +123,8 @@ const addCaseAndPayments = (payload) =>{
 export const addClientAndCase = (payload) =>  (
   dispatch, getState
 ) => {
-  //convert dates to strings
+  return new Promise((res, rej)=>{
+    //convert dates to strings
   payload.clientDetails.dob = payload.clientDetails.dob.toLocaleString();
   for(var i=0; i< payload.paymentOptions.installmentDate.length; i++){
     payload.paymentOptions.installmentDate[i].date = payload.paymentOptions.installmentDate[i].date.toLocaleString();
@@ -143,21 +144,28 @@ export const addClientAndCase = (payload) =>  (
           type: ADD_CASE,
           payload: {files,cases}
         });
-      });
+        res()
+      })
+      .catch((err)=>rej(err));
     }
   });
   //return if id exists
   if (id)
     return;
   //add client, case and payments
-  uploadPayload(payload);
+  uploadPayload(payload).then(()=>{
+    res()
+  })
+  .catch((err)=>rej(err));
+  })
 }
 
 
 const uploadPayload = (payload) => {
   //add client and make new client user
 
-  var currentdate = new Date(); 
+  return new Promise((res, rej)=>{
+    var currentdate = new Date(); 
   var datetime = currentdate.getDate() + "/"
                   + (currentdate.getMonth()+1)  + "/" 
                   + currentdate.getFullYear() + " @ "  
@@ -185,6 +193,9 @@ const uploadPayload = (payload) => {
                 .ref("/files")
                 .child(snapshot.numChildren())
                 .set({cases:{0:payload.caseDetails}, client_id:client_key})
+            })
+            .catch((err)=>{
+              rej(err)
             });
 
           //add payment options
@@ -196,17 +207,24 @@ const uploadPayload = (payload) => {
             .then((snap)=> {
               // Update successful.
               //add new client account
-              addClientUser(payload.clientDetails.email);
+              addClientUser(payload.clientDetails.email).then(()=>{
+                res()
+              })
+              .catch((err)=>{
+                rej(err)
+              })
               
     
       });  
-  });  
+  })
+  .catch((err)=>rej(err));
+  })  
 }
 
 //add client user account
 const addClientUser = (email) => {
   var fb = firebase.initializeApp(firebaseConfig, "Secondary");
-
+  return new Promise((res,rej)=>{
     fb.auth().createUserWithEmailAndPassword(email, '123456').then(function(userobj) {
       const user = userobj.user
       fb.database().ref("users/"+user.uid).set(
@@ -217,9 +235,10 @@ const addClientUser = (email) => {
           image:'',
           type:'client'
         }).then(()=>{
-          fb.auth().signOut();
+          fb.auth().signOut().then(()=>{
+            res()
+          });
           //client added
-
 
         })
       
@@ -228,10 +247,13 @@ const addClientUser = (email) => {
       var errorCode = error.code;
       var errorMessage = error.message;
       alert(errorMessage)
+      rej(error)
       // ...
     });
 
   fb.delete();
+  })
+
 }
 
 // Register User

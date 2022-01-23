@@ -20,6 +20,16 @@
   text-align: center;
 }
 
+input[type='checkbox'] {
+  width:20px;
+  height:20px;
+  border-radius:5px;
+  border:2px solid #555;
+}
+input[type='checkbox']:checked {
+  background: rgb(24, 24, 29);
+}
+
 .App-screen {
   min-height: 100vh;
   display: flex;
