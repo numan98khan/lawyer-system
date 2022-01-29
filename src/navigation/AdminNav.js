@@ -19,7 +19,7 @@ import ClientDetails from "../admin/Clients/DisplayItem";
 import CaseDetails from "../admin/Cases/DisplayItem";
 import LogSheet from "../admin/LogSheet";
 
-import Tracker from "../admin/Tracker";
+// import Tracker from "../admin/Tracker";
 import Workers from "../admin/Workers";
 
 class AdminNav extends Component {
@@ -27,9 +27,7 @@ class AdminNav extends Component {
     return (
       <Fragment>
         <Switch>
-          
           <Route exact path="/" component={Home} />
-          
           <Route exact path="/newcase" component={NewCase} />
           <Route exact path="/calender" component={Calender} />
           <Route exact path="/tasks" component={Tasks} />
@@ -44,12 +42,11 @@ class AdminNav extends Component {
           <Route exact path="/clients" component={Clients} />
           <Route exact path="/cases" component={Cases} />
           <Route exact path="/logsheet" component={LogSheet} />
-          <Route exact path="/tracker" component={Tracker} />
+          {/* <Route exact path="/tracker" component={Tracker} /> */}
           <Route exact path="/workers" component={Workers} />
-          
+
           {/* <Route exact path="/products" component={ProductList} />
           <Route component={Default} /> */}
-
         </Switch>
       </Fragment>
     );

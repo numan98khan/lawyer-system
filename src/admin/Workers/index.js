@@ -1,169 +1,311 @@
-import React,{Fragment} from "react"
-import Title from "../../components/Title";
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import ButtonContainer from '../../components/Button';
-import clsx from 'clsx';
-import { connect } from 'react-redux';
-import {loadCaseWorkers} from "../../actions/caseWorkersActions";
-// import { makeStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-// import Button from '@material-ui/core/Button';
-// import List from '@material-ui/core/List';
-// // import Divider from '@material-ui/core/Divider';
-// import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-// import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
-import IconButton from '@material-ui/core/IconButton';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import React, { useState, useEffect, Component } from "react";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
+import TextField from "@material-ui/core/TextField";
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+import ButtonContainer from "../../components/Button";
+import { Link } from "react-router-dom";
+// AIzaSyDVtDW0vjeyc6t1NR5QYU4mkGKMeO-cxI8
 
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Button from '@material-ui/core/Button';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Dialog from '@material-ui/core/Dialog';
+import styled from "styled-components";
+// import GoogleMapReact from 'google-map-react';
 
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Checkbox from '@material-ui/core/Checkbox';
-import Avatar from '@material-ui/core/Avatar';
+// import { GoogleMap, Marker } from "react-google-maps"
+import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
 
-import {useHistory} from 'react-router-dom';
-import { withRouter } from 'react-router-dom';
+// import Marker from './Marker';
 
+// import { loadCase } from "./actions/caseActions";
 
-import TextField from '@material-ui/core/TextField';
+import { connect } from "react-redux";
 
-import Divider from '@material-ui/core/Divider';
-import Typography from '@material-ui/core/Typography';
+const AnyReactComponent = ({ text }) => <div>{text}</div>;
+const Wrapper = styled.main`
+  width: 100%;
+  height: 100%;
+`;
 
-import Rating from '@material-ui/lab/Rating';
+const containerStyle = {
+  position: "relative",
+  // width: '90vw',
+  height: "92.1vh",
+};
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+const sidebar = {
+  // backgroundColor:'green',
+  padding: "12px",
+  paddingRight: "0",
+  height: "92vh",
+  width: "400px",
+  overflow: "scroll",
+};
 
-import Paper from '@material-ui/core/Paper';
+const workerList = {
+  listStyleType: "none",
+  paddingLeft: "0px",
+  lineHeight: "3",
+};
 
+const parentContainer = {
+  display: "flex",
+  flexDirection: "row",
+  height: "100%",
+  width: "100%",
+};
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-    maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
-  },
-}));
+const sidebarContainer = {
+  height: "100%",
+  width: "100%",
+  // backgroundColor:'magenta'
+};
 
+class Tracker extends Component {
+  state = {
+    searchTerm: "",
+    places: [],
+    center: {
+      lat: "",
+      long: "",
+    },
+  };
 
-function Workers(props) {
-  const history = useHistory()
-  const [searchTerm, setsearchTerm] = React.useState('')
+  componentDidMount() {
+    const places = [];
+    this.props.caseWorkers.map((worker) => {
+      const place = worker.currLocation;
+      place["scaleX"] = 50;
+      place["scaleY"] = 50;
+      place["id"] = worker.id;
+      places.push(place);
+    });
+    this.setState(
+      {
+        places: places,
+        center: {
+          lat: 33.68939,
+          long: 73.02054,
+        },
+      },
+      () => console.log(this.state.places)
+    );
+  }
 
-  React.useEffect(() => {
-    props.loadCaseWorkers();
-  }, [])
+  componentDidUpdate() {
+    var isChanged = false;
+    this.props.caseWorkers.map((worker, index) => {
+      if (this.state.places[index] != worker.currLocation) {
+        isChanged = true;
+        // break;
+      }
+      // places.push(worker.currLocation)
+    });
+
+    if (isChanged) {
+      const places = [];
+      this.props.caseWorkers.map((worker) => {
+        const place = worker.currLocation;
+        place["scaleX"] = 50;
+        place["scaleY"] = 50;
+        place["id"] = worker.id;
+        places.push(worker.currLocation);
+      });
+      this.setState(
+        {
+          places: places,
+        },
+        () => console.log(this.state.places)
+      );
+    }
+  }
+
+  onMarkerClick = (lat, long) => {
+    this.setState({
+      center: { lat: lat, long: long },
+    });
+  };
+
+  render() {
     return (
-        <Fragment>
-      
-        <div className="py-5">
-          <div className="container">
-          <div style={{marginBottom:"5%"}}>
-              <Title title="Manage Workers"/>
-          </div>
-          <div style={{
-              // backgroundColor:'blue',
-            display:'flex',justifyContent:'space-between',width:'40%',alignItems:'center',paddingBottom:"2%"}}>
-            <div style={{width:"83%"}}>
-                    <TextField
-                className="w-100"
-                color='primary'
-                id="outlined-basic" 
-                label="Search workers" 
-                variant="outlined"
-                onChange={(query)=> {setsearchTerm(query.target.value.toLowerCase())}} />
+      <div style={parentContainer}>
+        <div style={sidebar}>
+          <div style={sidebarContainer}>
+            <div
+              style={{
+                // backgroundColor:'blue',
+                display: "flex",
+                justifyContent: "space-between",
+                width: "100%",
+                alignItems: "center",
+              }}
+            >
+              <div style={{ width: "78%" }}>
+                <TextField
+                  className="w-100"
+                  color="primary"
+                  id="outlined-basic"
+                  label="Search workers"
+                  variant="outlined"
+                  onChange={(query) => {
+                    this.setState({
+                      searchTerm: query.target.value.toLowerCase(),
+                    });
+                  }}
+                />
+              </div>
+              <div>
+                <Link to="/addWorker">
+                  <ButtonContainer
+                    style={{
+                      height: "55px",
+                      width: "55px",
+                      borderRadius: "3px",
+                    }}
+                  >
+                    <AddCircleOutlineIcon
+                      color="purple"
+                      fontSize="large"
+                    ></AddCircleOutlineIcon>
+                  </ButtonContainer>
+                </Link>
+              </div>
+            </div>
+            <ul style={workerList}>
+              {this.props.caseWorkers
+                .filter((worker) => {
+                  return (
+                    worker.firstName
+                      .toLowerCase()
+                      .indexOf(this.state.searchTerm) !== -1 ||
+                    worker.lastName
+                      .toLowerCase()
+                      .indexOf(this.state.searchTerm) !== -1 ||
+                    worker.displayName
+                      .toLowerCase()
+                      .indexOf(this.state.searchTerm) !== -1 ||
+                    worker.email
+                      .toLowerCase()
+                      .indexOf(this.state.searchTerm) !== -1 ||
+                    worker.cnic
+                      .toLowerCase()
+                      .replace("-", "")
+                      .indexOf(this.state.searchTerm) !== -1
+                  );
+                })
+                .map((worker) => {
+                  return (
+                    <div>
+                      <ListItem
+                        button
+                        onMouseEnter={() => {
+                          for (var i = 0; i < this.state.places.length; i++) {
+                            if (this.state.places[i].id === worker.id) {
+                              const newPlaces = this.state.places;
+                              newPlaces[i]["scaleX"] = 70;
+                              newPlaces[i]["scaleY"] = 70;
+                              this.setState({
+                                places: newPlaces,
+                              });
+                              break;
+                            }
+                          }
+                        }}
+                        onMouseLeave={() => {
+                          for (var i = 0; i < this.state.places.length; i++) {
+                            if (this.state.places[i].id === worker.id) {
+                              const newPlaces = this.state.places;
+                              newPlaces[i]["scaleX"] = 50;
+                              newPlaces[i]["scaleY"] = 50;
+                              this.setState({
+                                places: newPlaces,
+                              });
+                              break;
+                            }
+                          }
+                        }}
+                        onClick={() => {
+                          this.setState({
+                            center: {
+                              lat: worker.currLocation.lat,
+                              long: worker.currLocation.long,
+                            },
+                          });
+                        }}
+                        alignItems="flex-start"
+                      >
+                        <ListItemText
+                          primary={worker.displayName}
+                          secondary={
+                            <React.Fragment>
+                              <Typography
+                                component="span"
+                                variant="body2"
+                                // className={classes.inline}
+                                color="textPrimary"
+                              >
+                                {/* {"text1"} */}
+                              </Typography>
+                            </React.Fragment>
+                          }
+                        />
+                      </ListItem>
+                      <Divider />
                     </div>
-            <div>
-
-            <ButtonContainer style={{height:'55px', width:'55px', borderRadius:'3px'}} onClick={()=>{
-               history.push({pathname:'/addWorker',
-              //  state:{clientDetails:payload}
-              })
-                }}>
-            <AddCircleOutlineIcon color="purple" fontSize="large"></AddCircleOutlineIcon>
-            </ButtonContainer>
-            </div>
-            </div>
-            <List style={{width:'100%'}}>
-            {                  
-              props.worker.caseWorkers.filter((worker) => {
-                
-                return worker.firstName.toLowerCase().indexOf(searchTerm) !== -1
-                      || worker.lastName.toLowerCase().indexOf(searchTerm) !== -1
-                      || worker.displayName.toLowerCase().indexOf(searchTerm) !== -1
-                      || worker.email.toLowerCase().indexOf(searchTerm) !== -1
-                      || worker.cnic.toLowerCase().replace('-','').indexOf(searchTerm) !== -1
-                }).map((worker) => {
-                // const labelId = `checkbox-list-secondary-label-${productReview}`;
-                // const fetchedProduct = this.extractProduct(value.products, productReview.productId)
-                // console.log(productReview.review)
-                return (
-                  <div key = {worker.displayName}>
-                  <ListItem 
-                    button
-                    // onClick={() => console.log('go to details')} 
-                    onClick={()=>{}} 
-                    
-                    alignItems="flex-start">
-                    {
-
-                    // <ListItemAvatar>
-                    //   <Avatar alt="Remy Sharp" src='{fetchedProduct.img}' />
-                    // </ListItemAvatar>
-                    
-                    }
-                    <ListItemText
-                      primary={worker.title + ' ' + worker.lastName}
-                      secondary={
-                        <React.Fragment>
-                          <Typography
-                            component="span"
-                            variant="body2"
-                            // className={classes.inline}
-                            color="textPrimary"
-                          >
-                            {worker.displayName}
-                          </Typography>
-                          
-                          {" — "} {worker.email}
-                        </React.Fragment>
-                      }
-                    />
-                  </ListItem>
-                  <Divider 
-                  // variant="inset" 
-                  component="li" />
-                  </div>
-              );
-              })}
-
-              
-                
-            
-              </List>
-            
-
+                  );
+                })}
+            </ul>
           </div>
         </div>
-      </Fragment>
-    )
+        <Map
+          google={this.props.google}
+          containerStyle={containerStyle}
+          center={{
+            lat: this.state.center.lat,
+            lng: this.state.center.long,
+          }}
+          zoom={12}
+        >
+          {this.state.places.length > 0 &&
+            this.state.places.map((place) => {
+              return (
+                <Marker
+                  onClick={() => this.onMarkerClick(place.lat, place.long)}
+                  name={"Current location"}
+                  position={{ lat: place.lat, lng: place.long }}
+                  icon={{
+                    url: require("../../images/person.png"),
+                    scaledSize: new this.props.google.maps.Size(
+                      place.scaleX,
+                      place.scaleY
+                    ),
+                  }}
+                />
+              );
+            })}
+        </Map>
+      </div>
+      // <div style={parentContainer}>
+      //   <div style={leftContainer}>
+      //     <div className="display-4">Case Workers</div>
+      //   </div>
+      //   <div style={rightContainer}>
+
+      //   </div>
+
+      // </div>
+    );
+  }
 }
-
 const mapStateToProps = (state) => ({
-  worker: state.caseworker
+  // user: state.user,
+  // type: state.type
+  caseWorkers: state.caseworker.caseWorkers,
 });
-export default connect(mapStateToProps, { loadCaseWorkers })(
-  Workers
-);
 
+const TrackerContainer = connect(mapStateToProps, {})(Tracker);
+
+export default GoogleApiWrapper({
+  apiKey: "AIzaSyDVtDW0vjeyc6t1NR5QYU4mkGKMeO-cxI8",
+})(TrackerContainer);
