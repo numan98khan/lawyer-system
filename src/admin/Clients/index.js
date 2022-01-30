@@ -44,6 +44,7 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 
 import ItemDetails from "./DisplayItem";
+import { useScrollTrigger } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -95,17 +96,7 @@ class clientList extends Component {
     //   setOpen(!open);
     // };
     // const history = useHistory();
-
-    const userId =
-      this.props.user && this.props.user.user && this.props.user.user.uid;
-    const client = this.props.client.clients;
-
-    console.log(client, "this is");
-
-    const workerCases = client.filter((item) => {
-      return item.id === userId || item.id === userId;
-    });
-
+    const user = this.props.user.user;
     const MyBackDrop = (
       <Dialog
         onClose={this.handleClose}
@@ -156,20 +147,45 @@ class clientList extends Component {
               <List style={{ width: "100%" }}>
                 {/* <ItemDetails review={value.reviewDetail} />   */}
 
-                {workerCases
-                  // .filter((client)=>{
-                  //   // console.log(client.id.toString())
-                  //   // console.log(this.state.ids)
-                  //   // if(this.state.ids.includes(client.id)){
-                  //   //   console.log("here")
-                  //   // }
-
-                  //   return client.firstName.toLowerCase().indexOf(this.state.searchTerm) !== -1
-                  //         || client.lastName.toLowerCase().indexOf(this.state.searchTerm) !== -1
-                  //         || client.email.toLowerCase().indexOf(this.state.searchTerm) !== -1
-                  //         || client.cnic.toLowerCase().replace('-','').indexOf(this.state.searchTerm) !== -1
-
-                  // })
+                {this.props.client.clients
+                  .filter((client) => {
+                    if (user.type === "worker") {
+                      var isClientsWorker = false;
+                      this.props.case.cases.every((Case) => {
+                        if (
+                          Case.clientId === client.id &&
+                          (Case.caseSupervisor === user.uid ||
+                            Case.caseWorker === user.uid)
+                        ) {
+                          isClientsWorker = true;
+                          return false;
+                        }
+                        return true;
+                      });
+                      if (isClientsWorker) {
+                        return (
+                          client.firstName
+                            .toLowerCase()
+                            .indexOf(this.state.searchTerm) !== -1 ||
+                          client.lastName
+                            .toLowerCase()
+                            .indexOf(this.state.searchTerm) !== -1 ||
+                          client.email
+                            .toLowerCase()
+                            .indexOf(this.state.searchTerm) !== -1 ||
+                          client.cnic
+                            .toLowerCase()
+                            .replace("-", "")
+                            .indexOf(this.state.searchTerm) !== -1
+                        );
+                      }
+                      return false;
+                    } else if (user.type === "admin") {
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  })
                   .filter((client) => {
                     // console.log(el)
 
@@ -247,7 +263,7 @@ class clientList extends Component {
 const mapStateToProps = (state) => ({
   client: state.client,
   user: state.user,
-  // type: state.type
+  case: state.cases,
 });
 export default connect(mapStateToProps, {})(clientList);
 

@@ -56,6 +56,10 @@ import ItemDetails from "./DisplayItem";
 
 const filterValues = [
   {
+    name: "case title",
+    value: "caseTitle",
+  },
+  {
     name: "additional information",
     value: "AdditionalInformation",
   },
@@ -184,6 +188,9 @@ class casesList extends Component {
     const cases = this.props.casesState.cases;
     // Filter by Signed in Case worker or case supervisor
     const workerCases = cases.filter((item) => {
+      if (this.props.userState.user.type === "admin") {
+        return true;
+      }
       return (
         (item.caseSupervisor === userId || item.caseWorker === userId) &&
         item[this.state.searchFilter]

@@ -195,6 +195,7 @@ class Tracker extends Component {
                   );
                 })
                 .map((worker) => {
+                  console.log(worker);
                   return (
                     <div>
                       <ListItem

@@ -5,18 +5,16 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Tasks from "../admin/Tasks";
 import Clients from "../admin/Clients";
 import Cases from "../admin/Cases";
-
+import ClientDetails from "../admin/Clients/DisplayItem";
 import Home from "../worker/Home";
-
 
 class WorkerNav extends Component {
   render() {
     return (
       <Fragment>
         <Switch>
-          
           <Route exact path="/" component={Home} />
-          
+
           {/*
             peshi adding and editting
             viewing peshis
@@ -27,9 +25,8 @@ class WorkerNav extends Component {
           <Route exact path="/tasks" component={Tasks} />
           <Route exact path="/clients" component={Clients} />
           <Route exact path="/cases" component={Cases} />
-
-
-
+          <Route exact path="/clientdetails" component={ClientDetails} />
+          <Route exact path="/tasks" component={Tasks} />
         </Switch>
       </Fragment>
     );

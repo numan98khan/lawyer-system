@@ -63,7 +63,7 @@ class App extends Component {
         ) : null}
         {this.props.user.isLoading === true ? (
           <div className="d-flex loader"></div>
-        ) : this.props.user.user && this.props.user.isLoading === false ? (
+        ) : this.props.user.user ? (
           this.props.user.user.type === "admin" ? (
             <AdminNav />
           ) : this.props.user.user.type === "worker" ? (
