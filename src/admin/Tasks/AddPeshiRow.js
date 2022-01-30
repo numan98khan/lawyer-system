@@ -13,6 +13,7 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import EditableCell from "../../components/EditableNewCellComp";
+import EditableCellSelect from "../../components/EditableNewCellSelect";
 
 import { addHearingEntry, loadHearings } from "../../actions/hearingActions";
 import { connect } from "react-redux";
@@ -331,11 +332,12 @@ function AddPeshiRow(props) {
       {/* <TableCell align="center">{retCase == null ? '' : retCase.caseWorker}</TableCell> */}
       {/* <TableCell align="center">ccnum</TableCell> */}
       {retCase == null ? null : (
-        <EditableCell
+        <EditableCellSelect
           value={retCase == null ? "" : workers[retCase.caseWorker]}
+          options={workers}
           cell={"caseWorker"}
           changeCellValue={ChangeCellValue}
-        ></EditableCell>
+        ></EditableCellSelect>
       )}
       {/* <TableCell align="center">{retCase == null ? '' : retCase.caseClerk}</TableCell> */}
       {/* <TableCell align="center">ccnum</TableCell> */}

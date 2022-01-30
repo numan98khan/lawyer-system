@@ -1,7 +1,7 @@
 import React from "react";
 // import classes from './componentCSS/field.module.css';
 
-import Field from "../components/Field";
+import { Field } from "../components/Field";
 import TableCell from "@material-ui/core/TableCell";
 
 const RowCell = (props) => {
