@@ -21,8 +21,8 @@ import { connect } from "react-redux";
 import _ from "lodash";
 
 function AddPeshiRow(props) {
-  const [fileNum, setFileNum] = React.useState("0");
-  const [courtCase, setCourtCase] = React.useState("0");
+  const [fileNum, setFileNum] = React.useState("");
+  const [courtCase, setCourtCase] = React.useState("");
   const [retCase, setRetCase] = React.useState(null);
 
   const [initCase, setInitCase] = React.useState(null);
@@ -103,14 +103,13 @@ function AddPeshiRow(props) {
   }
 
   const handleChangeFileNum = (e) => {
-    console.log("huee");
     console.log(courtCase.length);
 
-    var tempVal = e.target.value.replace(/\D/, "");
+    var tempVal = e.target.value;
 
     setFileNum(tempVal);
 
-    console.log(fileNum.length);
+    console.log(tempVal);
 
     // getCaseData(0, 0)
 
@@ -134,9 +133,9 @@ function AddPeshiRow(props) {
   };
 
   function ChangeCellValue(cell, value) {
-    retCase[cell] = value;
-    console.log(cell, value);
-    setRetCase(retCase);
+    let tempCase = retCase;
+    tempCase[cell] = value;
+    setRetCase(tempCase);
   }
 
   return (
@@ -190,6 +189,8 @@ function AddPeshiRow(props) {
 
       <TableCell align="center">
         <input
+          className="text-center"
+          style={{ maxWidth: "40px" }}
           value={fileNum}
           onChange={handleChangeFileNum}
           onBlur={(e) => {}}
@@ -199,6 +200,8 @@ function AddPeshiRow(props) {
       </TableCell>
       <TableCell align="center">
         <input
+          className="text-center"
+          style={{ maxWidth: "40px" }}
           value={courtCase}
           onChange={handleChangeCourtCase}
           onBlur={(e) => {}}
@@ -323,17 +326,18 @@ function AddPeshiRow(props) {
       {/* <TableCell align="center">{retCase == null ? '' : retCase.caseSupervisor}</TableCell> */}
       {/* <TableCell align="center">ccnum</TableCell> */}
       {retCase == null ? null : (
-        <EditableCell
-          value={retCase == null ? "" : workers[retCase.caseSupervisor]}
+        <EditableCellSelect
+          value={retCase == null ? "" : retCase.caseSupervisor}
+          options={workers}
           cell={"caseSupervisor"}
           changeCellValue={ChangeCellValue}
-        ></EditableCell>
+        ></EditableCellSelect>
       )}
       {/* <TableCell align="center">{retCase == null ? '' : retCase.caseWorker}</TableCell> */}
       {/* <TableCell align="center">ccnum</TableCell> */}
       {retCase == null ? null : (
         <EditableCellSelect
-          value={retCase == null ? "" : workers[retCase.caseWorker]}
+          value={retCase == null ? "" : retCase.caseWorker}
           options={workers}
           cell={"caseWorker"}
           changeCellValue={ChangeCellValue}

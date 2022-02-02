@@ -6,16 +6,23 @@ import TableCell from "@material-ui/core/TableCell";
 
 const RowCell = (props) => {
   const [cellValue, setCellValue] = React.useState(props.value);
-  const cellOptions = props.options;
   const [cellValueInput, setCellValueInput] = React.useState(false);
   const [temp, settemp] = React.useState("");
+  const cellOptions = props.options;
 
   function updateChange() {
     setCellValueInput(false);
     if (cellValue.length < 1) {
       setCellValue(temp);
     } else if (temp !== cellValue) {
-      props.changeCellValue(props.cell, cellValue);
+      console.log("case path", props.file_n + "/" + props.case_n);
+      props.updateHearing(
+        props.cell,
+        cellValue,
+        props.hearing_key,
+        temp,
+        props.file_n + "/" + props.case_n
+      );
     }
   }
 

@@ -30,24 +30,22 @@ import { loadLogs } from "../../actions/logActions";
 import AddPeshiRow from "./AddPeshiRow";
 
 import EditableCellComp from "../../components/EditableCellComp";
+import EditableCellSelect from "../../components/EditableCellSelect";
 
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
+import { createTheme } from "@material-ui/core";
 
 function Tasks(props) {
   const [searchterm, setsearchterm] = React.useState("");
+  const [NoHearings, setNoHearings] = React.useState(true);
   const [timestampSearch, settimestampSearch] = React.useState(true);
   const [filterDate, setdate] = React.useState(new Date());
   const [file_n, setfile_n] = React.useState(-1);
   const [case_n, setcase_n] = React.useState(-1);
-  const [firstName, setFirstName] = React.useState("Moiz");
-  const [websiteName, setWebsiteName] = React.useState("Ciphertrick");
-  const [firstNameInput, setFirstNameInput] = React.useState(false);
-  const [websiteNameInput, setWebsiteNameInput] = React.useState(false);
-  const [temp, settemp] = React.useState("");
   const [workers, setworkers] = React.useState({});
 
   // const [openEntry, setopenEntry] = React.useState(false)
@@ -91,6 +89,17 @@ function Tasks(props) {
     props.loadHearings();
   }, []);
 
+  React.useEffect(() => {
+    let hearings =
+      props.hearings &&
+      props.hearings.hearings.filter((hearing) => filterHearing(hearing));
+    if (hearings.length > 0) {
+      setNoHearings(false);
+    } else {
+      setNoHearings(true);
+    }
+  });
+
   function updateHearing(cell, value, key, old_value, case_path) {
     props.updateHearing(cell, value, key, old_value, case_path);
   }
@@ -99,7 +108,7 @@ function Tasks(props) {
     props.loadLogs(case_path).then(() => {
       history.push({
         pathname: "/logsheet",
-        state: case_path,
+        state: { case_path: case_path, keys: workers },
       });
     });
   }
@@ -113,6 +122,29 @@ function Tasks(props) {
           clientsList[i.toString()]["firstName"]
         );
       }
+    }
+  }
+  function filterHearing(row) {
+    {
+      if (props.user.user.type === "worker") {
+        if (!timestampSearch) {
+          return (
+            row.caseSupervisor === props.user.user.uid ||
+            row.caseWorker === props.user.user.uid
+          );
+        }
+        return (
+          (row.caseSupervisor === props.user.user.uid ||
+            row.caseWorker === props.user.user.uid) &&
+          row.next_proceedings_date === filterDate.toLocaleDateString("en-US")
+        );
+      }
+      if (!timestampSearch) {
+        return true;
+      }
+      return (
+        row.next_proceedings_date === filterDate.toLocaleDateString("en-US")
+      );
     }
   }
 
@@ -359,265 +391,260 @@ function Tasks(props) {
               {/* show hearings data here
                       Error in code not showing
                     */}
-              {// console.log()
-              props.hearings &&
+              {!NoHearings &&
+                props.hearings &&
                 props.hearings.hearings
                   .slice(0)
                   .reverse()
-                  .filter((row) => {
-                    if (props.user.user.type === "worker") {
-                      if (!timestampSearch) {
-                        return (
-                          row.caseSupervisor === props.user.user.uid ||
-                          row.caseWorker === props.user.user.uid
-                        );
-                      }
-                      return (
-                        (row.caseSupervisor === props.user.user.uid ||
-                          row.caseWorker === props.user.user.uid) &&
-                        row.next_proceedings_date ===
-                          filterDate.toLocaleDateString("en-US")
-                      );
-                    }
-                    if (!timestampSearch) {
-                      return true;
-                    }
+                  .filter((row) => filterHearing(row))
+                  .map((row, idx) => {
                     return (
-                      row.next_proceedings_date ===
-                      filterDate.toLocaleDateString("en-US")
+                      <TableRow
+                        className={`${row.isLast ? "highlightedRow" : ""} `}
+                      >
+                        <TableCell align="center">{row.id}</TableCell>
+                        <TableCell align="center">{row.file_n}</TableCell>
+                        <TableCell align="center">{row.case_n}</TableCell>
+
+                        {/* <TableCell align="center">{row.court_case_n}</TableCell> */}
+
+                        {row.isLast ? (
+                          <EditableCellComp
+                            updateHearing={updateHearing}
+                            file_n={row.file_n}
+                            case_n={row.case_n}
+                            hearing_key={row.key}
+                            cell={"courtCaseNo"}
+                            value={row.courtCaseNo}
+                          >
+                            {" "}
+                          </EditableCellComp>
+                        ) : (
+                          <TableCell align="center">
+                            {row.courtCaseNo}
+                          </TableCell>
+                        )}
+
+                        {row.isLast ? (
+                          <EditableCellComp
+                            updateHearing={updateHearing}
+                            file_n={row.file_n}
+                            case_n={row.case_n}
+                            hearing_key={row.key}
+                            cell={"caseTitle"}
+                            value={row.caseTitle}
+                          >
+                            {" "}
+                          </EditableCellComp>
+                        ) : (
+                          <TableCell align="center">{row.caseTitle}</TableCell>
+                        )}
+
+                        {row.isLast ? (
+                          <EditableCellComp
+                            updateHearing={updateHearing}
+                            file_n={row.file_n}
+                            case_n={row.case_n}
+                            hearing_key={row.key}
+                            cell={"subCategory"}
+                            value={row.subCategory}
+                          >
+                            {" "}
+                          </EditableCellComp>
+                        ) : (
+                          <TableCell align="center">
+                            {row.subCategory}
+                          </TableCell>
+                        )}
+
+                        <TableCell align="center">{row.category}</TableCell>
+
+                        {/* <TableCell align="center">{row.court}</TableCell> */}
+                        {row.isLast ? (
+                          <EditableCellComp
+                            updateHearing={updateHearing}
+                            file_n={row.file_n}
+                            case_n={row.case_n}
+                            hearing_key={row.key}
+                            cell={"court"}
+                            value={row.court}
+                          >
+                            {" "}
+                          </EditableCellComp>
+                        ) : (
+                          <TableCell align="center">{row.court}</TableCell>
+                        )}
+
+                        {/* <TableCell align="center">{row.district}</TableCell> */}
+                        {row.isLast ? (
+                          <EditableCellComp
+                            updateHearing={updateHearing}
+                            file_n={row.file_n}
+                            case_n={row.case_n}
+                            hearing_key={row.key}
+                            cell={"district"}
+                            value={row.district}
+                          >
+                            {" "}
+                          </EditableCellComp>
+                        ) : (
+                          <TableCell align="center">{row.district}</TableCell>
+                        )}
+
+                        {/* <TableCell align="center">{row.judge}</TableCell> */}
+                        {row.isLast ? (
+                          <EditableCellComp
+                            updateHearing={updateHearing}
+                            file_n={row.file_n}
+                            case_n={row.case_n}
+                            hearing_key={row.key}
+                            cell={"judge"}
+                            value={row.judge}
+                          >
+                            {" "}
+                          </EditableCellComp>
+                        ) : (
+                          <TableCell align="center">{row.judge}</TableCell>
+                        )}
+
+                        <TableCell align="center">
+                          {row.previous_proceedings}
+                        </TableCell>
+                        {/* <EditableCellComp value={row.} > </EditableCellComp> */}
+
+                        <TableCell align="center">
+                          {row.previous_proceedings_date}
+                        </TableCell>
+                        <TableCell align="center">
+                          {row.next_proceedings_date}
+                        </TableCell>
+                        <TableCell align="center">
+                          {row.next_proceedings}
+                        </TableCell>
+
+                        {/* <TableCell align="center">{row.remarks}</TableCell> */}
+                        {row.isLast ? (
+                          <EditableCellComp
+                            updateHearing={updateHearing}
+                            file_n={row.file_n}
+                            case_n={row.case_n}
+                            hearing_key={row.key}
+                            cell={"remarks"}
+                            value={row.remarks}
+                          >
+                            {" "}
+                          </EditableCellComp>
+                        ) : (
+                          <TableCell align="center">{row.remarks}</TableCell>
+                        )}
+
+                        {/* <TableCell align="center">{row.caseSrc}</TableCell> */}
+
+                        {row.isLast ? (
+                          <EditableCellComp
+                            updateHearing={updateHearing}
+                            file_n={row.file_n}
+                            case_n={row.case_n}
+                            hearing_key={row.key}
+                            cell={"caseSrc"}
+                            value={row.caseSrc}
+                          >
+                            {" "}
+                          </EditableCellComp>
+                        ) : (
+                          <TableCell align="center">{row.caseSrc}</TableCell>
+                        )}
+
+                        {/* <TableCell align="center">{row.caseSupervisor}</TableCell> */}
+                        {row.isLast ? (
+                          <EditableCellSelect
+                            updateHearing={updateHearing}
+                            file_n={row.file_n}
+                            case_n={row.case_n}
+                            hearing_key={row.key}
+                            cell={"caseSupervisor"}
+                            options={workers}
+                            value={row.caseWorker}
+                          ></EditableCellSelect>
+                        ) : (
+                          <TableCell align="center">
+                            {workers[row.caseSupervisor]}
+                          </TableCell>
+                        )}
+
+                        {/* <TableCell align="center">{row.caseWorker}</TableCell> */}
+                        {row.isLast ? (
+                          <EditableCellSelect
+                            updateHearing={updateHearing}
+                            file_n={row.file_n}
+                            case_n={row.case_n}
+                            hearing_key={row.key}
+                            cell={"caseWorker"}
+                            options={workers}
+                            value={row.caseWorker}
+                          ></EditableCellSelect>
+                        ) : (
+                          <TableCell align="center">
+                            {workers[row.caseWorker]}
+                          </TableCell>
+                        )}
+
+                        {/* <TableCell align="center">{row.case_clerk}</TableCell> */}
+                        {row.isLast ? (
+                          <EditableCellComp
+                            updateHearing={updateHearing}
+                            file_n={row.file_n}
+                            case_n={row.case_n}
+                            hearing_key={row.key}
+                            cell={"caseClerk"}
+                            value={row.caseClerk}
+                          >
+                            {" "}
+                          </EditableCellComp>
+                        ) : (
+                          <TableCell align="center">{row.caseClerk}</TableCell>
+                        )}
+
+                        {/* <TableCell align="center">{row.other_party}</TableCell> */}
+                        {row.isLast ? (
+                          <EditableCellComp
+                            updateHearing={updateHearing}
+                            file_n={row.file_n}
+                            case_n={row.case_n}
+                            hearing_key={row.key}
+                            cell={"otherParty"}
+                            value={row.otherParty}
+                          >
+                            {" "}
+                          </EditableCellComp>
+                        ) : (
+                          <TableCell align="center">{row.otherParty}</TableCell>
+                        )}
+
+                        <TableCell align="center">{row.updated_by}</TableCell>
+                      </TableRow>
                     );
-                  })
-                  .map((row, idx) => (
-                    // return llist.map((row) => (
-                    // {row.isLast === true?xxxxx:
-
-                    <TableRow
-                      className={`${row.isLast ? "highlightedRow" : ""} `}
-                    >
-                      <TableCell align="center">{row.id}</TableCell>
-                      <TableCell align="center">{row.file_n}</TableCell>
-                      <TableCell align="center">{row.case_n}</TableCell>
-
-                      {/* <TableCell align="center">{row.court_case_n}</TableCell> */}
-
-                      {row.isLast ? (
-                        <EditableCellComp
-                          updateHearing={updateHearing}
-                          file_n={row.file_n}
-                          case_n={row.case_n}
-                          hearing_key={row.key}
-                          cell={"courtCaseNo"}
-                          value={row.courtCaseNo}
-                        >
-                          {" "}
-                        </EditableCellComp>
-                      ) : (
-                        <TableCell align="center">{row.courtCaseNo}</TableCell>
-                      )}
-
-                      {row.isLast ? (
-                        <EditableCellComp
-                          updateHearing={updateHearing}
-                          file_n={row.file_n}
-                          case_n={row.case_n}
-                          hearing_key={row.key}
-                          cell={"caseTitle"}
-                          value={row.caseTitle}
-                        >
-                          {" "}
-                        </EditableCellComp>
-                      ) : (
-                        <TableCell align="center">{row.caseTitle}</TableCell>
-                      )}
-
-                      {row.isLast ? (
-                        <EditableCellComp
-                          updateHearing={updateHearing}
-                          file_n={row.file_n}
-                          case_n={row.case_n}
-                          hearing_key={row.key}
-                          cell={"subCategory"}
-                          value={row.subCategory}
-                        >
-                          {" "}
-                        </EditableCellComp>
-                      ) : (
-                        <TableCell align="center">{row.subCategory}</TableCell>
-                      )}
-
-                      <TableCell align="center">{row.category}</TableCell>
-
-                      {/* <TableCell align="center">{row.court}</TableCell> */}
-                      {row.isLast ? (
-                        <EditableCellComp
-                          updateHearing={updateHearing}
-                          file_n={row.file_n}
-                          case_n={row.case_n}
-                          hearing_key={row.key}
-                          cell={"court"}
-                          value={row.court}
-                        >
-                          {" "}
-                        </EditableCellComp>
-                      ) : (
-                        <TableCell align="center">{row.court}</TableCell>
-                      )}
-
-                      {/* <TableCell align="center">{row.district}</TableCell> */}
-                      {row.isLast ? (
-                        <EditableCellComp
-                          updateHearing={updateHearing}
-                          file_n={row.file_n}
-                          case_n={row.case_n}
-                          hearing_key={row.key}
-                          cell={"district"}
-                          value={row.district}
-                        >
-                          {" "}
-                        </EditableCellComp>
-                      ) : (
-                        <TableCell align="center">{row.district}</TableCell>
-                      )}
-
-                      {/* <TableCell align="center">{row.judge}</TableCell> */}
-                      {row.isLast ? (
-                        <EditableCellComp
-                          updateHearing={updateHearing}
-                          file_n={row.file_n}
-                          case_n={row.case_n}
-                          hearing_key={row.key}
-                          cell={"judge"}
-                          value={row.judge}
-                        >
-                          {" "}
-                        </EditableCellComp>
-                      ) : (
-                        <TableCell align="center">{row.judge}</TableCell>
-                      )}
-
-                      <TableCell align="center">
-                        {row.previous_proceedings}
-                      </TableCell>
-                      {/* <EditableCellComp value={row.} > </EditableCellComp> */}
-
-                      <TableCell align="center">
-                        {row.previous_proceedings_date}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.next_proceedings_date}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.next_proceedings}
-                      </TableCell>
-
-                      {/* <TableCell align="center">{row.remarks}</TableCell> */}
-                      {row.isLast ? (
-                        <EditableCellComp
-                          updateHearing={updateHearing}
-                          file_n={row.file_n}
-                          case_n={row.case_n}
-                          hearing_key={row.key}
-                          cell={"remarks"}
-                          value={row.remarks}
-                        >
-                          {" "}
-                        </EditableCellComp>
-                      ) : (
-                        <TableCell align="center">{row.remarks}</TableCell>
-                      )}
-
-                      {/* <TableCell align="center">{row.caseSrc}</TableCell> */}
-
-                      {row.isLast ? (
-                        <EditableCellComp
-                          updateHearing={updateHearing}
-                          file_n={row.file_n}
-                          case_n={row.case_n}
-                          hearing_key={row.key}
-                          cell={"caseSrc"}
-                          value={row.caseSrc}
-                        >
-                          {" "}
-                        </EditableCellComp>
-                      ) : (
-                        <TableCell align="center">{row.caseSrc}</TableCell>
-                      )}
-
-                      {/* <TableCell align="center">{row.caseSupervisor}</TableCell> */}
-                      {row.isLast ? (
-                        <EditableCellComp
-                          updateHearing={updateHearing}
-                          file_n={row.file_n}
-                          case_n={row.case_n}
-                          hearing_key={row.key}
-                          cell={"caseSupervisor"}
-                          value={workers[row.caseSupervisor]}
-                        ></EditableCellComp>
-                      ) : (
-                        <TableCell align="center">
-                          {workers[row.caseSupervisor]}
-                        </TableCell>
-                      )}
-
-                      {/* <TableCell align="center">{row.caseWorker}</TableCell> */}
-                      {row.isLast ? (
-                        <EditableCellComp
-                          updateHearing={updateHearing}
-                          file_n={row.file_n}
-                          case_n={row.case_n}
-                          hearing_key={row.key}
-                          cell={"caseWorker"}
-                          value={workers[row.caseWorker]}
-                        ></EditableCellComp>
-                      ) : (
-                        <TableCell align="center">
-                          {workers[row.caseWorker]}
-                        </TableCell>
-                      )}
-
-                      {/* <TableCell align="center">{row.case_clerk}</TableCell> */}
-                      {row.isLast ? (
-                        <EditableCellComp
-                          updateHearing={updateHearing}
-                          file_n={row.file_n}
-                          case_n={row.case_n}
-                          hearing_key={row.key}
-                          cell={"caseClerk"}
-                          value={row.caseClerk}
-                        >
-                          {" "}
-                        </EditableCellComp>
-                      ) : (
-                        <TableCell align="center">{row.caseClerk}</TableCell>
-                      )}
-
-                      {/* <TableCell align="center">{row.other_party}</TableCell> */}
-                      {row.isLast ? (
-                        <EditableCellComp
-                          updateHearing={updateHearing}
-                          file_n={row.file_n}
-                          case_n={row.case_n}
-                          hearing_key={row.key}
-                          cell={"otherParty"}
-                          value={row.otherParty}
-                        >
-                          {" "}
-                        </EditableCellComp>
-                      ) : (
-                        <TableCell align="center">{row.otherParty}</TableCell>
-                      )}
-
-                      <TableCell align="center">{row.updated_by}</TableCell>
-                    </TableRow>
                     // }
-                  ))}
-
+                  })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        {!props.hearings.isLoading && NoHearings && (
+          <div className="display-4 text-center bg-light">
+            NO HEARINGS TO SHOW
+          </div>
+        )}
+        <TableContainer
+          style={{ marginTop: "20px" }}
+          className="bg-light shadow rounded"
+        >
+          <Table>
+            <TableBody>
               <AddPeshiRow />
             </TableBody>
           </Table>
         </TableContainer>
       </div>
-      {/* {openEntry && <Entry Details={entryDetails} closeEntry={()=>{setopenEntry(false)}}/>} */}
       <TextField
         className="mb-4"
         style={{ minWidth: "400px" }}
@@ -658,8 +685,6 @@ function Tasks(props) {
                       }
                     })
                     .map(function(key, index) {
-                      // console.log(value.clientsList["-MjYcy-1vhwjXOXuXsP4"])
-                      // console.log('cmon', idx+'/'+key )
                       return (
                         <div key={index}>
                           <ListItem

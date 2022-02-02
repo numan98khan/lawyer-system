@@ -24,7 +24,7 @@ function SelectField(props) {
         </>
       ) : (
         <div onDoubleClick={props.doubleClick} className={classes.Change}>
-          {props.value}
+          {props.options[props.value]}
         </div>
       )}
     </div>

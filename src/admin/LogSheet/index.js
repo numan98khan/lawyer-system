@@ -39,7 +39,7 @@ import {
 } from "@material-ui/pickers";
 
 function LogSheet(props) {
-  const [casePath, setCasePath] = React.useState("0/0");
+  const [casePath, setCasePath] = React.useState("");
   const [filterDate, setdate] = React.useState();
   const [keyvalue, setkeyvalue] = React.useState("ALL KEYS");
   const [quicksearch, setquicksearch] = React.useState("");
@@ -47,9 +47,10 @@ function LogSheet(props) {
   // const [keySearch, setkeySearch] = React.useState(true)
   // const [valueSearch, setvalueSearch] = React.useState(true)
   const location = useLocation();
+  const { case_path, keys } = location.state;
 
   React.useEffect(() => {
-    props.loadLogs(location.state);
+    props.loadLogs(case_path);
   }, []);
   const useStyles = makeStyles({
     table: {
@@ -64,7 +65,7 @@ function LogSheet(props) {
   }
 
   React.useEffect(() => {
-    setCasePath(location.state);
+    if (case_path && casePath === "") setCasePath(case_path);
   });
 
   const filterFunc = (row) => {
@@ -105,7 +106,7 @@ function LogSheet(props) {
     <div className="py-5 pl-4 pr-4">
       <div className="mb-5" style={{ minWidth: "1000px" }}>
         <div style={{ marginBottom: "5%" }}>
-          <Title title={"LOG SHEET " + casePath} />
+          {casePath && <Title title={"LOG SHEET " + casePath} />}
         </div>
         <div
           className="bg-light d-flex justify-content-between"
@@ -224,8 +225,20 @@ function LogSheet(props) {
 
                     {/* <TableCell align="center">{row.court_case_n}</TableCell> */}
 
-                    <TableCell align="center">{row.prev_value}</TableCell>
-                    <TableCell align="center">{row.new_value}</TableCell>
+                    <TableCell align="center">
+                      {row.key === "caseWorker"
+                        ? keys[row.prev_value]
+                        : row.key === "caseSupervisor"
+                        ? keys[row.prev_value]
+                        : row.prev_value}
+                    </TableCell>
+                    <TableCell align="center">
+                      {row.key === "caseWorker"
+                        ? keys[row.prev_value]
+                        : row.key === "caseSupervisor"
+                        ? keys[row.prev_value]
+                        : row.prev_value}
+                    </TableCell>
                     <TableCell align="center">{row.updated_by}</TableCell>
                   </TableRow>
                 ))}
@@ -241,5 +254,6 @@ function LogSheet(props) {
 
 const mapStateToProps = (state) => ({
   log: state.log,
+  caseworkers: state.caseworker.caseWorkers,
 });
 export default connect(mapStateToProps, { loadLogs })(LogSheet);
