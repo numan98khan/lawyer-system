@@ -222,6 +222,9 @@ class clientList extends Component {
                           }}
                           alignItems="flex-start"
                         >
+                          <ListItemAvatar>
+                            <Avatar alt={""} />
+                          </ListItemAvatar>
                           {
                             // <ListItemAvatar>
                             //   <Avatar alt="Remy Sharp" src='{fetchedProduct.img}' />

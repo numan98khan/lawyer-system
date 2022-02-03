@@ -128,6 +128,7 @@ function Tasks(props) {
     {
       if (props.user.user.type === "worker") {
         if (!timestampSearch) {
+          console.log(row.caseSupervisor, props.user.user.uid);
           return (
             row.caseSupervisor === props.user.user.uid ||
             row.caseWorker === props.user.user.uid
@@ -626,6 +627,7 @@ function Tasks(props) {
                     );
                     // }
                   })}
+              <AddPeshiRow />
             </TableBody>
           </Table>
         </TableContainer>
@@ -634,16 +636,16 @@ function Tasks(props) {
             NO HEARINGS TO SHOW
           </div>
         )}
-        <TableContainer
+
+        {/* <TableContainer
           style={{ marginTop: "20px" }}
           className="bg-light shadow rounded"
         >
           <Table>
             <TableBody>
-              <AddPeshiRow />
             </TableBody>
           </Table>
-        </TableContainer>
+        </TableContainer> */}
       </div>
       <TextField
         className="mb-4"

@@ -269,6 +269,14 @@ class casesList extends Component {
             <div className="row">
               <List style={{ width: "100%" }}>
                 {workerCases.map((Case, index) => {
+                  let clientOfCase = {};
+                  this.props.clientState.clients.every((client) => {
+                    if (client.id === Case.clientId) {
+                      clientOfCase = client;
+                      return false;
+                    }
+                    return true;
+                  });
                   return (
                     <ListItem
                       button
@@ -291,9 +299,11 @@ class casesList extends Component {
                               // className={classes.inline}
                               color="textPrimary"
                             >
-                              {Case.caseSupervisor}
+                              file: {Case.file_number} case: {Case.case_number}
                             </Typography>
-                            {" — "} {Case.caseWorker}
+                            {" — "}
+                            {clientOfCase.title}
+                            {clientOfCase.firstName}
                           </React.Fragment>
                         }
                       />
@@ -314,6 +324,7 @@ class casesList extends Component {
 const mapStateToProps = (state) => ({
   casesState: state.cases,
   userState: state.user,
+  clientState: state.client,
 });
 export default connect(mapStateToProps, {})(withRouter(casesList));
 
