@@ -41,6 +41,7 @@ export const navbarTitleKeyValueMap = {
   "/tracker": "TRACKER",
   "/workers": "WORKERS",
   "/addWorker": "ADD NEW WORKER",
+  "/hearings": "HEARINGS",
 };
 
 export const optionsCivilLitigation = [

@@ -153,7 +153,7 @@ function Tasks(props) {
     <div className="py-5 pl-4 pr-4">
       <div className="mb-5" style={{ minWidth: "1000px" }}>
         <div style={{ marginBottom: "5%" }}>
-          <Title title="PESHI LIST" />
+          <Title title="HEARINGS" />
         </div>
         <div
           className="bg-light d-flex"
@@ -565,7 +565,7 @@ function Tasks(props) {
                             hearing_key={row.key}
                             cell={"caseSupervisor"}
                             options={workers}
-                            value={row.caseWorker}
+                            value={row.caseSupervisor}
                           ></EditableCellSelect>
                         ) : (
                           <TableCell align="center">

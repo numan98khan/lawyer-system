@@ -10,7 +10,7 @@ import Consultations from "../admin/Consultations";
 import NewCase from "../admin/NewCase";
 import Addclient from "../admin/NewCase/Addclient";
 import addWorker from "../admin/Workers/addWorker";
-import Tasks from "../admin/Tasks";
+import Hearings from "../admin/Tasks";
 import addcasedetails from "../admin/NewCase/casedetails";
 import PaymentOptions from "../admin/NewCase/PaymentOptions";
 import Clients from "../admin/Clients";
@@ -30,7 +30,7 @@ class AdminNav extends Component {
           <Route exact path="/" component={Home} />
           <Route exact path="/newcase" component={NewCase} />
           <Route exact path="/calender" component={Calender} />
-          <Route exact path="/tasks" component={Tasks} />
+          <Route exact path="/hearings" component={Hearings} />
           <Route exact path="/consultations" component={Consultations} />
           <Route exact path="/accounts" component={Accounts} />
           <Route exact path="/addclient" component={Addclient} />

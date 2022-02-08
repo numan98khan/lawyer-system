@@ -257,10 +257,7 @@ function casedetails(props) {
         >
           {props.worker.caseWorkers.map((options, index) => {
             return (
-              <MenuItem
-                key={index}
-                value={options.firstName + " " + options.lastName}
-              >
+              <MenuItem key={index} value={options.id}>
                 {options.firstName} {options.lastName}
               </MenuItem>
             );

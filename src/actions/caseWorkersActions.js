@@ -5,136 +5,145 @@ import {
   CASEWORKERS_LOADED,
   CASEWORKERS_LOADING,
   ADD_CASEWORKER,
-  DELETE_CASEWORKER
+  DELETE_CASEWORKER,
   // FILTER_CASE
-} from '../actions/types';
-import fire,{firebaseConfig} from  '../fire';
-import firebase from 'firebase';
+} from "../actions/types";
+import fire, { firebaseConfig } from "../fire";
+import firebase from "firebase";
 
+// load case
+export const loadCaseWorkers = (casePath) => (dispatch, getState) => {
+  dispatch({ type: CASEWORKERS_LOADING });
 
+  var fb = fire.getFire();
+  var workers = [];
 
+  fb.database()
+    .ref("/")
+    .child("CaseWorkers")
+    .on("value", function(snapshot) {
+      workers = [];
+      snapshot.forEach((doc) => {
+        var tempJSON = doc.toJSON();
+        tempJSON["id"] = doc.key;
 
+        workers.push(tempJSON);
+      });
 
-  // load case
-  export const loadCaseWorkers = (casePath) => (
-    dispatch, getState
-  ) => {
+      dispatch({
+        type: CASEWORKERS_LOADED,
+        payload: workers,
+      });
 
-    dispatch({ type: CASEWORKERS_LOADING });
-    
-    var fb=fire.getFire();
-    var workers = [];
-
-    fb.database().ref('/')
-      .child('CaseWorkers')
-      .on("value", function(snapshot) {
-        workers = []
-        snapshot.forEach((doc) => {
-          
-          var tempJSON = doc.toJSON()  
-              tempJSON['id'] = doc.key
-            
-              workers.push(tempJSON);
-
-        });
-
-        dispatch({
-          type: CASEWORKERS_LOADED,
-          payload: workers
-        });
-
-        // console.log(this.state.clientsList)
-
+      // console.log(this.state.clientsList)
     });
+};
 
-    
-  };
+// function still has an error
+// C:/Users/numan/OneDrive/Desktop/salore/lawyer-system/src/actions/userActions.js:33
+// probably related to type inside the user object
+// Salar will handle this
+export const addWorker = (payload) => (dispatch, getState) => {
+  const {
+    username,
+    email,
+    firstName,
+    lastName,
+    password,
+    nationality,
+    country,
+    town,
+    zipcode,
+    cnic,
+    contactNumber,
+    address,
+    dob,
+    title,
+  } = payload;
+  var dobstring = dob.toLocaleDateString("en-US");
 
+  const state = getState();
+  // const userid = state.user.user.uid;
 
-  // function still has an error
-  // C:/Users/numan/OneDrive/Desktop/salore/lawyer-system/src/actions/userActions.js:33
-  // probably related to type inside the user object
-  // Salar will handle this
-  export const addWorker = (payload) => (
-    dispatch, getState
-  ) => {
+  var fbPrimary = fire.getFire();
+  var fb = firebase.initializeApp(firebaseConfig, "Secondary");
+  return new Promise((res, rej) => {
+    fb.auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(function() {
+        // Update successful.
 
-    const {username, email, firstName, lastName, password, nationality, country, town, zipcode, cnic, contactNumber, address, dob, title } = payload;
-    var dobstring = dob.toLocaleDateString('en-US')
-      
-    const state = getState();
-    // const userid = state.user.user.uid; 
+        fb.auth().onAuthStateChanged((user) => {
+          console.log("user image updated!!!");
+          console.log("user: " + user);
 
-    
-    var fb = firebase.initializeApp(firebaseConfig, "Secondary");
-    return  new Promise((res, rej)=>{
-
-        fb.auth().createUserWithEmailAndPassword(email, password).then(function() {
-          // Update successful.
-
-          fb.auth().onAuthStateChanged(user => {
-            console.log('user image updated!!!')
-            console.log("user: " + user);
-            
-            user.updateProfile({
+          user
+            .updateProfile({
               // photoURL: image,
-              displayName: username
-            }).then(function() {
-              console.log("add worker code deployed")
+              displayName: username,
+            })
+            .then(function() {
+              console.log("add worker code deployed");
               // Update successful. Add to workers table
-              // /* 
-              fb.database().ref("CaseWorkers/"+user.uid).set(
-                {
+              // /*
+              fbPrimary
+                .database()
+                .ref("CaseWorkers/" + user.uid)
+                .set({
                   displayName: username,
                   email: email,
                   firstName: firstName,
                   lastName: lastName,
-                  nationality: nationality, 
-                  country: country, 
-                  town: town, 
-                  zipcode: zipcode, 
-                  cnic: cnic, 
-                  contactNumber: contactNumber, 
-                  address: address, 
-                  dob: dobstring, 
+                  nationality: nationality,
+                  country: country,
+                  town: town,
+                  zipcode: zipcode,
+                  cnic: cnic,
+                  contactNumber: contactNumber,
+                  address: address,
+                  dob: dobstring,
                   title: title,
-                  type: 'worker',
+                  type: "worker",
                   currLocation: {
-                    lat:'',
-                    long:''
-                  }
-                }).then(function(){
-                  fb.database().ref("users/"+user.uid).set(
-                    {
+                    lat: "",
+                    long: "",
+                  },
+                })
+                .then(function() {
+                  fbPrimary
+                    .database()
+                    .ref("users/" + user.uid)
+                    .set({
                       displayName: username,
                       credit: 0,
-                      email:email,
-                      image:'',
-                      type:'worker'
-                    }).then(()=>{
-                      res()
+                      email: email,
+                      image: "",
+                      type: "worker",
                     })
-                })
+                    .then(() => {
+                      res();
+                    });
+                });
 
               // */
-       
-              fb.auth().signOut().then(() => {
-                fb.delete()
-        
-              });
+
+              fb.auth()
+                .signOut()
+                .then(() => {
+                  fb.delete();
+                });
               // fb.delete()
             });
         });
-  
-      }).catch(function(error) {
-        // Handle Errors here.
-          if (fb) {
-            fb.delete()
-          }
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          alert(errorMessage)
-        });
-        
       })
-  }
+      .catch(function(error) {
+        // Handle Errors here.
+        if (fb) {
+          fb.delete();
+        }
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        alert(errorMessage);
+      });
+  });
+};

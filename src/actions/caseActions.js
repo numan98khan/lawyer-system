@@ -99,10 +99,19 @@ const addCaseAndPayments = (payload) => {
                         caseDetails: payload.caseDetails,
                         file_n: file_key,
                       });
+                    })
+                    .catch((err) => {
+                      rej(err);
                     });
+                })
+                .catch((err) => {
+                  rej(err);
                 });
             }
           });
+      })
+      .catch((err) => {
+        rej(err);
       });
   });
 };
@@ -230,13 +239,15 @@ const uploadPayload = (payload) => {
 
 //add client user account
 const addClientUser = (email) => {
+  var fbPrimary = fire.getFire();
   var fb = firebase.initializeApp(firebaseConfig, "Secondary");
   return new Promise((res, rej) => {
     fb.auth()
       .createUserWithEmailAndPassword(email, "123456")
       .then(function(userobj) {
         const user = userobj.user;
-        fb.database()
+        fbPrimary
+          .database()
           .ref("users/" + user.uid)
           .set({
             displayName: user.displayName,
@@ -249,6 +260,7 @@ const addClientUser = (email) => {
             fb.auth()
               .signOut()
               .then(() => {
+                fb.delete();
                 res();
               });
             //client added
@@ -256,14 +268,13 @@ const addClientUser = (email) => {
       })
       .catch(function(error) {
         // Handle Errors here.
+        fb.delete();
         var errorCode = error.code;
         var errorMessage = error.message;
         alert(errorMessage);
         rej(error);
         // ...
       });
-
-    fb.delete();
   });
 };
 

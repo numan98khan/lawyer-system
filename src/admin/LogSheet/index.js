@@ -234,10 +234,10 @@ function LogSheet(props) {
                     </TableCell>
                     <TableCell align="center">
                       {row.key === "caseWorker"
-                        ? keys[row.prev_value]
+                        ? keys[row.new_value]
                         : row.key === "caseSupervisor"
-                        ? keys[row.prev_value]
-                        : row.prev_value}
+                        ? keys[row.new_value]
+                        : row.new_value}
                     </TableCell>
                     <TableCell align="center">{row.updated_by}</TableCell>
                   </TableRow>
