@@ -269,6 +269,7 @@ class casesList extends Component {
             <div className="row">
               <List style={{ width: "100%" }}>
                 {workerCases.map((Case, index) => {
+                  console.log(Case, "CASE");
                   let clientOfCase = {};
                   this.props.clientState.clients.every((client) => {
                     if (client.id === Case.clientId) {
@@ -280,8 +281,12 @@ class casesList extends Component {
                   return (
                     <ListItem
                       button
-                      // onClick={() => console.log('go to details')}
-                      onClick={() => {}}
+                      onClick={() => {
+                        this.props.history.push({
+                          pathname: "/casedetails",
+                          state: { caseDetails: Case },
+                        });
+                      }}
                       alignItems="flex-start"
                     >
                       {

@@ -21,7 +21,7 @@ export const toggleDrawer = () => (dispatch, getState) => {
 };
 export const loadUser = () => (dispatch, getState) => {
   // User loading
-  console.log("user loading");
+
   dispatch({ type: USER_LOADING });
   //set user
   // var data_ = null;
@@ -30,7 +30,6 @@ export const loadUser = () => (dispatch, getState) => {
     .auth()
     .onAuthStateChanged(function(user) {
       if (user) {
-        console.log(user);
         //get user from users table and set type property in user
         fire
           .getFire()
@@ -43,7 +42,6 @@ export const loadUser = () => (dispatch, getState) => {
             const userData = snapshot.val();
             // Loading needs to wait for type to get filled
             user.type = userData.type;
-            // console.log(userData.type);
             // data_ = {user: user, type_:userData.type}
           })
           .then(() => {
@@ -88,7 +86,6 @@ export const login = ({ email, password }) => (dispatch) => {
     .signInWithEmailAndPassword(email, password)
     .then((user) => {
       if (user) {
-        console.log("USER +> " + user.user.uid);
         getUserData(user.user.uid).then((userobj) => {
           user["type"] = userobj.type;
           user["displayName"] = userobj.displayName;
