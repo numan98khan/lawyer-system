@@ -35,10 +35,13 @@ class SignIn extends React.Component {
           alignItems: "center",
           // paddingTop: 10,
           height: "100vh",
+          backgroundColor:
+            "red" /* For browsers that do not support gradients */,
+          backgroundImage: "linear-gradient(to right, grey, white)",
           // backgroundColor: "blue",
         }}
       >
-        <img src="./logo.jpeg" style={{ height: "30vh", width: "15vw" }}></img>
+        <img src="./logo.png" style={{ height: "33vh", width: "15vw" }}></img>
         <MuiThemeProvider>
           <div
             className="container p-4 d-flex flex-column"
