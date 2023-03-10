@@ -16,7 +16,8 @@ import PaymentOptions from "../admin/NewCase/PaymentOptions";
 import Clients from "../admin/Clients";
 import Cases from "../admin/Cases";
 import ClientDetails from "../admin/Clients/DisplayItem";
-import CaseDetails from "../admin/Cases/DisplayItem";
+// import CaseDetails from "../admin/Cases/DisplayItem";
+import CaseDetails from "../admin/Cases/ClientCaseDetails"
 import LogSheet from "../admin/LogSheet";
 
 // import Tracker from "../admin/Tracker";
@@ -37,13 +38,18 @@ class AdminNav extends Component {
           <Route exact path="/addworker" component={addWorker} />
           <Route exact path="/addcasedetails" component={addcasedetails} />
           <Route exact path="/paymentoptions" component={PaymentOptions} />
+          
+          {/* <Route exact path="/casedetails" component={CaseDetails} /> */}
           <Route exact path="/casedetails" component={CaseDetails} />
+          
           <Route exact path="/clientdetails" component={ClientDetails} />
           <Route exact path="/clients" component={Clients} />
           <Route exact path="/cases" component={Cases} />
           <Route exact path="/logsheet" component={LogSheet} />
           {/* <Route exact path="/tracker" component={Tracker} /> */}
           <Route exact path="/workers" component={Workers} />
+          {/* <Route exact path="/workers" component={Workers} /> */}
+          
 
           {/* <Route exact path="/products" component={ProductList} />
           <Route component={Default} /> */}

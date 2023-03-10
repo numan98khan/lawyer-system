@@ -40,7 +40,7 @@ export const loadCase = () => (dispatch, getState) => {
       // );
     })
     .then(() => {
-      // console.log(cases.filter((Case) => Case))
+      console.log(cases.filter((Case) => Case))
 
       dispatch({
         type: CASES_LOADED,
@@ -120,12 +120,16 @@ export const addClientAndCase = (payload) => (dispatch, getState) => {
   return new Promise((res, rej) => {
     //convert dates to strings
     payload.clientDetails.dob = payload.clientDetails.dob.toLocaleString();
-    for (var i = 0; i < payload.paymentOptions.installmentDate.length; i++) {
-      payload.paymentOptions.installmentDate[
-        i
-      ].date = payload.paymentOptions.installmentDate[i].date.toLocaleString();
-    }
+    
+    // TODO: Figure out purpose for this
+    // for (var i = 0; i < payload.paymentOptions.installmentDate.length; i++) {
+    //   payload.paymentOptions.installmentDate[
+    //     i
+    //   ].date = payload.paymentOptions.installmentDate[i].date.toLocaleString();
+    // }
+
     let id = payload.clientDetails.id;
+    
     //if user exists already then only add case details and payment options
     fire
       .getFire()

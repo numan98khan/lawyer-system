@@ -172,14 +172,20 @@ class Details extends Component {
             })
             .map((Case, i) => (
               <div>
-                <ListItem alignItems="flex-start">
+                <ListItem 
+                button
+                onClick={() => {
+                  this.props.history.push('/casedetails', { Case })
+                }}
+                alignItems="flex-start">
+
                   {/* {
                     <ListItemAvatar>
                       <Avatar alt={""} />
                     </ListItemAvatar>
                   } */}
                   <ListItemText
-                    primary={Case.caseTitle}
+                    primary={Case.litigationCaseTitle}
                     secondary={
                       <React.Fragment>
                         {/*<Typography

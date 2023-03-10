@@ -1,0 +1,44 @@
+.navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  
+  .navigation ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .navigation li {
+    margin-right: 1rem;
+  }
+  
+  .navigation li:last-child {
+    margin-right: 0;
+  }
+  
+  .navigation li a {
+    display: block;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    color: #555;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .navigation li a.active {
+    color: #fff;
+    background-color: #555;
+  }
+
+  /* .navigation-steps button.active {
+    background-color: blue;
+    color: white;
+  }
+   */

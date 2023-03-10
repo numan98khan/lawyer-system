@@ -1,463 +1,207 @@
-import React, { useState, useEffect } from "react";
-import { useHistory, useLocation } from "react-router-dom";
-import FormControl from "@material-ui/core/FormControl";
-import { makeStyles } from "@material-ui/core/styles";
-import MenuItem from "@material-ui/core/MenuItem";
-import TextField from "@material-ui/core/TextField";
-import Select from "@material-ui/core/Select";
-import InputLabel from "@material-ui/core/InputLabel";
-import { connect } from "react-redux";
-import countryList from "react-select-country-list";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
-import ButtonContainer from "../../components/Button";
-import Title from "../../components/Title";
-import {
-  nulllist,
-  optionsCivilLitigation,
-  optionsChances,
-  optionsCaseWorker,
-  optionsCaseSupervisor,
-  optionsHousingLaw,
-  optionsConsumerLaw,
-  optionsCriminalLaw,
-  optionsPersonalInjury,
-  optionsImmigrationAssylum,
-  optionsHumanRights,
-  optionsEmploymentLaw,
-  optionsFamilyLaw,
-} from "./lists";
-import { Fragment } from "react";
+import React, { useState } from 'react';
+import CaseInstructions from './Step1';
+
+import LegalOpinion from './Step2';
+import CaseDetails  from './Step3';
+import CourtDetails from './Step4';
+import ClientDetails from './Step5';
+import OtherPartyDetails from './Step6';
+import ContactPerson from './Step7';
+import NatureOfLitigation from './Step8';
+import CaseCategory from './Step9';
+
+import Navigation from './Navigation';
+import './Form.css';
+
+import ButtonContainer from '../../components/Button';
+
+import FormControl from '@material-ui/core/FormControl';
+import { makeStyles } from '@material-ui/core/styles';
+import { addClientAndCase } from "../../actions/caseActions";
+import { connect } from 'react-redux';
+import {useHistory,useLocation} from 'react-router-dom';
+
+
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
-    minWidth: "35vw",
+    // minWidth: '35vw',
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
 }));
-function casedetails(props) {
+
+
+
+function Form(props) {
+  const [step, setStep] = useState(1);
   const location = useLocation();
-  const history = useHistory();
-  const classes = useStyles();
-  const [caseSrc, setCaseSrc] = useState("");
-  // const [caseStatus, setCaseStatus] = useState('open')
-  const [caseTitle, setcaseTitle] = useState("");
-  const [category, setCategory] = useState("");
+  
+
+  const [category, setCategory] = useState("Civil Litigation");
   const [subCategory, setSubCategory] = useState("");
-  const [briefDescription, setBriefDescription] = useState("");
-  const [caseSupervisor, setCaseSupervisor] = useState("");
-  const [caseWorker, setCaseWorker] = useState("");
-  const [clientInstructions, setClientInstructions] = useState("");
-  const [adviceToClient, setAdviceToClient] = useState("");
-  const [planOfAction, setPlanOfAction] = useState("");
-  const [chancesOfSuccess, setChances] = useState("");
-  const [conflictsofInterest, setConflictsofInterest] = useState("no");
-  const [criminalRecord, setCriminalRecord] = useState("no");
-  const [explanationOfCriminal, setexplanationOfCriminal] = useState("");
-  const [court, setCourt] = useState("");
-  const [judge, setJudge] = useState("");
-  const [caseClerk, setCaseClerk] = useState("");
-  const [courtCaseNo, setcourtCaseNo] = useState("");
-  const [otherParty, setOtherParty] = useState("");
-  const [remarks, setremarks] = useState("");
-  const [district, setDistrict] = useState("");
-  const payload = {
-    // caseStatus,
-    caseTitle,
-    caseSrc,
-    category,
-    subCategory,
-    briefDescription,
-    caseSupervisor,
-    caseWorker,
-    clientInstructions,
-    adviceToClient,
-    planOfAction,
-    chancesOfSuccess,
-    conflictsofInterest,
-    criminalRecord,
-    explanationOfCriminal,
-    court,
-    judge,
-    otherParty,
-    caseClerk,
-    courtCaseNo,
-    remarks,
-    district,
-  };
-  useEffect(() => {
-    return () => {
-      // console.log("passed:",location.state)
-    };
+
+  
+  const classes = useStyles();
+
+  const [formData, setFormData] = useState({
+    category: 'Civil Litigation',
+
+    legalOpinion: false,
+    legalDrafting: false,
+    dueDiligence: false,
+    legalisationRegistration: false,
+    regulatoryWork: false,
+    
+    // courtName: '',
+    clientDetails: {name: 'Nauman'},
+    otherPartyDetails: {},
+    contactPerson: {}
   });
+
+  // const [formData, setFormData] = useState();
+
+  // const handleInputChange = (event) => {
+  //   // console.log("inputting", formData, event.target);
+
+
+  //   const { name, value } = event.target;
+  //   setFormData({ ...formData, [name]: value });
+  // };
+
+  const handleInputChange = (event) => {
+    console.log(event);
+    if (event.target === undefined) {
+      const { name, value } = event;
+
+      setFormData({ ...formData, [name]: value });
+      return 
+    }
+    
+    
+    const { name, value } = event.target;
+
+    console.log("Upstream", name, value, event.target);
+  
+    // check if the name contains a '.' indicating a nested object
+    if (name.includes('.')) {
+      // separate the nested object key and property name
+      const [objName, propName] = name.split('.');
+  
+      // update the nested object property
+      setFormData(prevState => ({
+        ...prevState,
+        [objName]: {
+          ...prevState[objName],
+          [propName]: value
+        }
+      }));
+    } else {
+      if ( event.target.checked) {
+        setFormData({ ...formData, [name]: event.target.checked });
+
+      } else {
+        // update the top-level property
+        setFormData({ ...formData, [name]: value });
+      }
+    }
+  };
+
+  // const handleInputChange = (event) => {
+  //   const { name, value } = event.target;
+  //   setFormData((prevState) => ({
+  //     ...prevState,
+  //     clientDetails: {
+  //       ...prevState.clientDetails,
+  //       [name]: value
+  //     }
+  //   }));
+  // };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (step < 9) {
+      setStep(step + 1);
+    } else {
+
+      // console.log(formData);
+    }
+  };
+
   return (
-    <div className="App-screen">
-      <div style={{ marginBottom: "5%" }}>
-        <Title title="Enter case information" />
+    <div className="form-container">
+      <div className="form">
+        <Navigation step={step} setStep={setStep} />
+        <form className="form" onSubmit={handleSubmit}>
+          {step === 1 && (
+            <CaseInstructions formData={formData} handleInputChange={handleInputChange} />
+          )}
+          {step === 2 && (
+            <LegalOpinion formData={formData} handleInputChange={handleInputChange} />
+          )}
+          {step === 3 && (
+            <CaseDetails formData={formData} handleInputChange={handleInputChange} />
+          )}
+          {step === 4 && (
+            <CourtDetails formData={formData} handleInputChange={handleInputChange} />
+          )}
+          {step === 5 && (
+            <ClientDetails formData={formData} handleInputChange={handleInputChange} />
+          )}
+          {step === 6 && (
+            <OtherPartyDetails formData={formData} handleInputChange={handleInputChange} />
+          )}
+          {step === 7 && (
+            <ContactPerson formData={formData} handleInputChange={handleInputChange} />
+          )}
+          {step === 8 && (
+            <NatureOfLitigation formData={formData} handleInputChange={handleInputChange} />
+          )}
+          {step === 9 && (
+            <CaseCategory category={category} setCategory={setCategory} subCategory={subCategory} setSubCategory={setSubCategory} formData={formData} handleInputChange={handleInputChange} />
+          )}
+
+          {step < 9 ? (
+            // <button type="button" onClick={() => setStep(step + 1)}>Next</button>
+            <FormControl className={classes.formControl}>
+                <ButtonContainer     
+                // className={step === 2 ? 'active' : ''}
+                      onClick={()=>setStep(step + 1)}
+                      >Next</ButtonContainer>
+            </FormControl>
+
+          ) : (
+            // <button type="submit">Submit</button>
+            <FormControl className={classes.formControl}>
+                <ButtonContainer     className={step === 2 ? 'active' : ''}
+                      onClick={()=> {
+                        
+                        location.state.caseDetails = formData;
+                        location.state.paymentOptions = {};
+                        console.log(location.state)
+                        // props.addClientAndCase(location.state).then(()=>{
+                        //     alert("case added successfully")
+                        //     // history.push('/')
+                        // });
+                      }}
+                      >Submit</ButtonContainer>
+            </FormControl>
+          )}
+        </form>
       </div>
-      <FormControl className={classes.formControl}>
-        <TextField
-          variant="outlined"
-          multiline={true}
-          onChange={(e) => {
-            setcaseTitle(e.target.value);
-          }}
-          label="case title"
-        ></TextField>
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <InputLabel>category</InputLabel>
-        <Select
-          value={category}
-          onChange={(e) => {
-            setCategory(e.target.value);
-          }}
-        >
-          <MenuItem value={"Civil Litigation"}>Civil Litigation</MenuItem>
-          <MenuItem value={"Consumer Law"}>Consumer Law</MenuItem>
-          <MenuItem value={"Criminal Law"}>Criminal Law</MenuItem>
-          <MenuItem value={"Employment Law"}>Employment Law</MenuItem>
-          <MenuItem value={"Family Law"}>Family Law</MenuItem>
-          <MenuItem value={"Human Rights"}>Human Rights</MenuItem>
-          <MenuItem value={"Immigration & Asylum"}>
-            Immigration & Asylum
-          </MenuItem>
-          <MenuItem value={"Personal injury & clinical negligence"}>
-            Personal injury & clinical negligence
-          </MenuItem>
-          <MenuItem value={"Housing Law (Property & Conveyancing)"}>
-            Housing Law (Property & Conveyancing)
-          </MenuItem>
-        </Select>
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <InputLabel>sub-category</InputLabel>
-        <Select
-          value={subCategory}
-          onChange={(e) => {
-            setSubCategory(e.target.value);
-          }}
-        >
-          {category === "Civil Litigation"
-            ? optionsCivilLitigation.map((options, index) => {
-                return (
-                  <MenuItem key={index} value={options.value}>
-                    {options.name}
-                  </MenuItem>
-                );
-              })
-            : category === "Consumer Law"
-            ? optionsConsumerLaw.map((options, index) => {
-                return (
-                  <MenuItem key={index} value={options.value}>
-                    {options.name}
-                  </MenuItem>
-                );
-              })
-            : category === "Housing Law (Property & Conveyancing)"
-            ? optionsHousingLaw.map((options, index) => {
-                return (
-                  <MenuItem key={index} value={options.value}>
-                    {options.name}
-                  </MenuItem>
-                );
-              })
-            : category === "Criminal Law"
-            ? optionsCriminalLaw.map((options, index) => {
-                return (
-                  <MenuItem key={index} value={options.value}>
-                    {options.name}
-                  </MenuItem>
-                );
-              })
-            : category === "Employment Law"
-            ? optionsEmploymentLaw.map((options, index) => {
-                return (
-                  <MenuItem key={index} value={options.value}>
-                    {options.name}
-                  </MenuItem>
-                );
-              })
-            : category === "Family Law"
-            ? optionsFamilyLaw.map((options, index) => {
-                return (
-                  <MenuItem key={index} value={options.value}>
-                    {options.name}
-                  </MenuItem>
-                );
-              })
-            : category === "Human Rights"
-            ? optionsHumanRights.map((options, index) => {
-                return (
-                  <MenuItem key={index} value={options.value}>
-                    {options.name}
-                  </MenuItem>
-                );
-              })
-            : category === "Immigration & Asylum"
-            ? optionsImmigrationAssylum.map((options, index) => {
-                return (
-                  <MenuItem key={index} value={options.value}>
-                    {options.name}
-                  </MenuItem>
-                );
-              })
-            : category === "Personal injury & clinical negligence"
-            ? optionsPersonalInjury.map((options, index) => {
-                return (
-                  <MenuItem key={index} value={options.value}>
-                    {options.name}
-                  </MenuItem>
-                );
-              })
-            : null}
-        </Select>
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <TextField
-          variant="outlined"
-          multiline={true}
-          minRows={"1"}
-          onChange={(e) => {
-            setcourtCaseNo(e.target.value);
-          }}
-          label="court case#"
-        ></TextField>
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <TextField
-          variant="outlined"
-          multiline={true}
-          minRows={"5"}
-          onChange={(e) => {
-            setBriefDescription(e.target.value);
-          }}
-          label="brief description about the case"
-        ></TextField>
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <TextField
-          variant="outlined"
-          multiline={true}
-          onChange={(e) => {
-            setCaseSrc(e.target.value);
-          }}
-          label="case source"
-        ></TextField>
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <InputLabel>case supervisor</InputLabel>
-        <Select
-          value={caseSupervisor}
-          onChange={(e) => {
-            setCaseSupervisor(e.target.value);
-          }}
-        >
-          {props.worker.caseWorkers.map((options, index) => {
-            return (
-              <MenuItem key={index} value={options.id}>
-                {options.firstName} {options.lastName}
-              </MenuItem>
-            );
-          })}
-        </Select>
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <InputLabel>case worker</InputLabel>
-        <Select
-          value={caseWorker}
-          onChange={(e) => {
-            setCaseWorker(e.target.value);
-          }}
-        >
-          {props.worker.caseWorkers.map((options, index) => {
-            return (
-              <MenuItem key={index} value={options.id}>
-                {options.firstName} {options.lastName}
-              </MenuItem>
-            );
-          })}
-        </Select>
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <TextField
-          variant="outlined"
-          multiline={true}
-          minRows={"5"}
-          onChange={(e) => {
-            setClientInstructions(e.target.value);
-          }}
-          label="client intrusctions"
-        ></TextField>
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <TextField
-          variant="outlined"
-          multiline={true}
-          minRows={"5"}
-          onChange={(e) => {
-            setAdviceToClient(e.target.value);
-          }}
-          label="advice to client"
-        ></TextField>
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <TextField
-          variant="outlined"
-          multiline={true}
-          minRows={"5"}
-          onChange={(e) => {
-            setPlanOfAction(e.target.value);
-          }}
-          label="plan of action"
-        ></TextField>
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <InputLabel>chances of success</InputLabel>
-        <Select
-          value={chancesOfSuccess}
-          onChange={(e) => {
-            setChances(e.target.value);
-          }}
-        >
-          {optionsChances.map((options, index) => {
-            return (
-              <MenuItem key={index} value={options.value}>
-                {options.name}
-              </MenuItem>
-            );
-          })}
-        </Select>
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <InputLabel>conflicts of Interest</InputLabel>
-        <Select
-          value={conflictsofInterest}
-          onChange={(e) => {
-            setConflictsofInterest(e.target.value);
-          }}
-        >
-          <MenuItem value={"yes"}>yes</MenuItem>
-          <MenuItem value={"no"}>no</MenuItem>
-        </Select>
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <InputLabel>case clerk</InputLabel>
-        <Select
-          value={caseClerk}
-          onChange={(e) => {
-            setCaseClerk(e.target.value);
-          }}
-        >
-          {optionsCaseSupervisor.map((options, index) => {
-            return (
-              <MenuItem key={index} value={options.value}>
-                {options.name}
-              </MenuItem>
-            );
-          })}
-        </Select>
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <InputLabel>criminal record</InputLabel>
-        <Select
-          value={conflictsofInterest}
-          onChange={(e) => {
-            setCriminalRecord(e.target.value);
-          }}
-        >
-          <MenuItem value={"yes"}>yes</MenuItem>
-          <MenuItem value={"no"}>no</MenuItem>
-        </Select>
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <TextField
-          variant="outlined"
-          multiline={true}
-          minRows={"5"}
-          onChange={(e) => {
-            setexplanationOfCriminal(e.target.value);
-          }}
-          label="explanation of criminal record"
-        ></TextField>
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <TextField
-          variant="outlined"
-          minRows={"5"}
-          onChange={(e) => {
-            setCourt(e.target.value);
-          }}
-          label="case court"
-        ></TextField>
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <TextField
-          variant="outlined"
-          minRows={"5"}
-          onChange={(e) => {
-            setDistrict(e.target.value);
-          }}
-          label="district"
-        ></TextField>
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <TextField
-          variant="outlined"
-          minRows={"5"}
-          onChange={(e) => {
-            setremarks(e.target.value);
-          }}
-          label="remarks"
-        ></TextField>
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <TextField
-          variant="outlined"
-          minRows={"5"}
-          onChange={(e) => {
-            setJudge(e.target.value);
-          }}
-          label="case judge"
-        ></TextField>
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <TextField
-          variant="outlined"
-          minRows={"5"}
-          onChange={(e) => {
-            setOtherParty(e.target.value);
-          }}
-          label="other party"
-        ></TextField>
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <ButtonContainer
-          onClick={() => {
-            location.state.caseDetails = payload;
-            history.push({
-              pathname: "/paymentoptions",
-              state: location.state,
-            });
-          }}
-        >
-          Save case details
-        </ButtonContainer>
-      </FormControl>
     </div>
   );
 }
 
+// export default Form;
+
 const mapStateToProps = (state) => ({
-  worker: state.caseworker,
+  // user: state.user,
+  // type: state.type
 });
-export default connect(mapStateToProps, {})(casedetails);
+export default connect(mapStateToProps, { addClientAndCase })(
+  Form
+);
 
-//remarks
-//next proceeding date
-
-//previous date
-//everything else
-//updated by

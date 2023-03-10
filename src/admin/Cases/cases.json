@@ -1,0 +1,55 @@
+{
+    "cases": [
+      {
+        "id": "1",
+        "caseTitle": "Purse snatching",
+        "briefDescription": "Brief description of the purse snatching case...",
+        "category": "Criminal Law",
+        "subCategory": "Assault",
+        "status": "Ongoing",
+        "chancesOfSuccess": "High",
+        "clientInstructions": "Instructions for the client...",
+        "adviceToClient": "Advice for the client...",
+        "otherParty": "The snatcher",
+        "explanationOfCriminal": "Explanation of the criminal...",
+        "planOfAction": "Plan of action...",
+        "court": "Session court",
+        "district": "Lahore",
+        "criminalRecord": "No",
+        "conflictsofInterest": "No",
+        "courtCaseNo": "50",
+        "judge": "Justice Anjum",
+        "caseWorker": "Asim Tauqeer",
+        "caseClerk": "Asim Tauqeer",
+        "caseSupervisor": "Supervisor Name",
+        "caseSrc": "worker2",
+        "remarks": "Badly injured as well"
+      },
+      {
+        "id": "2",
+        "caseTitle": "Breach of Contract",
+        "briefDescription": "Brief description of the breach of contract case...",
+        "category": "Business Law",
+        "subCategory": "Contract Dispute",
+        "status": "Settled",
+        "chancesOfSuccess": "Moderate",
+        "clientInstructions": "Instructions for the client...",
+        "adviceToClient": "Advice for the client...",
+        "otherParty": "The other party in the contract",
+        "explanationOfCriminal": "",
+        "planOfAction": "Plan of action...",
+        "court": "High court",
+        "district": "Karachi",
+        "criminalRecord": "No",
+        "conflictsofInterest": "No",
+        "courtCaseNo": "100",
+        "judge": "Justice Khan",
+        "caseWorker": "John Doe",
+        "caseClerk": "Jane Smith",
+        "caseSupervisor": "Supervisor Name",
+        "caseSrc": "worker1",
+        "remarks": ""
+      }
+    ]
+  }
+  

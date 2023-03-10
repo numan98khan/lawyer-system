@@ -1,48 +1,32 @@
-new field in the case details --> couse source
-create a client user --> after new client added
-(default password for now)
+{
+    "clientDetails": {
+        "address": "House # 1168, Gali # 63",
+        "cnic": "17301-0830477-1",
+        "companyName": "IBM",
+        "contactNumber": "+923315882990",
+        
+        "id": "-NP8zbpc0ffM2G6fSDgW"
+    },
+    "caseInformation": {
+        "category": "Civil Litigation",
+        "clientDetails": {
+            "name": "Nauman",
+            "clientName": "Test",
+   
+        },
+        "otherPartyDetails": {
+            "partyName": "Test",
+            "cnicNumber": "Test",
+    
+        },
+        "contactPerson": {
+            "name": "Test",
+            "fatherName": "Test",
 
-make client details and case details page
-client details: name, cnic, number of cases, date of registration
-
-case details: client name, case description, date of case creation, case ID
-add conflict of interest feature:
-check if case which is being currently added conflicts with previously added cases
-(check by comparing client name or cnic)
-
-file numbers --> each case will have its own unique file number
-
-when a case is closed and reopened, the case will have the same file number but different case number
-for example:
-001/001 is file: 001 and case 001
-when case is closed and reopened
-the new case id will be 001/002
-
-there will be a clerk account ---> clerk can make entry in peshi list
-admin will create clerk accounts
-admin and workers can view peshi list
-
-
-
-<TableRow key={row.key}>
-    <TableCell align="center">{row.id}</TableCell>
-    <TableCell align="center">{row.file_n}</TableCell>
-    <TableCell align="center">{row.case_n}</TableCell>
-    <TableCell align="center">{row.caseTitle}</TableCell>
-    <TableCell align="center">{row.nature_of_case}</TableCell>
-    <TableCell align="center">{row.category}</TableCell>
-    <TableCell align="center">{row.court}</TableCell>
-    <TableCell align="center">{row.district}</TableCell>
-    <TableCell align="center">{row.judge}</TableCell>
-    <TableCell align="center">{row.previous_proceedings}</TableCell>
-    <TableCell align="center">{row.prev_proceedings_date.slice(0, 24)}</TableCell>
-    <TableCell align="center">{row.next_proceedings_date.slice(0, 24)}</TableCell>
-    <TableCell align="center">{row.next_proceedings}</TableCell>
-    <TableCell align="center">{row.remarks}</TableCell>
-    <TableCell align="center">{row.caseSrc}</TableCell>
-    <TableCell align="center">{row.caseSupervisor}</TableCell>
-    <TableCell align="center">{row.caseWorker}</TableCell>
-    <TableCell align="center">{row.case_clerk}</TableCell>
-    <TableCell align="center">{row.other_party}</TableCell>
-    <TableCell align="center">{row.updated_by}</TableCell>
-</TableRow>
+        },
+        "courtName": "(KPK) Peshawar High Court",
+        "legalOpinion": "Test",
+        "legalDrafting": "Test",
+ 
+    }
+}

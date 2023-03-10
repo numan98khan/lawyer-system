@@ -1,26 +1,121 @@
+// export const caseValueMap = {
+//   file_n: "FILE#",
+//   case_n: "CASE#",
+//   court_case_n: "COURT CASE#",
+//   subCategory: "SUB CATEGORY",
+//   caseTitle: "CASE TITLE",
+//   nature_of_case: "NATURE OF CASE",
+//   category: "CATEGORY",
+//   court: "COURT",
+//   district: "DISTRICT",
+//   judge: "JUDGE",
+//   previous_proceedings: "PREVIOUS PROCEEDING",
+//   prev_proceedings_date: "PREVIOUS PROCEEDING DATE",
+//   next_proceedings_date: "NEXT PROCEEDING DATE",
+//   next_proceedings: "NEXT PROCEEDING",
+//   remarks: "REMARKS",
+//   caseSrc: "CASE SOURCE",
+//   caseSupervisor: "CASE SUPERVISOR",
+//   caseWorker: "CASE WORKER",
+//   case_clerk: "CASE CLERK",
+//   other_party: "OTHER PARTY",
+//   updated_by: "UPDATED BY",
+// };
+
 export const caseValueMap = {
-  file_n: "FILE#",
-  case_n: "CASE#",
-  court_case_n: "COURT CASE#",
-  subCategory: "SUB CATEGORY",
-  caseTitle: "CASE TITLE",
-  nature_of_case: "NATURE OF CASE",
-  category: "CATEGORY",
-  court: "COURT",
   district: "DISTRICT",
-  judge: "JUDGE",
-  previous_proceedings: "PREVIOUS PROCEEDING",
-  prev_proceedings_date: "PREVIOUS PROCEEDING DATE",
-  next_proceedings_date: "NEXT PROCEEDING DATE",
-  next_proceedings: "NEXT PROCEEDING",
-  remarks: "REMARKS",
-  caseSrc: "CASE SOURCE",
-  caseSupervisor: "CASE SUPERVISOR",
-  caseWorker: "CASE WORKER",
-  case_clerk: "CASE CLERK",
-  other_party: "OTHER PARTY",
-  updated_by: "UPDATED BY",
-};
+  court: "COURT",
+  courtName: "COURT NAME",
+    legalOpinion: "LEGAL OPINION",
+    legalDrafting: "LEGAL DRAFTING",
+    dueDiligence: "DUE DILIGENCE",
+    legalisationRegistration: "LEGALISATION REGISTRATION",
+    regulatoryWork: "REGULATORY WORK",
+    summaryOfFacts: "SUMMARY OF FACTS",
+    legalAnalysis: "LEGAL ANALYSIS",
+    recommendation: "RECOMMENDATION",
+    litigationCaseTitle: "LITIGATION CASE TITLE",
+    substantiveDateOfHearing: "SUBSTANTIVE DATE OF HEARING",
+    substantiveDateOfLastHearing: "SUBSTANTIVE DATE OF LAST HEARING",
+    substantiveDateOfNextHearing: "SUBSTANTIVE DATE OF NEXT HEARING",
+    substantiveDateNotFixed: "SUBSTANTIVE DATE NOT FIXED",
+    interimDateOfHearing: "INTERIM DATE OF HEARING",
+    interimDateOfLastHearing: "INTERIM DATE OF LAST HEARING",
+    interimDateOfFirstHearing: "INTERIM DATE OF FIRST HEARING",
+    interimDateNotFixed: "INTERIM DATE NOT FIXED",
+    courtCaseNo: "COURT CASE NO.",
+  // clientDetails: {
+  //   id: "ID",
+  //   title: "TITLE",
+  //   firstName: "FIRST NAME",
+  //   lastName: "LAST NAME",
+  //   dob: "DOB",
+  //   gender: "GENDER",
+  //   nationality: "NATIONALITY",
+  //   cnic: "CNIC",
+  //   companyName: "COMPANY NAME",
+  //   contactNumber: "CONTACT NUMBER",
+  //   email: "EMAIL",
+  //   address: "ADDRESS",
+  //   town: "TOWN",
+  //   zipcode: "ZIPCODE",
+  //   country: "COUNTRY",
+  //   howDidYou: "HOW DID YOU",
+  //   preferredCorr: "PREFERRED CORRESPONDENCE",
+  //   registration_time: "REGISTRATION TIME"
+  // },
+  // caseInformation: {
+  //   category: "CATEGORY",
+  //   clientDetails: {
+  //     name: "NAME",
+  //     clientName: "CLIENT NAME",
+  //     cnicNumber: "CNIC NUMBER",
+  //     clientAddress: "CLIENT ADDRESS",
+  //     plaintiff: "PLAINTIFF",
+  //     defendant: "DEFENDANT",
+  //     phoneNumber: "PHONE NUMBER",
+  //     email: "EMAIL"
+  //   },
+  //   otherPartyDetails: {
+  //     partyName: "PARTY NAME",
+  //     cnicNumber: "CNIC NUMBER",
+  //     address: "ADDRESS",
+  //     plaintiff: "PLAINTIFF",
+  //     defendant: "DEFENDANT",
+  //     phoneNumber: "PHONE NUMBER",
+  //     email: "EMAIL"
+  //   },
+  //   contactPerson: {
+  //     name: "NAME",
+  //     fatherName: "FATHER NAME",
+  //     cnic: "CNIC",
+  //     phoneNumber1: "PHONE NUMBER 1",
+  //     whatsappNumber1: "WHATSAPP NUMBER 1",
+  //     email: "EMAIL",
+  //     homeAddress: "HOME ADDRESS"
+  //   },
+  //   courtName: "COURT NAME",
+  //   legalOpinion: "LEGAL OPINION",
+  //   legalDrafting: "LEGAL DRAFTING",
+  //   dueDiligence: "DUE DILIGENCE",
+  //   legalisationRegistration: "LEGALISATION REGISTRATION",
+  //   regulatoryWork: "REGULATORY WORK",
+  //   summaryOfFacts: "SUMMARY OF FACTS",
+  //   legalAnalysis: "LEGAL ANALYSIS",
+  //   recommendation: "RECOMMENDATION",
+  //   litigationCaseTitle: "LITIGATION CASE TITLE",
+  //   substantiveDateOfHearing: "SUBSTANTIVE DATE OF HEARING",
+  //   substantiveDateOfLastHearing: "SUBSTANTIVE DATE OF LAST HEARING",
+  //   substantiveDateOfNextHearing: "SUBSTANTIVE DATE OF NEXT HEARING",
+  //   substantiveDateNotFixed: "SUBSTANTIVE DATE NOT FIXED",
+  //   interimDateOfHearing: "INTERIM DATE OF HEARING",
+  //   interimDateOfLastHearing: "INTERIM DATE OF LAST HEARING",
+  //   interimDateOfFirstHearing: "INTERIM DATE OF FIRST HEARING",
+  //   interimDateNotFixed: "INTERIM DATE NOT FIXED",
+  //   courtCaseNo: "COURT CASE NO."
+  // }
+}
+
 
 export const navbarTitleKeyValueMap = {
   "/": "HOME",
@@ -45,37 +140,168 @@ export const navbarTitleKeyValueMap = {
 };
 
 export const optionsCivilLitigation = [
+  // const optionsCivilDispute = [
+    {
+    name: "",
+    value: "",
+    },
+    {
+    name: "- - - Other / Not in the list - - -",
+    value: "- - - Other / Not in the list - - -",
+    },
+    {
+    name: "Recovery of Immovable Property under Section 8",
+    value: "Recovery of Immovable Property under Section 8",
+    },
+    {
+    name: "Suit Against Dispossession under Section 9",
+    value: "Suit Against Dispossession under Section 9",
+    },
+    {
+    name: "Recovery of Specific Moveable Property/Money Claims under Section 10",
+    value: "Recovery of Specific Moveable Property/Money Claims under Section 10",
+    },
+    {
+    name: "Specific Performance of Contract under Section 12",
+    value: "Specific Performance of Contract under Section 12",
+    },
+    {
+    name: "Damages for Breach of Contract",
+    value: "Damages for Breach of Contract",
+    },
+    {
+    name: "Rectification of Instruments",
+    value: "Rectification of Instruments",
+    },
+    {
+    name: "Rescission of Instruments",
+    value: "Rescission of Instruments",
+    },
+    {
+    name: "Cancellation of Instruments",
+    value: "Cancellation of Instruments",
+    },
+    {
+    name: "Suit for Declaration",
+    value: "Suit for Declaration",
+    },
+    {
+    name: "Appointment of Receivers",
+    value: "Appointment of Receivers",
+    },
+    {
+    name: "Injunctions",
+    value: "Injunctions",
+    },
+    {
+    name: "Defamation",
+    value: "Defamation",
+    },
+    {
+    name: "Rendition of Accounts",
+    value: "Rendition of Accounts",
+    },
+    {
+    name: "Other Contractual Dispute",
+    value: "Other Contractual Dispute",
+    },
+    {
+    name: "Partnership Dispute",
+    value: "Partnership Dispute",
+    },
+    {
+    name: "Partition of Property",
+    value: "Partition of Property",
+    },
+    {
+    name: "Arbitration",
+    value: "Arbitration",
+    },
+    {
+    name: "Execution/Enforcement",
+    value: "Execution/Enforcement",
+    },
+    {
+    name: "Pre-emption",
+    value: "Pre-emption",
+    },
+    {
+    name: "Writ Petition",
+    value: "Writ Petition",
+    },
+    {
+    name: "Application under Section 12(2) CPC",
+    value: "Application under Section 12(2) CPC",
+    },
+    {
+      name: "Leave Blank",
+      value: "Leave Blank",
+      },
+    ];
+
+const optionsServiceLaw = [
   {
-    value: "Boundary and neighbour disputes",
-    name: "Boundary and neighbour disputes",
+    name: "",
+    value: "",
   },
   {
-    value: "Building disputes",
-    name: "Building disputes",
+    name: "- - - Other / Not in the list - - -",
+    value: "- - - Other / Not in the list - - -",
   },
   {
-    value: "Consumer disputes",
-    name: "Consumer disputes",
+    name: "Inquiry",
+    value: "Inquiry",
   },
   {
-    value: "Contractual disputes",
-    name: "Contractual disputes",
+    name: "Termination/Dismissal etc.",
+    value: "Termination/Dismissal etc.",
   },
   {
-    value: "Landlord and tenant disputes",
-    name: "Landlord and tenant disputes",
+    name: "Minor Penalty",
+    value: "Minor Penalty",
   },
   {
-    value: "Professional Negligence",
-    name: "Professional Negligence",
+    name: "ACR Remarks",
+    value: "ACR Remarks",
   },
   {
-    value: "Property disputes",
-    name: "Property disputes",
+    name: "Other (Please specify)",
+    value: "Other (Please specify)",
   },
   {
-    value: "Wills and inheritence disputes",
-    name: "Wills and inheritence disputes",
+    name: "Or leave blank",
+    value: "Or leave blank",
+  },
+];
+
+const optionsCompetitionLaw = [
+  {
+    name: "Specify",
+    value: "Specify",
+  },
+  {
+    name: "Or leave blank",
+    value: "Or leave blank",
+  },
+];
+const optionsOtherLaw = [
+  {
+    name: "Specify",
+    value: "Specify",
+  },
+  {
+    name: "Or leave blank",
+    value: "Or leave blank",
+  },
+];
+const optionsPublicInterestLaw = [
+  {
+    name: "Specify",
+    value: "Specify",
+  },
+  {
+    name: "Or leave blank",
+    value: "Or leave blank",
   },
 ];
 const optionsConsumerLaw = [
@@ -123,35 +349,201 @@ const optionsCriminalLaw = [
     value: "- - - Other / Not in the list - - -",
   },
   {
-    name: "Assault",
-    value: "Assault",
+    name: "Pakistan Penal Code",
+    value: "Pakistan Penal Code",
   },
   {
-    name: "Business crime",
-    value: "Business crime",
+    name: "Anti-Corruption Laws",
+    value: "Anti-Corruption Laws",
   },
   {
-    name: "Criminal Appeals",
-    value: "Criminal Appeals",
+    name: "NAB Laws",
+    value: "NAB Laws",
   },
   {
-    name: "Fraud",
-    value: "Fraud",
+    name: "Illegal dispossession Act",
+    value: "Illegal dispossession Act",
   },
   {
-    name: "General and other serious crime",
-    value: "General and other serious crime",
+    name: "Control of Narcotics Substance Act",
+    value: "Control of Narcotics Substance Act",
   },
   {
-    name: "Proceeds of Crime",
-    value: "Proceeds of Crime",
+    name: "Telegraph Act",
+    value: "Telegraph Act",
   },
   {
-    name: "Sexual Offences",
-    value: "Sexual Offences",
+    name: "Illegal Arms",
+    value: "Illegal Arms",
+  },
+  {
+    name: "Passport Act",
+    value: "Passport Act",
+  },
+  {
+    name: "Banking Laws",
+    value: "Banking Laws",
+  },
+  {
+    name: "Other (Please specify)",
+    value: "Other (Please specify)",
+  },
+  {
+    name: "Or leave blank",
+    value: "Or leave blank",
   },
 ];
 
+const optionsCriminalLaw_2 = [ 
+  {
+    name: "",
+    value: "",
+  },
+  {
+    name: "- - - Other / Not in the list - - -",
+    value: "- - - Other / Not in the list - - -",
+  },
+  {
+    name: "420/468/471",
+    value: "420/468/471",
+  },
+  {
+    name: "409",
+    value: "409",
+  },
+  {
+    name: "13/20/65",
+    value: "13/20/65",
+  },
+  {
+    name: "302",
+    value: "302",
+  },
+  {
+    name: "324",
+    value: "324",
+  },
+  {
+    name: "337",
+    value: "337",
+  },
+  {
+    name: "427",
+    value: "427",
+  },
+  {
+    name: "506",
+    value: "506",
+  },
+  {
+    name: "9CNSA",
+    value: "9CNSA",
+  },
+  {
+    name: "Other (Please specify)",
+    value: "Other (Please specify)",
+  },
+  {
+    name: "Or leave blank",
+    value: "Or leave blank",
+  },
+];
+
+const optionsCriminalLaw_3 = [
+    {
+      name: "",
+      value: "",
+    },
+    {
+      name: "- - - Other / Not in the list - - -",
+      value: "- - - Other / Not in the list - - -",
+    },
+    {
+      name: "FIR No./Case Reference number",
+      value: "FIR No./Case Reference number",
+    },
+    {
+      name: "Date of FIR",
+      value: "Date of FIR",
+    },
+    {
+      name: "Police Station",
+      value: "Police Station",
+    },
+    {
+      name: "Offence U/S",
+      value: "Offence U/S",
+    },
+    {
+      name: "Other (Please specify)",
+      value: "Other (Please specify)",
+    },
+    {
+      name: "Or leave blank",
+      value: "Or leave blank",
+    },
+  ];
+
+
+
+
+const optionsHousingLaw = [
+    {
+      name: "",
+      value: "",
+    },
+    {
+      name: "- - - Other / Not in the list - - -",
+      value: "- - - Other / Not in the list - - -",
+    },
+    {
+      name: "Ejectment petition",
+      value: "Ejectment petition",
+    },
+    {
+      name: "Fair rent determination",
+      value: "Fair rent determination",
+    },
+    {
+      name: "Tenancy registration",
+      value: "Tenancy registration",
+    },
+    {
+      name: "Other (Please specify)",
+      value: "Other (Please specify)",
+    },
+    {
+      name: "Or leave blank",
+      value: "Or leave blank",
+    },
+  ];
+  
+  const optionsCompanyLaw = [
+    {
+      name: "",
+      value: "",
+    },
+    {
+      name: "- - - Other / Not in the list - - -",
+      value: "- - - Other / Not in the list - - -",
+    },
+    {
+      name: "Winding up",
+      value: "Winding up",
+    },
+    {
+      name: "Other (Please specify)",
+      value: "Other (Please specify)",
+    },
+    {
+      name: "Or leave blank",
+      value: "Or leave blank",
+    },
+  ];
+  
+
+
+  
 const optionsFamilyLaw = [
   {
     name: "",
@@ -162,36 +554,48 @@ const optionsFamilyLaw = [
     value: "- - - Other / Not in the list - - -",
   },
   {
-    name: "Children Act proceedings",
-    value: "Children Act proceedings",
+    name: "Jactitation of marriage",
+    value: "Jactitation of marriage",
   },
   {
-    name: "Cohabitation disputes",
-    value: "Cohabitation disputes",
+    name: "Dissolution of marriage/Khula",
+    value: "Dissolution of marriage/Khula",
   },
   {
-    name: "Divorce proceedings",
-    value: "Divorce proceedings",
+    name: "Restitution of conjugal rights",
+    value: "Restitution of conjugal rights",
   },
   {
-    name: "Domestic violence",
-    value: "Domestic violence",
+    name: "Maintenance",
+    value: "Maintenance",
   },
   {
-    name: "Financial settlements and proceedings",
-    value: "Financial settlements and proceedings",
+    name: "Dower",
+    value: "Dower",
   },
   {
-    name: "Prenuptial agreements",
-    value: "Prenuptial agreements",
+    name: "Dowry article/gifts",
+    value: "Dowry article/gifts",
   },
   {
-    name: "Separation agreements",
-    value: "Separation agreements",
+    name: "Child custody/Guardianship",
+    value: "Child custody/Guardianship",
+  },
+  {
+    name: "Child visitation rights",
+    value: "Child visitation rights",
+  },
+  {
+    name: "Other (Please specify)",
+    value: "Other (Please specify)",
+  },
+  {
+    name: "Or leave blank option",
+    value: "Or leave blank option",
   },
 ];
 
-const optionsEmploymentLaw = [
+const optionsBankingLaw = [
   {
     name: "",
     value: "",
@@ -201,52 +605,36 @@ const optionsEmploymentLaw = [
     value: "- - - Other / Not in the list - - -",
   },
   {
-    name: "Bullying/Harassment",
-    value: "Bullying/Harassment",
+    name: "Suit for recovery by the Bank",
+    value: "Suit for recovery by the Bank",
   },
   {
-    name: "Constructive Dismissal",
-    value: "Constructive Dismissal",
+    name: "Suit for recovery against the bank",
+    value: "Suit for recovery against the bank",
   },
   {
-    name: "Discrimination",
-    value: "Discrimination",
+    name: "Suit for damages",
+    value: "Suit for damages",
   },
   {
-    name: "Flexible Working",
-    value: "Flexible Working",
+    name: "Suit for declaration/injunction",
+    value: "Suit for declaration/injunction",
   },
   {
-    name: "Health and Safety",
-    value: "Health and Safety",
+    name: "Suit for rendition of accounts",
+    value: "Suit for rendition of accounts",
   },
   {
-    name: "Maternity/Paternity Rights",
-    value: "Maternity/Paternity Rights",
+    name: "Other (Please specify)",
+    value: "Other (Please specify)",
   },
   {
-    name: "Occupational Illness/Injury",
-    value: "Occupational Illness/Injury",
-  },
-  {
-    name: "TUPE",
-    value: "TUPE",
-  },
-  {
-    name: "Unfair Dismissal",
-    value: "Unfair Dismissal",
-  },
-  {
-    name: "Whistleblowing/Protected Disclosures",
-    value: "Whistleblowing/Protected Disclosures",
-  },
-  {
-    name: "Wrongful Dismissal/Breach of Contract",
-    value: "Wrongful Dismissal/Breach of Contract",
+    name: "Or leave blank",
+    value: "Or leave blank",
   },
 ];
 
-const optionsHumanRights = [
+const optionsTaxLaw = [
   {
     name: "",
     value: "",
@@ -256,229 +644,51 @@ const optionsHumanRights = [
     value: "- - - Other / Not in the list - - -",
   },
   {
-    name: "Abuse Claims",
-    value: "Abuse Claims",
+    name: "Income tax",
+    value: "Income tax",
   },
   {
-    name: "Community Care",
-    value: "Community Care",
+    name: "Sales tax",
+    value: "Sales tax",
   },
   {
-    name: "Deprivation of Liberty",
-    value: "Deprivation of Liberty",
+    name: "Federal excise law",
+    value: "Federal excise law",
   },
   {
-    name: "Disability Rights",
-    value: "Disability Rights",
+    name: "Customs",
+    value: "Customs",
   },
   {
-    name: "Educational Rights",
-    value: "Educational Rights",
+    name: "Property tax",
+    value: "Property tax",
   },
   {
-    name: "Fatal Accident Claims",
-    value: "Fatal Accident Claims",
+    name: "Provincial sales tax",
+    value: "Provincial sales tax",
   },
   {
-    name: "Health and Social Care",
-    value: "Health and Social Care",
+    name: "Employees old age benefit",
+    value: "Employees old age benefit",
   },
   {
-    name: "Inquests",
-    value: "Inquests",
+    name: "Worker’s participation fund",
+    value: "Worker’s participation fund",
   },
   {
-    name: "Mental Capacity",
-    value: "Mental Capacity",
+    name: "Other (Please specify)",
+    value: "Other (Please specify)",
   },
   {
-    name: "Military Injury Claims",
-    value: "Military Injury Claims",
-  },
-  {
-    name: "Public Law",
-    value: "Public Law",
-  },
-  {
-    name: "Refugee & Migrant Support",
-    value: "Refugee & Migrant Support",
-  },
-];
-
-const optionsImmigrationAssylum = [
-  {
-    name: "",
-    value: "",
-  },
-  {
-    name: "- - - Other / Not in the list - - -",
-    value: "- - - Other / Not in the list - - -",
-  },
-  {
-    name: "Assylum",
-    value: "Assylum",
-  },
-  {
-    name: "British citizenship",
-    value: "British citizenship",
-  },
-  {
-    name: "Entry Clearance / Arriving in the UK",
-    value: "Entry Clearance / Arriving in the UK",
-  },
-  {
-    name: "EU, EEA and Commonwealth",
-    value: "EU, EEA and Commonwealth",
-  },
-  {
-    name: "Family visas",
-    value: "Family visas",
-  },
-  {
-    name: "Human Rights",
-    value: "Human Rights",
-  },
-  {
-    name: "Passport & Travel Document",
-    value: "Passport & Travel Document",
-  },
-  {
-    name: "Settle in the UK",
-    value: "Settle in the UK",
-  },
-  {
-    name: "Sponsor workers or students",
-    value: "Sponsor workers or students",
-  },
-  {
-    name: "Stateless",
-    value: "Stateless",
-  },
-  {
-    name: "Student visas",
-    value: "Student visas",
-  },
-  {
-    name: "Tourist and short stay visas",
-    value: "Tourist and short stay visas",
-  },
-  {
-    name: "Transit visas",
-    value: "Transit visas",
-  },
-  {
-    name: "Work visas",
-    value: "Work visas",
-  },
-];
-
-const optionsPersonalInjury = [
-  {
-    name: "",
-    value: "",
-  },
-  {
-    name: "- - - Other / Not in the list - - -",
-    value: "- - - Other / Not in the list - - -",
-  },
-  {
-    name: "Accidents at work",
-    value: "Accidents at work",
-  },
-  {
-    name: "Amputation claims",
-    value: "Amputation claims",
-  },
-  {
-    name: "Asbestos claims",
-    value: "Asbestos claims",
-  },
-  {
-    name: "Brain injury claims",
-    value: "Brain injury claims",
-  },
-  {
-    name: "Criminal injury",
-    value: "Criminal injury",
-  },
-  {
-    name: "Mesothelioma claims",
-    value: "Mesothelioma claims",
-  },
-  {
-    name: "Multiple injury claims",
-    value: "Multiple injury claims",
-  },
-  {
-    name: "Personal injury trusts",
-    value: "Personal injury trusts",
-  },
-  {
-    name: "Public liability claims",
-    value: "Public liability claims",
-  },
-  {
-    name: "Road Traffic Accident",
-    value: "Road Traffic Accident",
-  },
-  {
-    name: "Slip & Trip",
-    value: "Slip & Trip",
-  },
-  {
-    name: "Spinal injury claims",
-    value: "Spinal injury claims",
-  },
-  {
-    name: "Stress related injury",
-    value: "Stress related injury",
+    name: "Or leave blank",
+    value: "Or leave blank",
   },
 ];
 
 const nulllist = [null];
 
-const optionsHousingLaw = [
-  {
-    name: "",
-    value: "",
-  },
-  {
-    name: "- - - Other / Not in the list - - -",
-    value: "- - - Other / Not in the list - - -",
-  },
-  {
-    name: "Commercial Property",
-    value: "Commercial Property",
-  },
-  {
-    name: "International Property",
-    value: "International Property",
-  },
-  {
-    name: "Property Licensing",
-    value: "Property Licensing",
-  },
-  {
-    name: "Residential Property",
-    value: "Residential Property",
-  },
-];
 
 const optionsCaseSupervisor = [
-  {
-    name: "",
-    value: "",
-  },
-  {
-    name: "Asim Tauqeer",
-    value: "Asim Tauqeer",
-  },
-  {
-    name: "John Smith",
-    value: "John Smith",
-  },
-];
-const optionsCaseWorker = [
   {
     name: "",
     value: "",
@@ -520,17 +730,259 @@ const optionsChances = [
   },
 ];
 
+
+const optionsLitigationTypes = [
+  {
+    name: "New Case start (no previous date in diary register)",
+    value: "New Case start (no previous date in diary register)",
+  },
+  {
+    name: "Pending adjudication case",
+    value: "Pending adjudication case",
+  },{
+    name: "Litigation consultation only",
+    value: "Litigation consultation only",
+  },
+];
+
+const optionsCourts = [
+  {
+    name: "Supreme Court of Pakistan",
+    value: "Supreme Court of Pakistan",
+  },
+  {
+    name: "Lahore High Court",
+    value: "Lahore High Court",
+  },
+  {
+    name: "Sindh High Court",
+    value: "Sindh High Court",
+  },
+  {
+    name: "(KPK) Peshawar High Court",
+    value: "(KPK) Peshawar High Court",
+  },
+  {
+    name: "Balochistan High Court",
+    value: "Balochistan High Court",
+  },
+  {
+    name: "Gilgit Baltistan High Court",
+    value: "Gilgit Baltistan High Court",
+  },
+  {
+    name: "Islamabad High Court",
+    value: "Islamabad High Court",
+  },
+  {
+    name: "Federal Shariat Court",
+    value: "Federal Shariat Court",
+  },
+  {
+    name: "District & Sessions Judge",
+    value: "District & Sessions Judge",
+  },
+  {
+    name: "Additional District & Sessions Judge",
+    value: "Additional District & Sessions Judge",
+  },
+  {
+    name: "Senior Civil Judge",
+    value: "Senior Civil Judge",
+  },
+  {
+    name: "Civil Judge Class",
+    value: "Civil Judge Class",
+  },
+  {
+    name: "Judicial Magistrate",
+    value: "Judicial Magistrate",
+  },
+  {
+    name: "Special Judicial Magistrate",
+    value: "Special Judicial Magistrate",
+  },
+  {
+    name: "Family Court",
+    value: "Family Court",
+  },
+  {
+    name: "Guardian and Ward Court",
+    value: "Guardian and Ward Court",
+  },
+  {
+    name: "Anti-Terrorism Court",
+    value: "Anti-Terrorism Court",
+  },
+  {
+    name: "Anti-Corruption Court",
+    value: "Anti-Corruption Court",
+  },
+  {
+    name: "Special Judge Central",
+    value: "Special Judge Central",
+  },
+  {
+    name: "Special Court for offence in Banks",
+    value: "Special Court for offence in Banks",
+  },
+  {
+    name: "National Accountability Court",
+    value: "National Accountability Court",
+  },
+  {
+    name: "Banking Court",
+    value: "Banking Court",
+  },
+  {
+    name: "Collector of Customs",
+    value: "Collector of Customs",
+  },
+  {
+    name: "Collector of Customs (Appeals)",
+    value: "Collector of Customs (Appeals)",
+  },
+  {
+    name: "Customs Tribunal",
+    value: "Customs Tribunal",
+  },
+  {
+    name: "Drug Courts",
+    value: "Drug Courts",
+  },
+  {
+    name: "Labour Courts",
+    value: "Labour Courts",
+  },
+  {
+    name: "National Industrial Relation Commission",
+    value: "National Industrial Relation Commission",
+  },
+  {
+    name: "Board of Revenue",
+    value: "Board of Revenue",
+  },
+  {
+    name: "Consumer Court",
+    value: "Consumer Court",
+  },
+  {
+    name: "Secretary Cooperative Societies",
+    value: "Secretary Cooperative Societies",
+  },
+  {
+    name: "Labour Appellate Tribunal",
+    value: "Labour Appellate Tribunal",
+  },
+  {
+    name: "Intellectual Property Tribunal",
+    value: "Intellectual Property Tribunal",
+  },
+  {
+    name: "Anti-Dumping Appellate Tribunal",
+    value: "Anti-Dumping Appellate Tribunal"
+  }]
+
+// const optionsLitigationTypes = [
+
+  const optionsNatureLitigation = [
+    {
+      name: "Bail before arrest",
+      value: "Bail before arrest",
+    },
+    {
+      name: "Bail after arrest",
+      value: "Bail after arrest",
+    },
+    {
+      name: "Supurdari",
+      value: "Supurdari",
+    },
+    {
+      name: "Application under Section 22/A, 22/B Cr.P.C.",
+      value: "Application under Section 22/A, 22/B Cr.P.C.",
+    },
+    {
+      name: "Quashment",
+      value: "Quashment",
+    },
+    {
+      name: "Trial",
+      value: "Trial",
+    },
+    {
+      name: "Complaint U/S 202",
+      value: "Complaint U/S 202",
+    },
+    {
+      name: "Petition",
+      value: "Petition",
+    },
+    {
+      name: "Application",
+      value: "Application",
+    },
+    {
+      name: "Appeal",
+      value: "Appeal",
+    },
+    {
+      name: "Intra Court Appeal",
+      value: "Intra Court Appeal",
+    },
+    {
+      name: "Review",
+      value: "Review",
+    },
+    {
+      name: "Revision",
+      value: "Revision",
+    },
+    {
+      name: "Constitutional petition U/A 188 etc.",
+      value: "Constitutional petition U/A 188 etc.",
+    },
+    {
+      name: "Constitutional Petitioner U/A 184 etc.",
+      value: "Constitutional Petitioner U/A 184 etc.",
+    },
+    {
+      name: "Rectification of mistake in a Court decision",
+      value: "Rectification of mistake in a Court decision",
+    },
+    {
+      name: "Miscellaneous Application",
+      value: "Miscellaneous Application",
+    },
+    {
+      name: "Others (Please specify option)",
+      value: "Others (Please specify option)",
+    },
+    {
+      name: "Or leave blank option",
+      value: "Or leave blank option",
+    },
+  ];
+  
+
 export {
   nulllist,
   optionsChances,
-  optionsCaseWorker,
   optionsCaseSupervisor,
   optionsHousingLaw,
   optionsConsumerLaw,
   optionsCriminalLaw,
-  optionsPersonalInjury,
-  optionsImmigrationAssylum,
-  optionsHumanRights,
-  optionsEmploymentLaw,
+  optionsServiceLaw,
+  optionsCompanyLaw,
+  optionsBankingLaw,
   optionsFamilyLaw,
+  optionsTaxLaw,
+  optionsCriminalLaw_2,
+  optionsCriminalLaw_3,
+  optionsCompetitionLaw,
+  optionsPublicInterestLaw,
+  optionsOtherLaw,
+  optionsLitigationTypes,
+  optionsCourts,
+  optionsNatureLitigation
 };
