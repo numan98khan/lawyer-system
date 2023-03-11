@@ -6,6 +6,8 @@ import {
   CASEWORKERS_LOADING,
   ADD_CASEWORKER,
   DELETE_CASEWORKER,
+  USERS_LOADED,
+  USERS_LOADING
   // FILTER_CASE
 } from "../actions/types";
 import fire, { firebaseConfig } from "../fire";
@@ -32,6 +34,33 @@ export const loadCaseWorkers = (casePath) => (dispatch, getState) => {
 
       dispatch({
         type: CASEWORKERS_LOADED,
+        payload: workers,
+      });
+
+      // console.log(this.state.clientsList)
+    });
+};
+
+export const loadWorkers = (casePath) => (dispatch, getState) => {
+  dispatch({ type: USERS_LOADING });
+
+  var fb = fire.getFire();
+  var workers = [];
+
+  fb.database()
+    .ref("/")
+    .child("users")
+    .on("value", function(snapshot) {
+      workers = [];
+      snapshot.forEach((doc) => {
+        var tempJSON = doc.toJSON();
+        tempJSON["id"] = doc.key;
+
+        workers.push(tempJSON);
+      });
+
+      dispatch({
+        type: USERS_LOADED,
         payload: workers,
       });
 

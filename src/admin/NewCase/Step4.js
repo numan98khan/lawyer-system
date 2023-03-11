@@ -14,8 +14,13 @@ import {
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
-    minWidth: "35vw",
+    width: "100%",
 
+  },
+  heading: {
+    textAlign: "center",
+    marginTop: 20,
+    marginBottom: 10,
   },
 }));
 
@@ -28,8 +33,31 @@ function CourtForm({ formData, handleInputChange }) {
     setCourtName(event.target.value);
   };
 
+  const fields = {
+    "judge":
+    {
+      label: "judge",
+      id: "judge",
+      value: formData.judge || "",
+    },
+    "district":
+    {
+      label: "district",
+      id: "district",
+      value: formData.district || "",
+    },
+    "court":
+    {
+      label: "court",
+      id: "court",
+      value: formData.court || "",
+    },
+  }
+
   return (
 <>
+<h2 className={classes.heading}>Court Details</h2>
+      
     <FormControl className={classes.formControl}>
         <TextField
           variant="outlined"
@@ -40,8 +68,8 @@ function CourtForm({ formData, handleInputChange }) {
 
           // value={formData.courtName}
           
-          name='judge'
-          value={formData.judge}
+          value={fields['judge'].value}
+          name={fields['judge'].id}
           onChange={handleInputChange}
           
           label="Name of the Judge"
@@ -57,8 +85,8 @@ function CourtForm({ formData, handleInputChange }) {
           // }}
 
           // value={formData.courtName}
-          name='district'
-          value={formData.district}
+          value={fields['district'].value}
+          name={fields['district'].id}
           onChange={handleInputChange}
           
           label="District/Bench/Tehsil"
@@ -69,9 +97,12 @@ function CourtForm({ formData, handleInputChange }) {
       
       <InputLabel htmlFor="court-select">Name of Court</InputLabel>
       <Select
-        value={formData.courtName}
-        name='courtName'
+
+
+        value={fields['court'].value}
+        name={fields['court'].id}
         onChange={handleInputChange}
+
         inputProps={{ id: "court-select" }}
       >
         {optionsCourts.map((option, index) => (

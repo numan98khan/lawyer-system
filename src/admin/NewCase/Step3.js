@@ -5,6 +5,11 @@ import FormControl from "@material-ui/core/FormControl";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import TextField from "@material-ui/core/TextField";
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 import DateFnsUtils from "@date-io/date-fns";
 
@@ -31,6 +36,17 @@ const useStyles = makeStyles((theme) => ({
 function StepTwo({ formData, handleInputChange }) {
   const classes = useStyles();
 
+  const dateDecision = [
+    {
+      name: "Specify",
+      value: "Specify",
+    },
+    {
+      name: "Or leave blank",
+      value: "Or leave blank",
+    },
+  ];
+
   const fields = [
     {
       label: "Litigation Case Title",
@@ -40,17 +56,17 @@ function StepTwo({ formData, handleInputChange }) {
     {
       label: "Date of Hearing",
       id: "substantiveDateOfHearing",
-      value: formData.substantiveDateOfHearing || new Date(),
+      value: formData.substantiveDateOfHearing || null,
     },
     {
       label: "Date of Last Hearing",
       id: "substantiveDateOfLastHearing",
-      value: formData.substantiveDateOfLastHearing || new Date(),
+      value: formData.substantiveDateOfLastHearing || null,
     },
     {
       label: "Date of Next Hearing",
       id: "substantiveDateOfNextHearing",
-      value: formData.substantiveDateOfNextHearing || new Date(),
+      value: formData.substantiveDateOfNextHearing || null,
     },
     {
       label: "Date not fixed yet/new case",
@@ -60,17 +76,18 @@ function StepTwo({ formData, handleInputChange }) {
     {
       label: "Date of Hearing",
       id: "interimDateOfHearing",
-      value: formData.interimDateOfHearing || new Date(),
+      // value: formData.interimDateOfHearing || new Date(),
+      value: formData.interimDateOfHearing || null,
     },
     {
       label: "Date of Last Hearing",
       id: "interimDateOfLastHearing",
-      value: formData.interimDateOfLastHearing || new Date(),
+      value: formData.interimDateOfLastHearing || null,
     },
     {
       label: "Date of First Hearing",
       id: "interimDateOfFirstHearing",
-      value: formData.interimDateOfFirstHearing || new Date(),
+      value: formData.interimDateOfFirstHearing || null,
     },
     {
       label: "Date not fixed yet/new case",
@@ -101,7 +118,38 @@ function StepTwo({ formData, handleInputChange }) {
             />
           </FormControl>
         ))}
+        
+        {fields.slice(9).map(({ label, id, value }) => (
+          <FormControl key={id} className={classes.formControl}>
+
+            <TextField
+              label={label}
+
+              id={id}
+              name={id}
+              value={value}
+              onChange={handleInputChange}
+            />
+          </FormControl>
+        ))}
+        <FormControlLabel
+            // key={id}
+            control={
+              <Checkbox
+                checked={fields[8].value}
+                onChange={handleInputChange}
+                name={fields[8].id}
+              />
+            }
+            label={fields[8].label}
+          />
+
+
+        </div>
         <h6 className={classes.heading}>Substantive date of hearing</h6>
+        
+        <div className={classes.formRow}>
+        {/* <h6 className={classes.heading}>Substantive date of hearing</h6> */}
         
         {fields.slice(1, 4).map(({ label, id, value }) => (
           <FormControl key={id} className={classes.formControl}>
@@ -115,6 +163,7 @@ function StepTwo({ formData, handleInputChange }) {
                 id={id}
                 name={id}
                 // label="Date of birth"
+                label={label}
                 format="MM/dd/yyyy"
                 value={value}
                 onChange={(e) => {
@@ -132,26 +181,14 @@ function StepTwo({ formData, handleInputChange }) {
               />
             </MuiPickersUtilsProvider>
 
-            {/* <DatePicker
-                  label={label}
-                  id={id}
-                  name={id}
-                  value={value}
-                  onChange={handleInputChange}
-                  format="MM/dd/yyyy"
-            /> */}
-            {/* <TextField
-              label={label}
-
-              id={id}
-              name={id}
-              value={value}
-              onChange={handleInputChange}
-            /> */}
           </FormControl>
         ))}
 
+        </div>
+
         <h6 className={classes.heading}>Interim date of hearing</h6>
+      <div className={classes.formRow}>
+        {/* <h6 className={classes.heading}>Interim date of hearing</h6> */}
         {fields.slice(5, 8).map(({ label, id, value }) => (
           <FormControl key={id} className={classes.formControl}>
 
@@ -164,6 +201,8 @@ function StepTwo({ formData, handleInputChange }) {
                 id={id}
                 name={id}
                 // label="Date of birth"
+                label={label}
+                
                 format="MM/dd/yyyy"
                 value={value}
                 onChange={(e) => {
@@ -191,19 +230,7 @@ function StepTwo({ formData, handleInputChange }) {
             /> */}
           </FormControl>
         ))}
-        {fields.slice(8).map(({ label, id, value }) => (
-          <FormControl key={id} className={classes.formControl}>
-
-            <TextField
-              label={label}
-
-              id={id}
-              name={id}
-              value={value}
-              onChange={handleInputChange}
-            />
-          </FormControl>
-        ))}
+        
       </div>
     </>
   );

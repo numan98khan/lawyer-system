@@ -36,11 +36,10 @@ width: '100%',
 },
 }));
 
-function LitigationForm({category, setCategory, subCategory, setSubCategory, formData, handleInputChange }) {
+function LitigationForm({formData, handleInputChange }) {
 const classes = useStyles();
 // const { category, subCategory} = formData;
 
-console.log(category);
 
 const subCategoryOptions = {
   "Civil Litigation": optionsCivilLitigation,
@@ -61,26 +60,54 @@ const subCategoryOptions = {
   // "Human Rights": optionsHumanRights,
   // "Immigration & Asylum": optionsImmigrationAssylum,
   // "Personal injury & clinical negligence": optionsPersonalInjury,
-}[category];
+}[formData.litigation.category];
 
 
-// const subCategoryOptions = [
-//   { name: 'Details 1', value: 'details1' },
-//   { name: 'Details 2', value: 'details2' },
-//   { name: 'Details 3', value: 'details3' },
-//   ];
+// const optionsCriminalLaw_2 = [
+// { name: 'Details 1', value: 'details1' },
+// { name: 'Details 2', value: 'details2' },
+// { name: 'Details 3', value: 'details3' },
+// ];
 
-const optionsCriminalLaw_2 = [
-{ name: 'Details 1', value: 'details1' },
-{ name: 'Details 2', value: 'details2' },
-{ name: 'Details 3', value: 'details3' },
-];
+// const optionsCriminalLaw_3 = [
+// { name: 'Details 1', value: 'details1' },
+// { name: 'Details 2', value: 'details2' },
+// { name: 'Details 3', value: 'details3' },
+// ];
 
-const optionsCriminalLaw_3 = [
-{ name: 'Details 1', value: 'details1' },
-{ name: 'Details 2', value: 'details2' },
-{ name: 'Details 3', value: 'details3' },
-];
+const fields = {
+    "litigationCategory":
+    {
+      label: "litigation.category",
+      id: "litigation.category",
+      value: formData.litigation.category || "",
+    },
+    "subCategory":
+    {
+      label: "litigation.subCategory",
+      id: "litigation.subCategory",
+      value: formData.litigation.subCategory || "",
+    },
+
+    "natureOfOffense":
+    {
+      label: "litigation.natureOfOffense",
+      id: "litigation.natureOfOffense",
+      value: formData.litigation.natureOfOffense || "",
+    },
+    "descriptionOfOffense":
+    {
+      label: "litigation.descriptionOfOffense",
+      id: "litigation.descriptionOfOffense",
+      value: formData.litigation.descriptionOfOffense || "",
+    },
+    "detailsOfCase":
+    {
+      label: "litigation.detailsOfCase",
+      id: "litigation.detailsOfCase",
+      value: formData.litigation.detailsOfCase || "",
+    },
+  }
 
 const handleSubCategoryChange = (event) => {
 const { value } = event.target;
@@ -96,10 +123,16 @@ Litigation Information
     <FormControl className={classes.formControl}>
         <InputLabel>category</InputLabel>
         <Select
-          value={category}
-          onChange={(e) => {
-            setCategory(e.target.value);
-          }}
+          
+          value={fields['litigationCategory'].value}
+          name={fields['litigationCategory'].id}
+          
+          onChange={handleInputChange}
+          
+          // value={category}
+          // onChange={(e) => {
+          //   setCategory(e.target.value);
+          // }}
         >
           <MenuItem value={"Civil Litigation"} >
             Civil Litigation
@@ -145,22 +178,30 @@ Litigation Information
       </FormControl>
 
     <FormControl className={classes.formControl}>
-      {category === "Criminal Litigation" ?
+      {fields['litigationCategory'].value === "Criminal Litigation" ?
         <InputLabel>{`Select Nature of Offense `}</InputLabel>
-        : <InputLabel>{`Select ${category} sub-category`}</InputLabel>
+        : <InputLabel>{`Select ${fields['litigationCategory'].value} sub-category`}</InputLabel>
       }
       
       <Select
-        value={subCategory}
-        onChange={(e) => {
-          setSubCategory(e.target.value);
-        }}
+        value={fields['subCategory'].value}
+        name={fields['subCategory'].id}
+        onChange={handleInputChange}
+          
+        // value={subCategory}
+        // onChange={(e) => {
+        //   setSubCategory(e.target.value);
+        // }}
       >
         
         
         {subCategoryOptions.map((option, index) => {
           return (
-            <MenuItem key={index} value={option.value}>
+            <MenuItem 
+              key={index} 
+              value={option.value}
+
+              >
               {option.name}
             </MenuItem>
           );
@@ -170,11 +211,17 @@ Litigation Information
       </FormControl>
 
   {/* 2nd  */}
-  {category === 'Criminal Litigation' && (
+  {fields['litigationCategory'].value === 'Criminal Litigation' && (
     <>
       <FormControl className={classes.formControl}>
         <InputLabel>{`Select Description of Offense`}</InputLabel>
-        <Select value={subCategory} onChange={handleSubCategoryChange}>
+        <Select 
+          value={fields['descriptionOfOffense'].value}
+          name={fields['descriptionOfOffense'].id}
+          onChange={handleInputChange}
+          // value={subCategory} 
+          // onChange={handleSubCategoryChange}
+        >
           {optionsCriminalLaw_2.map((option, index) => (
             <MenuItem key={index} value={option.value}>
               {option.name}
@@ -186,11 +233,17 @@ Litigation Information
   )}
 
   {/* 3rd  */}
-  {category === 'Criminal Litigation' && (
+  {fields['litigationCategory'].value === 'Criminal Litigation' && (
     <>
       <FormControl className={classes.formControl}>
         <InputLabel>{`Select Details of Case`}</InputLabel>
-        <Select value={subCategory} onChange={handleSubCategoryChange}>
+        <Select 
+          value={fields['detailsOfCase'].value}
+          name={fields['detailsOfCase'].id}
+          onChange={handleInputChange}
+          // value={subCategory} 
+          // onChange={handleSubCategoryChange}
+        >
           {optionsCriminalLaw_3.map((option, index) => (
             <MenuItem key={index} value={option.value}>
               {option.name}

@@ -9,6 +9,7 @@ import OtherPartyDetails from './Step6';
 import ContactPerson from './Step7';
 import NatureOfLitigation from './Step8';
 import CaseCategory from './Step9';
+import WorkerAssignment from './Step10';
 
 import Navigation from './Navigation';
 import './Form.css';
@@ -47,7 +48,7 @@ function Form(props) {
   const classes = useStyles();
 
   const [formData, setFormData] = useState({
-    category: 'Civil Litigation',
+    // category: 'Civil Litigation',
 
     legalOpinion: false,
     legalDrafting: false,
@@ -58,18 +59,17 @@ function Form(props) {
     // courtName: '',
     clientDetails: {name: 'Nauman'},
     otherPartyDetails: {},
-    contactPerson: {}
+    contactPerson: {},
+
+    // // Worker Details
+    // worker: null,
+    // clerk: null,
+    // caseowner: null,
+
+    litigation: {category: 'Civil Litigation'}
   });
 
-  // const [formData, setFormData] = useState();
-
-  // const handleInputChange = (event) => {
-  //   // console.log("inputting", formData, event.target);
-
-
-  //   const { name, value } = event.target;
-  //   setFormData({ ...formData, [name]: value });
-  // };
+  console.log('MyProps', props);
 
   const handleInputChange = (event) => {
     console.log(event);
@@ -109,20 +109,9 @@ function Form(props) {
     }
   };
 
-  // const handleInputChange = (event) => {
-  //   const { name, value } = event.target;
-  //   setFormData((prevState) => ({
-  //     ...prevState,
-  //     clientDetails: {
-  //       ...prevState.clientDetails,
-  //       [name]: value
-  //     }
-  //   }));
-  // };
-
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (step < 9) {
+    if (step < 10) {
       setStep(step + 1);
     } else {
 
@@ -134,7 +123,7 @@ function Form(props) {
     <div className="form-container">
       <div className="form">
         <Navigation step={step} setStep={setStep} />
-        <form className="form" onSubmit={handleSubmit}>
+        <form className="sub-form" onSubmit={handleSubmit}>
           {step === 1 && (
             <CaseInstructions formData={formData} handleInputChange={handleInputChange} />
           )}
@@ -163,32 +152,48 @@ function Form(props) {
             <CaseCategory category={category} setCategory={setCategory} subCategory={subCategory} setSubCategory={setSubCategory} formData={formData} handleInputChange={handleInputChange} />
           )}
 
-          {step < 9 ? (
-            // <button type="button" onClick={() => setStep(step + 1)}>Next</button>
-            <FormControl className={classes.formControl}>
-                <ButtonContainer     
-                // className={step === 2 ? 'active' : ''}
-                      onClick={()=>setStep(step + 1)}
-                      >Next</ButtonContainer>
-            </FormControl>
-
-          ) : (
-            // <button type="submit">Submit</button>
-            <FormControl className={classes.formControl}>
-                <ButtonContainer     className={step === 2 ? 'active' : ''}
-                      onClick={()=> {
-                        
-                        location.state.caseDetails = formData;
-                        location.state.paymentOptions = {};
-                        console.log(location.state)
-                        // props.addClientAndCase(location.state).then(()=>{
-                        //     alert("case added successfully")
-                        //     // history.push('/')
-                        // });
-                      }}
-                      >Submit</ButtonContainer>
-            </FormControl>
+          {step === 10 && (
+            <WorkerAssignment workers={props.caseworkers} category={category} setCategory={setCategory} subCategory={subCategory} setSubCategory={setSubCategory} formData={formData} handleInputChange={handleInputChange} />
           )}
+
+          {/* form buttons */}
+          <div className="form-buttons">
+            {step < 10 ? (
+              <FormControl className={classes.formControl}>
+                <ButtonContainer
+                  // onClick={() => setStep(step + 1)}
+                  onClick={() => {
+
+                    location.state.caseDetails = formData;
+                    location.state.paymentOptions = {};
+                    console.log(location.state);
+                    // props.addClientAndCase(location.state).then(()=>{
+                    //     alert("case added successfully")
+                    //     // history.push('/')
+                    // });
+                  }}
+                >
+                  Next
+                </ButtonContainer>
+              </FormControl>
+            ) : (
+              <FormControl className={classes.formControl}>
+                <ButtonContainer
+                  onClick={() => {
+                    location.state.caseDetails = formData;
+                    location.state.paymentOptions = {};
+                    console.log(location.state);
+                    props.addClientAndCase(location.state).then(()=>{
+                        alert("case added successfully")
+                        // history.push('/')
+                    });
+                  }}
+                >
+                  Submit
+                </ButtonContainer>
+              </FormControl>
+            )}
+          </div>
         </form>
       </div>
     </div>
@@ -198,7 +203,7 @@ function Form(props) {
 // export default Form;
 
 const mapStateToProps = (state) => ({
-  // user: state.user,
+  caseworkers: state.caseworker.case_workers,
   // type: state.type
 });
 export default connect(mapStateToProps, { addClientAndCase })(

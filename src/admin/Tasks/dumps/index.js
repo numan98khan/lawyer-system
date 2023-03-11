@@ -39,6 +39,29 @@ import {
 } from "@material-ui/pickers";
 import { createTheme } from "@material-ui/core";
 
+const hearingTableHeaders = [
+  "#", 
+  "FILE#", 
+  "CASE#", 
+  "COURT CASE#", 
+  "CASE TITLE", 
+  "NATURE OF CASE", 
+  "CATEGORY", 
+  "COURT",
+  "DISTRICT",
+  "JUDGE",
+  "PREVIOUS PROCEEDINGS",
+  "PREVIOUS DATE",
+  "NEXT DATE",
+  "NEXT PROCEEDINGS",
+  "REMARKS",  
+  "CASE OWNER",
+  "CASE SUPERVISOR",
+  "CASE WORKER",
+  "CASE CLERK",
+  "OTHER PARTY",
+  "UPDATED BY"];
+
 function Tasks(props) {
   const [searchterm, setsearchterm] = React.useState("");
   const [NoHearings, setNoHearings] = React.useState(true);
@@ -124,6 +147,7 @@ function Tasks(props) {
       }
     }
   }
+
   function filterHearing(row) {
     {
       if (props.user.user.type === "worker") {
@@ -196,198 +220,17 @@ function Tasks(props) {
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
               <TableRow>
-                {/* <TableCell align="center">Dessert (100g serving)</TableCell> */}
-                <TableCell
-                  align="center"
-                  style={{
-                    color: "white",
-                    backgroundColor: "var(--mainPurple)",
-                  }}
-                >
-                  #
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    color: "white",
-                    backgroundColor: "var(--mainPurple)",
-                  }}
-                >
-                  FILE#
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    color: "white",
-                    backgroundColor: "var(--mainPurple)",
-                  }}
-                >
-                  CASE#
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    color: "white",
-                    backgroundColor: "var(--mainPurple)",
-                  }}
-                >
-                  COURT CASE#
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    color: "white",
-                    backgroundColor: "var(--mainPurple)",
-                  }}
-                >
-                  CASE TITLE
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    color: "white",
-                    backgroundColor: "var(--mainPurple)",
-                  }}
-                >
-                  NATURE OF CASE
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    color: "white",
-                    backgroundColor: "var(--mainPurple)",
-                  }}
-                >
-                  CATEGORY
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    color: "white",
-                    backgroundColor: "var(--mainPurple)",
-                  }}
-                >
-                  COURT
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    color: "white",
-                    backgroundColor: "var(--mainPurple)",
-                  }}
-                >
-                  DISTRICT
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    color: "white",
-                    backgroundColor: "var(--mainPurple)",
-                  }}
-                >
-                  JUDGE
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    color: "white",
-                    backgroundColor: "var(--mainPurple)",
-                  }}
-                >
-                  PREVIOUS PROCEEDINGS
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    color: "white",
-                    backgroundColor: "var(--mainPurple)",
-                  }}
-                >
-                  PREVIOUS DATE
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    color: "white",
-                    backgroundColor: "var(--mainPurple)",
-                  }}
-                >
-                  NEXT DATE
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    color: "white",
-                    backgroundColor: "var(--mainPurple)",
-                  }}
-                >
-                  NEXT PROCEEDINGS
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    color: "white",
-                    backgroundColor: "var(--mainPurple)",
-                  }}
-                >
-                  REMARKS
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    color: "white",
-                    backgroundColor: "var(--mainPurple)",
-                  }}
-                >
-                  CASE OWNER
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    color: "white",
-                    backgroundColor: "var(--mainPurple)",
-                  }}
-                >
-                  CASE SUPERVISOR
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    color: "white",
-                    backgroundColor: "var(--mainPurple)",
-                  }}
-                >
-                  CASE WORKER
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    color: "white",
-                    backgroundColor: "var(--mainPurple)",
-                  }}
-                >
-                  CASE CLERK
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    color: "white",
-                    backgroundColor: "var(--mainPurple)",
-                  }}
-                >
-                  OTHER PARTY
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    color: "white",
-                    backgroundColor: "var(--mainPurple)",
-                  }}
-                >
-                  UPDATED BY
-                </TableCell>
+                {hearingTableHeaders.map((header) => (
+                  <TableCell
+                    align="center"
+                    style={{ color: "white", backgroundColor: "var(--mainPurple)" }}
+                  >
+                    {header}
+                  </TableCell>
+                ))}
               </TableRow>
             </TableHead>
+
             <TableBody>
               {/* show hearings data here
                       Error in code not showing
@@ -399,6 +242,7 @@ function Tasks(props) {
                   .reverse()
                   .filter((row) => filterHearing(row))
                   .map((row, idx) => {
+                    console.log("ROWED", row)
                     return (
                       <TableRow
                         className={`${row.isLast ? "highlightedRow" : ""} `}
@@ -433,7 +277,7 @@ function Tasks(props) {
                             case_n={row.case_n}
                             hearing_key={row.key}
                             cell={"caseTitle"}
-                            value={row.caseTitle}
+                            value={row.litigationCaseTitle}
                           >
                             {" "}
                           </EditableCellComp>
@@ -468,7 +312,7 @@ function Tasks(props) {
                             case_n={row.case_n}
                             hearing_key={row.key}
                             cell={"court"}
-                            value={row.court}
+                            value={row.courtName}
                           >
                             {" "}
                           </EditableCellComp>
@@ -697,7 +541,7 @@ function Tasks(props) {
                             <ListItemText
                               primary={
                                 props.cases.files[file_key]["cases"][key]
-                                  .caseTitle
+                                  .litigationCaseTitle
                               }
                               secondary={
                                 <React.Fragment>
@@ -784,322 +628,3 @@ export default connect(mapStateToProps, {
 
 //                     {/*<img src={img} className="img-fluid" alt="product" />*/}
 //                 </Paper>
-
-
-
-
-
-<TableContainer component={Paper}>
-          <Table className={classes.table} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                {/* <TableCell align="center">Dessert (100g serving)</TableCell> */}
-                <TableCell
-                  align="center"
-                  style={{
-                    color: "white",
-                    backgroundColor: "var(--mainPurple)",
-                  }}
-                >
-                  #
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    color: "white",
-                    backgroundColor: "var(--mainPurple)",
-                  }}
-                >
-                  FILE#
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    color: "white",
-                    backgroundColor: "var(--mainPurple)",
-                  }}
-                >
-                  CASE#
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    color: "white",
-                    backgroundColor: "var(--mainPurple)",
-                  }}
-                >
-                  COURT CASE#
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    color: "white",
-                    backgroundColor: "var(--mainPurple)",
-                  }}
-                >
-                  CASE TITLE
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    color: "white",
-                    backgroundColor: "var(--mainPurple)",
-                  }}
-                >
-                  NATURE OF CASE
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    color: "white",
-                    backgroundColor: "var(--mainPurple)",
-                  }}
-                >
-                  CATEGORY
-                </TableCell>
-            
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {/* show hearings data here
-                      Error in code not showing
-                    */}
-              {!NoHearings &&
-                props.hearings &&
-                props.hearings.hearings
-                  .slice(0)
-                  .reverse()
-                  .filter((row) => filterHearing(row))
-                  .map((row, idx) => {
-                    return (
-                      <TableRow
-                        className={`${row.isLast ? "highlightedRow" : ""} `}
-                      >
-                        <TableCell align="center">{row.id}</TableCell>
-                        <TableCell align="center">{row.file_n}</TableCell>
-                        <TableCell align="center">{row.case_n}</TableCell>
-
-                        {/* <TableCell align="center">{row.court_case_n}</TableCell> */}
-
-                        {row.isLast ? (
-                          <EditableCellComp
-                            updateHearing={updateHearing}
-                            file_n={row.file_n}
-                            case_n={row.case_n}
-                            hearing_key={row.key}
-                            cell={"courtCaseNo"}
-                            value={row.courtCaseNo}
-                          >
-                            {" "}
-                          </EditableCellComp>
-                        ) : (
-                          <TableCell align="center">
-                            {row.courtCaseNo}
-                          </TableCell>
-                        )}
-
-                        {row.isLast ? (
-                          <EditableCellComp
-                            updateHearing={updateHearing}
-                            file_n={row.file_n}
-                            case_n={row.case_n}
-                            hearing_key={row.key}
-                            cell={"caseTitle"}
-                            value={row.caseTitle}
-                          >
-                            {" "}
-                          </EditableCellComp>
-                        ) : (
-                          <TableCell align="center">{row.caseTitle}</TableCell>
-                        )}
-
-                        {row.isLast ? (
-                          <EditableCellComp
-                            updateHearing={updateHearing}
-                            file_n={row.file_n}
-                            case_n={row.case_n}
-                            hearing_key={row.key}
-                            cell={"subCategory"}
-                            value={row.subCategory}
-                          >
-                            {" "}
-                          </EditableCellComp>
-                        ) : (
-                          <TableCell align="center">
-                            {row.subCategory}
-                          </TableCell>
-                        )}
-
-                        <TableCell align="center">{row.category}</TableCell>
-
-                        {/* <TableCell align="center">{row.court}</TableCell> */}
-                        {row.isLast ? (
-                          <EditableCellComp
-                            updateHearing={updateHearing}
-                            file_n={row.file_n}
-                            case_n={row.case_n}
-                            hearing_key={row.key}
-                            cell={"court"}
-                            value={row.court}
-                          >
-                            {" "}
-                          </EditableCellComp>
-                        ) : (
-                          <TableCell align="center">{row.court}</TableCell>
-                        )}
-
-                        {/* <TableCell align="center">{row.district}</TableCell> */}
-                        {row.isLast ? (
-                          <EditableCellComp
-                            updateHearing={updateHearing}
-                            file_n={row.file_n}
-                            case_n={row.case_n}
-                            hearing_key={row.key}
-                            cell={"district"}
-                            value={row.district}
-                          >
-                            {" "}
-                          </EditableCellComp>
-                        ) : (
-                          <TableCell align="center">{row.district}</TableCell>
-                        )}
-
-                        {/* <TableCell align="center">{row.judge}</TableCell> */}
-                        {row.isLast ? (
-                          <EditableCellComp
-                            updateHearing={updateHearing}
-                            file_n={row.file_n}
-                            case_n={row.case_n}
-                            hearing_key={row.key}
-                            cell={"judge"}
-                            value={row.judge}
-                          >
-                            {" "}
-                          </EditableCellComp>
-                        ) : (
-                          <TableCell align="center">{row.judge}</TableCell>
-                        )}
-
-                        <TableCell align="center">
-                          {row.previous_proceedings}
-                        </TableCell>
-                        {/* <EditableCellComp value={row.} > </EditableCellComp> */}
-
-                        <TableCell align="center">
-                          {row.previous_proceedings_date}
-                        </TableCell>
-                        <TableCell align="center">
-                          {row.next_proceedings_date}
-                        </TableCell>
-                        <TableCell align="center">
-                          {row.next_proceedings}
-                        </TableCell>
-
-                        {/* <TableCell align="center">{row.remarks}</TableCell> */}
-                        {row.isLast ? (
-                          <EditableCellComp
-                            updateHearing={updateHearing}
-                            file_n={row.file_n}
-                            case_n={row.case_n}
-                            hearing_key={row.key}
-                            cell={"remarks"}
-                            value={row.remarks}
-                          >
-                            {" "}
-                          </EditableCellComp>
-                        ) : (
-                          <TableCell align="center">{row.remarks}</TableCell>
-                        )}
-
-                        {/* <TableCell align="center">{row.caseSrc}</TableCell> */}
-
-                        {row.isLast ? (
-                          <EditableCellComp
-                            updateHearing={updateHearing}
-                            file_n={row.file_n}
-                            case_n={row.case_n}
-                            hearing_key={row.key}
-                            cell={"caseSrc"}
-                            value={row.caseSrc}
-                          >
-                            {" "}
-                          </EditableCellComp>
-                        ) : (
-                          <TableCell align="center">{row.caseSrc}</TableCell>
-                        )}
-
-                        {/* <TableCell align="center">{row.caseSupervisor}</TableCell> */}
-                        {row.isLast ? (
-                          <EditableCellSelect
-                            updateHearing={updateHearing}
-                            file_n={row.file_n}
-                            case_n={row.case_n}
-                            hearing_key={row.key}
-                            cell={"caseSupervisor"}
-                            options={workers}
-                            value={row.caseSupervisor}
-                          ></EditableCellSelect>
-                        ) : (
-                          <TableCell align="center">
-                            {workers[row.caseSupervisor]}
-                          </TableCell>
-                        )}
-
-                        {/* <TableCell align="center">{row.caseWorker}</TableCell> */}
-                        {row.isLast ? (
-                          <EditableCellSelect
-                            updateHearing={updateHearing}
-                            file_n={row.file_n}
-                            case_n={row.case_n}
-                            hearing_key={row.key}
-                            cell={"caseWorker"}
-                            options={workers}
-                            value={row.caseWorker}
-                          ></EditableCellSelect>
-                        ) : (
-                          <TableCell align="center">
-                            {workers[row.caseWorker]}
-                          </TableCell>
-                        )}
-
-                        {/* <TableCell align="center">{row.case_clerk}</TableCell> */}
-                        {row.isLast ? (
-                          <EditableCellComp
-                            updateHearing={updateHearing}
-                            file_n={row.file_n}
-                            case_n={row.case_n}
-                            hearing_key={row.key}
-                            cell={"caseClerk"}
-                            value={row.caseClerk}
-                          >
-                            {" "}
-                          </EditableCellComp>
-                        ) : (
-                          <TableCell align="center">{row.caseClerk}</TableCell>
-                        )}
-
-                        {/* <TableCell align="center">{row.other_party}</TableCell> */}
-                        {row.isLast ? (
-                          <EditableCellComp
-                            updateHearing={updateHearing}
-                            file_n={row.file_n}
-                            case_n={row.case_n}
-                            hearing_key={row.key}
-                            cell={"otherParty"}
-                            value={row.otherParty}
-                          >
-                            {" "}
-                          </EditableCellComp>
-                        ) : (
-                          <TableCell align="center">{row.otherParty}</TableCell>
-                        )}
-
-                        <TableCell align="center">{row.updated_by}</TableCell>
-                      </TableRow>
-                    );
-                    // }
-                  })}
-              <AddPeshiRow />
-            </TableBody>
-          </Table>
-        </TableContainer>

@@ -3,11 +3,40 @@ import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
+import CNICTextField from "../../components/CNICTextField"
+import MaskedInput from 'react-text-mask';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+
+
+function TextMaskCNIC(props) {
+  const { inputRef, ...other } = props;
+
+  return (
+    <MaskedInput
+      {...other}
+      ref={(ref) => {
+        inputRef(ref ? ref.inputElement : null);
+      }}
+      mask={[/\d/, /\d/, /\d/, /\d/, /\d/ , '-', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/]}
+      placeholderChar={'\u2000'}
+      showMask
+    />
+  );
+}
+
+TextMaskCNIC.propTypes = {
+  inputRef: PropTypes.func.isRequired,
+};
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
-    width: "100%",
+  },
+  gridContainer: {
+    display: "grid",
+    gridTemplateColumns: "repeat(2, 1fr)",
+    gridColumnGap: "1rem",
   },
 }));
 
@@ -52,22 +81,56 @@ function ClientInformationForm({ formData, handleInputChange }) {
     },
   ];
 
+
   return (
     <>
       <h2 style={{ textAlign: "center", marginTop: 20 }}>Client Information</h2>
 
-      {fields.map(({ label, id, value }) => (
-        <FormControl key={id} className={classes.formControl}>
-          <TextField
-            required
-            name={id}
-            label={label}
-            id={id}
-            value={value}
-            onChange={handleInputChange}
-          />
-        </FormControl>
-      ))}
+      <div className={classes.gridContainer}>
+        {fields.map(({ label, id, value }) => (
+          
+          <FormControl key={id} className={classes.formControl}>
+            {id === "clientDetails.cnicNumber" ? (
+            <><InputLabel>cnic</InputLabel>
+                
+            <Input
+
+              name={id}
+              label={label}
+              id={id}
+              value={value}
+              onChange={handleInputChange}
+              
+              // value={cnic}
+              // onChange={(e)=>{setcnic(e.target.value)}}
+              
+              inputComponent={TextMaskCNIC}
+            /></>
+          ) : (
+            <TextField
+              required
+              name={id}
+              label={label}
+              id={id}
+              value={value}
+              onChange={handleInputChange}
+              fullWidth
+            />
+          )}
+            {/* {id === "password" ? ():(
+            <TextField
+              required
+              name={id}
+              label={label}
+              id={id}
+              value={value}
+              onChange={handleInputChange}
+              fullWidth
+            />)} */}
+
+          </FormControl>
+        ))}
+      </div>
     </>
   );
 }

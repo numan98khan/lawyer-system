@@ -1,5 +1,5 @@
 import { Switch, Route, withRouter } from "react-router-dom";
-import React, { Component, Fragment } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import { navbarTitleKeyValueMap } from "./admin/NewCase/lists";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -7,7 +7,7 @@ import store from "./store";
 import { loadUser } from "./actions/userActions";
 import { loadClients } from "./actions/clientActions";
 import { loadCase } from "./actions/caseActions";
-import { loadCaseWorkers } from "./actions/caseWorkersActions";
+import { loadCaseWorkers, loadWorkers } from "./actions/caseWorkersActions";
 
 import { connect } from "react-redux";
 import AuthNav from "./navigation/AuthNav";
@@ -20,100 +20,77 @@ import ClientNav from "./navigation/ClientNav";
 import AdminNav from "./navigation/AdminNav";
 import WorkerNav from "./navigation/WorkerNav";
 
-// import Tracker from "./admin/Tracker";
+function App({ user }) {
+  const [route, setRoute] = useState("");
 
-// class App extends Component {
-//   render() {
-//     // const { isAuthenticated, isVerifying } = this.props;
-//     // // console.log("isAuthenticated +++ " + isAuthenticated)
-//     return (
-//       <Tracker/>
-//     );
-//   }
-// }
-
-class App extends Component {
-  state = {
-    route: "",
-  };
-  componentDidMount() {
+  useEffect(() => {
     console.log("App.js mounting");
     store.dispatch(loadUser());
     store.dispatch(loadClients());
     store.dispatch(loadCase());
     store.dispatch(loadCaseWorkers());
-  }
-  componentDidUpdate() {
+
+    //// TODO: CHECK WHY ADDING THIS BREAKS CODE
+    // store.dispatch(loadWorkers());
+  }, []);
+
+  useEffect(() => {
     let url = window.location.href.split("localhost:3000");
     let route = url.pop();
-    if (route !== this.state.route) {
-      this.setState({
-        route: route,
-      });
+    if (route !== setRoute) {
+      setRoute(route);
     }
-  }
+  }, [window.location.href]);
 
-  render() {
-    // const { isAuthenticated, isVerifying } = this.props;
+  const isLoading = user.isLoading;
+  const userType = user.user?.type;
 
-    return (
-      <div className="d-flex flex-column">
-        {this.props.user.user && this.props.user.isLoading === false ? (
-          <Navbar title={navbarTitleKeyValueMap[this.state.route]} />
-        ) : null}
-        {this.props.user.isLoading === true ? (
-          <div className="d-flex loader"></div>
-        ) : this.props.user.user ? (
-          this.props.user.user.type === "admin" ? (
-            <AdminNav />
-          ) : this.props.user.user.type === "worker" ? (
-            <WorkerNav />
-          ) : this.props.user.user.type === "client" ? (
-            <ClientNav />
-          ) : // <ClientDrawer/>
-          null
-        ) : (
-          // console.log(this.props.user.user.type )
-          //auth nav here
-          <AuthNav />
-        )}
+  const renderNavigation = () => {
+    if (isLoading) {
+      return <div className="d-flex loader"></div>;
+    } else if (!user.user) {
+      return <AuthNav />;
+    } else if (userType === "admin") {
+      return <AdminNav />;
+    } else if (userType === "worker") {
+      return <WorkerNav />;
+    } else if (userType === "client") {
+      return <ClientNav />;
+    } else {
+      return null;
+    }
+  };
 
-        {this.props.user.user && this.props.user.isLoading === false ? (
-          this.props.user.user.type === "admin" ? (
-            <AdminDrawer />
-          ) : this.props.user.user.type === "worker" ? (
-            <WorkerDrawer />
-          ) : this.props.user.user.type === "client" ? (
-            <ClientDrawer />
-          ) : // <ClientDrawer/>
-          null
-        ) : null}
+  const renderDrawer = () => {
+    if (isLoading || !user.user) {
+      return null;
+    } else if (userType === "admin") {
+      return <AdminDrawer />;
+    } else if (userType === "worker") {
+      return <WorkerDrawer />;
+    } else if (userType === "client") {
+      return <ClientDrawer />;
+    } else {
+      return null;
+    }
+  };
 
-        {/* {this.props.user.user && this.props.user.isLoading === false ? (
-          this.props.user.user.type === "admin" ? (
-            <AdminNav />
-          ) : this.props.user.user.type === "worker" ? (
-            <WorkerNav />
-          ) : this.props.user.user.type === "client" ? (
-            <ClientNav />
-          ) : // <ClientDrawer/>
-          null
-          // console.log(this.props.user.user.type )
-        ) : (
-          //auth nav here
-          <AuthNav />
-        )} */}
-        {/* </MapConsumer> */}
-        {/* <Modal /> */}
-      </div>
-    );
-  }
+  return (
+    <div 
+    // className="d-flex flex-column"
+    >
+      {user.user && !isLoading && (
+        <Navbar title={navbarTitleKeyValueMap[route]} />
+      )}
+      {renderNavigation()}
+      {renderDrawer()}
+    </div>
+  );
 }
 
 const mapStateToProps = (state) => ({
   user: state.user,
-  type: state.type,
-  // caseWorkers
 });
+
 const WithRouterApp = withRouter(App);
 export default connect(mapStateToProps, {})(WithRouterApp);
