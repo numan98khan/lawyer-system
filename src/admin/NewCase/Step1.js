@@ -4,6 +4,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 
+import Title from "../../components/Title";
+import {
+  Chip
+} from "@material-ui/core";
+
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
@@ -60,6 +65,11 @@ function StepOne({ formData, handleInputChange }) {
       id: "regulatoryWork",
       value: formData.regulatoryWork || "",
     },
+    {
+      label: "Litigation Work",
+      id: "litigationWork",
+      value: formData.litigationWork || "",
+    },
     
   ];
 
@@ -72,10 +82,18 @@ function StepOne({ formData, handleInputChange }) {
 
   return (
     <>
-      <h2 className={classes.heading}>Case Instructions</h2>
+      {/* <h2 className={classes.heading}>Case Instructions</h2> */}
+      <Title title="Case Instructions" extraSpace/>
 
       <div className={classes.formRow}>
         {fields.map(({ label, id }) => (
+          // <Chip
+          //   key={label}
+          //   label={label}
+          //   // color={selectedTags.includes(tag) ? "primary" : undefined}
+          //   // onClick={() => handleTagClick(tag)}
+          // />
+
           <FormControlLabel
             key={id}
             control={

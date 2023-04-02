@@ -31,7 +31,7 @@ function App({ user }) {
     store.dispatch(loadCaseWorkers());
 
     //// TODO: CHECK WHY ADDING THIS BREAKS CODE
-    // store.dispatch(loadWorkers());
+    store.dispatch(loadWorkers());
   }, []);
 
   useEffect(() => {

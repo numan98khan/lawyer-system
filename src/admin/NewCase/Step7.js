@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
-
+import Title from "../../components/Title";
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
@@ -69,7 +69,8 @@ function ContactInformationForm({ formData, handleInputChange }) {
 
   return (
     <>
-      <h2 style={{ textAlign: "center", marginTop: 20 }}>Contact Information</h2>
+      {/* <h2 style={{ textAlign: "center", marginTop: 20 }}>Contact Information</h2> */}
+      <Title title="Contact Information" extraSpace/>
 
       {fields.map(({ label, id, value }) => (
         <FormControl key={id} className={classes.formControl}>

@@ -1,0 +1,28 @@
+.title-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.title-container.extra-space {
+  margin-top: 2rem; /* Adjust the value according to your preference */
+}
+
+.title-text {
+  font-size: 24px;
+  font-weight: bold;
+  margin-right: 20px;
+}
+
+.title-name {
+  text-transform: capitalize;
+}
+
+.title-highlight {
+  color: var(--mainPurple);
+  text-transform: capitalize;
+}
+
+.title-add-product {
+  margin-left: auto;
+}

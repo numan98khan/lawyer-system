@@ -881,7 +881,103 @@ const optionsCourts = [
   {
     name: "Anti-Dumping Appellate Tribunal",
     value: "Anti-Dumping Appellate Tribunal"
-  }]
+  },
+  {
+    name: "Federal Services Tribunal",
+    value: "Federal Services Tribunal",
+  },
+  {
+    name: "Provincial Services Tribunal",
+    value: "Provincial Services Tribunal",
+  },
+  {
+    name: "Subordinate Judiciary Services Tribunal",
+    value: "Subordinate Judiciary Services Tribunal",
+  },
+  {
+    name: "Environmental Law Tribunal",
+    value: "Environmental Law Tribunal",
+  },
+  {
+    name: "Modarba Tribunal",
+    value: "Modarba Tribunal",
+  },
+  {
+    name: "Appellate Tribunal Inland Revenue",
+    value: "Appellate Tribunal Inland Revenue",
+  },
+  {
+    name: "Commissioner Appeals, Punjab Revenue Authority",
+    value: "Commissioner Appeals, Punjab Revenue Authority",
+  },
+  {
+    name: "Appellate Tribunal Sindh Revenue Board",
+    value: "Appellate Tribunal Sindh Revenue Board",
+  },
+  {
+    name: "Commissioner Inland Revenue (Appeals)",
+    value: "Commissioner Inland Revenue (Appeals)",
+  },
+  {
+    name: "Zonal Commissioner of Income Tax",
+    value: "Zonal Commissioner of Income Tax",
+  },
+  {
+    name: "Federal Tax Ombudsman",
+    value: "Federal Tax Ombudsman",
+  },
+  {
+    name: "Federal Ombudsman/Wafaqi Mohtasib",
+    value: "Federal Ombudsman/Wafaqi Mohtasib",
+  },
+  {
+    name: "Provincial Ombudsman/Subai Mohtasib",
+    value: "Provincial Ombudsman/Subai Mohtasib",
+  },
+  {
+    name: "Banking Ombudsman/Banking Mohtasib",
+    value: "Banking Ombudsman/Banking Mohtasib",
+  },
+  {
+    name: "Federal Insurance Ombudsman",
+    value: "Federal Insurance Ombudsman",
+  },
+  {
+    name: "Federal Ombudsperson for protection against Harassment of Women at Workplace",
+    value: "Federal Ombudsperson for protection against Harassment of Women at Workplace",
+  },
+  {
+    name: "Pakistan Electronic Media Regulatory Authority",
+    value: "Pakistan Electronic Media Regulatory Authority",
+  },
+  {
+    name: "Securities and Exchange Commission of Pakistan",
+    value: "Securities and Exchange Commission of Pakistan",
+  },
+  {
+    name: "Competition Commission of Pakistan",
+    value: "Competition Commission of Pakistan",
+  },
+  {
+    name: "Competition Appellate Tribunal",
+    value: "Competition Appellate Tribunal",
+  },
+  {
+    name: "Election Commission of Pakistan",
+    value: "Election Commission of Pakistan",
+  },
+  {
+    name: "Pakistan Telecommunication Authority",
+    value: "Pakistan Telecommunication Authority",
+  },
+  {
+    name: "Other (Please specify option)",
+    value: "Other (Please specify option)",
+  },
+  {
+    name: "Or leave blank option",
+    value: "Or leave blank option",
+  },]
 
 // const optionsLitigationTypes = [
 
@@ -939,8 +1035,8 @@ const optionsCourts = [
       value: "Revision",
     },
     {
-      name: "Constitutional petition U/A 188 etc.",
-      value: "Constitutional petition U/A 188 etc.",
+      name: "Constitutional petition U/A 199 etc.",
+      value: "Constitutional petition U/A 199 etc.",
     },
     {
       name: "Constitutional Petitioner U/A 184 etc.",
@@ -953,6 +1049,10 @@ const optionsCourts = [
     {
       name: "Miscellaneous Application",
       value: "Miscellaneous Application",
+    },
+    {
+      name: "Assessment Proceedings",
+      value: "Assessment Proceedings",
     },
     {
       name: "Others (Please specify option)",

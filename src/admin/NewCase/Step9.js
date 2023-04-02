@@ -5,7 +5,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-
+import Title from "../../components/Title";
 import {
   nulllist,
   optionsCivilLitigation,
@@ -116,9 +116,11 @@ handleInputChange('subCategory', value);
 
 return (
 <>
-<h2 style={{ textAlign: 'center', marginTop: 20 }}>
-Litigation Information
-</h2>
+    {/* <h2 style={{ textAlign: 'center', marginTop: 20 }}>
+    Litigation Information
+    </h2> */}
+    <Title title="Litigation Information" extraSpace/>
+
     {/* Case catergory */}
     <FormControl className={classes.formControl}>
         <InputLabel>category</InputLabel>

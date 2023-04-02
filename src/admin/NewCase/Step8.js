@@ -4,7 +4,7 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-
+import Title from "../../components/Title";
 import {
   nulllist,
   optionsCourts,
@@ -43,7 +43,8 @@ function CourtForm({formData, handleInputChange }) {
 
   return (
     <>
-          <h2 style={{ textAlign: "center", marginTop: 20 }}>Nature of Litigation</h2>
+          {/* <h2 style={{ textAlign: "center", marginTop: 20 }}>Nature of Litigation</h2> */}
+          <Title title="Nature of Litigation" extraSpace/>
 
     <FormControl className={classes.formControl}>
       <InputLabel htmlFor="court-select">Nature of Litigation</InputLabel>

@@ -1,19 +1,44 @@
 import React from 'react';
 import './Navigation.css';
-import FormControl from '@material-ui/core/FormControl';
 import { makeStyles } from '@material-ui/core/styles';
-
-// import ButtonContainer from '../../components/Button';
-import {MiniButtonContainer as ButtonContainer} from '../../components/Button';
-
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
-    // minWidth: '35vw',
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
+  },
+  tocItem: {
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: '12px 16px',
+
+    textTransform: 'capitalize',
+    fontSize: '1.0rem',
+    background: 'transparent',
+    border: '0.05rem solid var(--mainPurple)',
+    borderColor: 'var(--mainPurple)',
+    color: 'var(--mainPurple)',
+    // borderRadius: '0.5rem',
+    cursor: 'pointer',
+    transition: 'all 0.2s ease-in-out',
+
+    '&:hover': {
+      background: 'var(--mainPurple)',
+      color: 'white',
+    },
+
+    '&:focus': {
+      outline: 'none',
+    },
+
+    '&.active': {
+      background: 'var(--mainPurple)',
+      color: 'white',
+    },
   },
 }));
 
@@ -23,71 +48,64 @@ const Navigation = ({ step, setStep }) => {
   };
 
   const classes = useStyles();
-    
 
   return (
-    <div 
-    className="navigation-container"
-    >
-      <div 
-      className="navigation-steps"
-      >
-
-        <FormControl 
-        // className={step === 1 ? 'active' : ''}
-        className={classes.formControl}
-        >
-            <ButtonContainer 
-            className={step === 1 ? 'active' : ''}
-        
-            onClick={()=>handleClick(1)}>Case Instructions</ButtonContainer>
-        </FormControl>
-
-        <FormControl className={classes.formControl}>
-            <ButtonContainer     className={step === 2 ? 'active' : ''}
-                  onClick={()=>handleClick(2)}
-                  >Legal Opinion</ButtonContainer>
-        </FormControl>
-        <FormControl className={classes.formControl}>
-            <ButtonContainer     className={step === 3 ? 'active' : ''}
-        onClick={()=>handleClick(3)}>Litigation Case Details</ButtonContainer>
-        </FormControl>
-        <FormControl className={classes.formControl}>
-            <ButtonContainer    className={step === 4 ? 'active' : ''}
-         onClick={()=>handleClick(4)}>Court Details</ButtonContainer>
-        </FormControl>
-        <FormControl className={classes.formControl}>
-            <ButtonContainer     className={step === 5 ? 'active' : ''}
-        onClick={()=>handleClick(5)}>Client Information</ButtonContainer>
-        </FormControl>
-        <FormControl className={classes.formControl}>
-            <ButtonContainer     className={step === 6 ? 'active' : ''}
-        onClick={()=>handleClick(6)}>Other Party Information</ButtonContainer>
-        </FormControl>
-        <FormControl className={classes.formControl}>
-            <ButtonContainer     className={step === 7 ? 'active' : ''}
-        onClick={()=>handleClick(7)}>Contact Information</ButtonContainer>
-        </FormControl>
-        <FormControl className={classes.formControl}>
-            <ButtonContainer     className={step === 8 ? 'active' : ''}
-        onClick={()=>handleClick(8)}>Nature of Litigation</ButtonContainer>
-        </FormControl>
-        <FormControl className={classes.formControl}>
-            <ButtonContainer     className={step === 9 ? 'active' : ''}
-        onClick={()=>handleClick(9)}>Litigation Information</ButtonContainer>
-        </FormControl>
-
-        <FormControl className={classes.formControl}>
-            <ButtonContainer     className={step === 10 ? 'active' : ''}
-        onClick={()=>handleClick(10)}>Worker Assignment</ButtonContainer>
-        </FormControl>
-        
-        {/* <button
-          className={step === 1 ? 'active' : ''}
+    <div className="navigation-container sticky">
+      <div className="navigation-steps">
+        <div
+          className={`${classes.tocItem} ${step === 1 ? 'active' : ''}`}
           onClick={() => handleClick(1)}
         >
-          Step 1
-        </button> */}
+          {'Case Instructions'}
+        </div>
+        <div
+          className={`${classes.tocItem} ${step === 3 ? 'active' : ''}`}
+          onClick={() => handleClick(3)}
+        >
+          {'Litigation Case Details'}
+        </div>
+        <div
+          className={`${classes.tocItem} ${step === 4 ? 'active' : ''}`}
+          onClick={() => handleClick(4)}
+        >
+          {'Court Details'}
+        </div>
+        <div
+          className={`${classes.tocItem} ${step === 5 ? 'active' : ''}`}
+          onClick={() => handleClick(5)}
+        >
+          {'Client Information'}
+        </div>
+        <div
+          className={`${classes.tocItem} ${step === 6 ? 'active' : ''}`}
+          onClick={() => handleClick(6)}
+        >
+          {'Other Party Information'}
+        </div>
+        <div
+          className={`${classes.tocItem} ${step === 7 ? 'active' : ''}`}
+          onClick={() => handleClick(7)}
+        >
+          {'Contact Information'}
+        </div>
+        <div
+          className={`${classes.tocItem} ${step === 8 ? 'active' : ''}`}
+          onClick={() => handleClick(8)}
+        >
+          {'Nature of Litigation'}
+        </div>
+        <div
+          className={`${classes.tocItem} ${step === 9 ? 'active' : ''}`}
+          onClick={() => handleClick(9)}
+        >
+          {'Litigation Information'}
+        </div>
+        <div
+          className={`${classes.tocItem} ${step === 10 ? 'active' : ''}`}
+          onClick={() => handleClick(10)}
+        >
+          {'Case Allocation'}
+        </div>
       </div>
     </div>
   );

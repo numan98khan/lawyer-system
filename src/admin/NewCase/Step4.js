@@ -5,11 +5,13 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
-
+import Title from "../../components/Title";
 import {
   nulllist,
   optionsCourts
 } from "./lists";
+
+
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -56,7 +58,8 @@ function CourtForm({ formData, handleInputChange }) {
 
   return (
 <>
-<h2 className={classes.heading}>Court Details</h2>
+{/* <h2 className={classes.heading}>Court Details</h2> */}
+<Title title="Court Details" extraSpace/>
       
     <FormControl className={classes.formControl}>
         <TextField

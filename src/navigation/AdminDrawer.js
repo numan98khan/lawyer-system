@@ -49,8 +49,8 @@ const AntSwitch = withStyles((theme) => ({
       color: theme.palette.common.white,
       "& + $track": {
         opacity: 1,
-        backgroundColor: "#6600ff",
-        borderColor: "#6600ff",
+        backgroundColor: "var(--mainPurple)",
+        borderColor: "var(--mainPurple)",
       },
     },
   },
@@ -98,7 +98,7 @@ class MainDrawer extends Component {
             >
               <Link to="/">
                 <IconButton onClick={this.props.toggleDrawer}>
-                  <HomeIcon style={{ color: "#6600ff" }} />
+                  <HomeIcon style={{ color: "var(--mainPurple)" }} />
                 </IconButton>
               </Link>
               <IconButton onClick={this.props.toggleDrawer}>
@@ -114,7 +114,7 @@ class MainDrawer extends Component {
                 }}
                 activeStyle={{
                   fontWeight: "bold",
-                  color: "#6600ff",
+                  color: "var(--mainPurple)",
                 }}
                 isActive={(match, location) => {
                   if (!match) {
@@ -172,7 +172,7 @@ class MainDrawer extends Component {
                 }}
                 activeStyle={{
                   fontWeight: "bold",
-                  color: "#6600ff",
+                  color: "var(--mainPurple)",
                 }}
                 isActive={(match, location) => {
                   if (!match) {
@@ -203,7 +203,7 @@ class MainDrawer extends Component {
                 }}
                 activeStyle={{
                   fontWeight: "bold",
-                  color: "#6600ff",
+                  color: "var(--mainPurple)",
                 }}
                 isActive={(match, location) => {
                   if (!match) {
@@ -235,7 +235,7 @@ class MainDrawer extends Component {
                 }}
                 activeStyle={{
                   fontWeight: "bold",
-                  color: "#6600ff",
+                  color: "var(--mainPurple)",
                 }}
               >
                 <ListItem button key={"Calender"}>
@@ -254,7 +254,7 @@ class MainDrawer extends Component {
                 }}
                 activeStyle={{
                   fontWeight: "bold",
-                  color: "#6600ff",
+                  color: "var(--mainPurple)",
                 }}
               >
                 <ListItem button key={"Hearings"}>
@@ -273,7 +273,7 @@ class MainDrawer extends Component {
                 }}
                 activeStyle={{
                   fontWeight: "bold",
-                  color: "#6600ff",
+                  color: "var(--mainPurple)",
                 }}
               >
                 <ListItem button key={"Consultations"}>
@@ -290,7 +290,7 @@ class MainDrawer extends Component {
                 }}
                 activeStyle={{
                   fontWeight: "bold",
-                  color: "#6600ff",
+                  color: "var(--mainPurple)",
                 }}
               >
                 <ListItem button key={"Accounts"}>

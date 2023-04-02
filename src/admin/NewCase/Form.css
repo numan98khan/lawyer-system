@@ -1,15 +1,19 @@
 .form {
   /* padding-top: 400px; */
-  max-width: 800px;
+
+  /* max-width: 800px; */
   margin: 0 auto;
+  
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  height: 80%;
-  /* width: 100%; */
-  width: 50%;
+  /* height: 80%; */
+  width: 100%;
+  /* width: 50%; */
   /* background-color: #ccc; */
+  /* flex-grow: 1; */
+  /* margin-left: 20px; */
 }
 
 .sub-form {
@@ -33,6 +37,19 @@
 
   padding-top: 2%;
   display: flex;
+}
+
+.sticky-sidebar {
+  /* position: sticky;
+  top: 0; */
+
+
+  background-color: #c00;
+}
+
+.form-contents {
+  flex-grow: 1;
+  margin-left: 20px;
 }
 
 .form-buttons {

@@ -42,10 +42,13 @@ function AddPeshiRow(props) {
       // console.log(props.hearings)
     });
     let workers = {};
-    props.caseworkers.map((worker) => {
-      workers[worker.id] = worker.firstName + " " + worker.lastName;
+    props.case_workers.map((worker) => {
+      workers[worker.id] = worker.email;
     });
-    setworkers(workers);
+    setworkers(props.case_workers);
+    console.log('workers', props.case_workers)
+
+
   }, []);
 
   function getCaseData(fnum, cnum) {
@@ -161,6 +164,8 @@ function AddPeshiRow(props) {
             retCase["next_proceedings"] = nextProceedings;
             retCase["updated_by"] = props.user.email;
 
+            console.log('Observe Payload', payload, initCase);
+
             // value.addHearingEntry(payload, initCase).then(() => {
             props
               .addHearingEntry(payload, initCase)
@@ -220,16 +225,18 @@ function AddPeshiRow(props) {
       )}
       {retCase == null ? null : (
         <EditableCell
-          value={retCase == null ? "" : retCase.caseTitle}
+          value={retCase == null ? "" : retCase.litigationCaseTitle}
           cell={"caseTitle"}
           changeCellValue={ChangeCellValue}
         ></EditableCell>
       )}
+
       <TableCell align="center">
-        {retCase == null ? "" : retCase.subCategory}
+        {retCase == null ? "" : retCase.natureOfLitigation}
       </TableCell>
+
       <TableCell align="center">
-        {retCase == null ? "" : retCase.category}
+        {retCase == null ? "" : retCase?.litigation?.category || "retCase?.litigation?.category"}
       </TableCell>
       {retCase == null ? null : (
         <EditableCell
@@ -267,8 +274,8 @@ function AddPeshiRow(props) {
         {retCase == null
           ? ""
           : newCase
-          ? retCase.previous_proceedings_date
-          : retCase.next_proceedings_date}
+          ? retCase.substantiveDateOfLastHearing
+          : retCase.substantiveDateOfNextHearing}
       </TableCell>
 
       <TableCell
@@ -325,29 +332,45 @@ function AddPeshiRow(props) {
       </TableCell>
       {/* <TableCell align="center">{retCase == null ? '' : retCase.caseSupervisor}</TableCell> */}
       {/* <TableCell align="center">ccnum</TableCell> */}
-      {retCase == null ? null : (
+      {/* {retCase == null ? null : (
         <EditableCellSelect
-          value={retCase == null ? "" : retCase.caseSupervisor}
+          value={retCase == null ? "" : retCase.caseowner}
           options={workers}
           cell={"caseSupervisor"}
           changeCellValue={ChangeCellValue}
         ></EditableCellSelect>
+      )} */}
+      {retCase == null ? null : (
+        <EditableCell
+          value={retCase == null ? "" : retCase.caseowner}
+          cell={"caseSupervisor"}
+          changeCellValue={ChangeCellValue}
+        ></EditableCell>
       )}
       {/* <TableCell align="center">{retCase == null ? '' : retCase.caseWorker}</TableCell> */}
       {/* <TableCell align="center">ccnum</TableCell> */}
-      {retCase == null ? null : (
+      {/* TODO: Convert these cells into select options and make then workable */}
+      {/* {retCase == null ? null : (
         <EditableCellSelect
-          value={retCase == null ? "" : retCase.caseWorker}
+          // value={retCase == null ? "" : retCase.worker}
+          value={retCase.worker}
           options={workers}
           cell={"caseWorker"}
           changeCellValue={ChangeCellValue}
         ></EditableCellSelect>
+      )} */}
+      {retCase == null ? null : (
+        <EditableCell
+          value={retCase == null ? "" : retCase.worker}
+          cell={"caseWorker"}
+          changeCellValue={ChangeCellValue}
+        ></EditableCell>
       )}
       {/* <TableCell align="center">{retCase == null ? '' : retCase.caseClerk}</TableCell> */}
       {/* <TableCell align="center">ccnum</TableCell> */}
       {retCase == null ? null : (
         <EditableCell
-          value={retCase == null ? "" : retCase.caseClerk}
+          value={retCase == null ? "" : retCase.clerk}
           cell={"caseClerk"}
           changeCellValue={ChangeCellValue}
         ></EditableCell>
@@ -369,6 +392,7 @@ const mapStateToProps = (state) => ({
   hearings: state.hearing,
   user: state.user.user,
   caseworkers: state.caseworker.caseWorkers,
+  case_workers: state.caseworker.case_workers
 });
 export default connect(mapStateToProps, { addHearingEntry, loadHearings })(
   AddPeshiRow

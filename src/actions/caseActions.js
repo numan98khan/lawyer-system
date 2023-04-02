@@ -98,6 +98,7 @@ const addCaseAndPayments = (payload) => {
                       res({
                         caseDetails: payload.caseDetails,
                         file_n: file_key,
+                        case_n: snapshot.numChildren()
                       });
                     })
                     .catch((err) => {
@@ -140,7 +141,7 @@ export const addClientAndCase = (payload) => (dispatch, getState) => {
           console.log("client exists!");
           //only create case and payments
           addCaseAndPayments(payload)
-            .then(({ caseDetails, file_n }) => {
+            .then(({ caseDetails, file_n, case_n }) => {
               const files = getState().cases.files;
               const cases = getState().cases.cases;
               cases.push(caseDetails);
@@ -149,7 +150,11 @@ export const addClientAndCase = (payload) => (dispatch, getState) => {
                 type: ADD_CASE,
                 payload: { files, cases },
               });
-              res();
+              res({
+                caseDetails: caseDetails,
+                file_n: file_n,
+                case_n: case_n
+              });
             })
             .catch((err) => rej(err));
         }
@@ -159,7 +164,7 @@ export const addClientAndCase = (payload) => (dispatch, getState) => {
     //add client, case and payments
     uploadPayload(payload)
       .then(() => {
-        res();
+        res(payload);
       })
       .catch((err) => rej(err));
   });

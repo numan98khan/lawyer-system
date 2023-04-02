@@ -4,6 +4,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
 
+import Title from "../../components/Title";
+
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
@@ -40,7 +42,8 @@ function LegalOpinionForm({ formData, handleInputChange }) {
 
   return (
     <>
-      <h2 style={{ textAlign: "center", marginTop: 20 }}>Legal Opinion</h2>
+      {/* <h2 style={{ textAlign: "center", marginTop: 20 }}>Legal Opinion</h2> */}
+      <Title title="Legal Opinion" extraSpace/>
 
       {fields.map(({ label, id, value, multiline, rows }) => (
         <FormControl key={id} className={classes.formControl}>

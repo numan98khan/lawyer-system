@@ -20,6 +20,8 @@ import ClientDetails from "../admin/Clients/DisplayItem";
 import CaseDetails from "../admin/Cases/ClientCaseDetails"
 import LogSheet from "../admin/LogSheet";
 
+import PDFViewer from '../admin/Tasks/pdfViewer'
+
 // import Tracker from "../admin/Tracker";
 import Workers from "../admin/Workers";
 
@@ -42,6 +44,9 @@ class AdminNav extends Component {
           {/* <Route exact path="/casedetails" component={CaseDetails} /> */}
           <Route exact path="/casedetails" component={CaseDetails} />
           
+          <Route exact path="/pdf" component={PDFViewer} />
+          
+
           <Route exact path="/clientdetails" component={ClientDetails} />
           <Route exact path="/clients" component={Clients} />
           <Route exact path="/cases" component={Cases} />

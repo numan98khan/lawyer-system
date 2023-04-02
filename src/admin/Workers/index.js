@@ -10,7 +10,6 @@ import TextField from "@material-ui/core/TextField";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import ButtonContainer from "../../components/Button";
 import { Link } from "react-router-dom";
-// AIzaSyDVtDW0vjeyc6t1NR5QYU4mkGKMeO-cxI8
 
 import styled from "styled-components";
 // import GoogleMapReact from 'google-map-react';
@@ -76,23 +75,26 @@ class Tracker extends Component {
 
   componentDidMount() {
     const places = [];
-    this.props.caseWorkers.map((worker) => {
-      const place = worker.currLocation;
-      place["scaleX"] = 50;
-      place["scaleY"] = 50;
-      place["id"] = worker.id;
-      places.push(place);
-    });
-    this.setState(
-      {
-        places: places,
-        center: {
-          lat: 33.68939,
-          long: 73.02054,
-        },
-      },
-      () => console.log(this.state.places)
-    );
+
+    // TODO: Fix this
+    // this.props.caseWorkers.map((worker) => {
+    //   const place = worker.currLocation;
+    //   place["scaleX"] = 50;
+    //   place["scaleY"] = 50;
+    //   place["id"] = worker.id;
+    //   places.push(place);
+    // });
+
+    // this.setState(
+    //   {
+    //     places: places,
+    //     center: {
+    //       lat: 33.68939,
+    //       long: 73.02054,
+    //     },
+    //   },
+    //   () => console.log(this.state.places)
+    // );
   }
 
   componentDidUpdate() {
@@ -110,7 +112,7 @@ class Tracker extends Component {
       this.props.caseWorkers.map((worker) => {
         const place = worker.currLocation;
         place["scaleX"] = 50;
-        place["scaleY"] = 50;
+        // place["scaleY"] = 50;
         place["id"] = worker.id;
         places.push(worker.currLocation);
       });
@@ -177,23 +179,18 @@ class Tracker extends Component {
             <ul style={workerList}>
               {this.props.caseWorkers
                 .filter((worker) => {
+                  console.log(worker);
                   return (
-                    worker.firstName
-                      .toLowerCase()
-                      .indexOf(this.state.searchTerm) !== -1 ||
-                    worker.lastName
-                      .toLowerCase()
-                      .indexOf(this.state.searchTerm) !== -1 ||
                     worker.displayName
                       .toLowerCase()
                       .indexOf(this.state.searchTerm) !== -1 ||
                     worker.email
                       .toLowerCase()
-                      .indexOf(this.state.searchTerm) !== -1 ||
-                    worker.cnic
-                      .toLowerCase()
-                      .replace("-", "")
-                      .indexOf(this.state.searchTerm) !== -1
+                      .indexOf(this.state.searchTerm) !== -1 //||
+                    // worker.cnic
+                    //   .toLowerCase()
+                    //   .replace("-", "")
+                    //   .indexOf(this.state.searchTerm) !== -1
                   );
                 })
                 .map((worker) => {
@@ -264,7 +261,8 @@ class Tracker extends Component {
             </ul>
           </div>
         </div>
-        <Map
+        {/* TODO: Fix map issues */}
+        {/* <Map
           google={this.props.google}
           containerStyle={containerStyle}
           center={{
@@ -290,7 +288,7 @@ class Tracker extends Component {
                 />
               );
             })}
-        </Map>
+        </Map> */}
       </div>
       // <div style={parentContainer}>
       //   <div style={leftContainer}>
@@ -307,11 +305,15 @@ class Tracker extends Component {
 const mapStateToProps = (state) => ({
   // user: state.user,
   // type: state.type
-  caseWorkers: state.caseworker.caseWorkers,
+  // caseWorkers: state.caseworker.caseWorkers,
+
+  caseWorkers: state.caseworker.case_workers,
 });
 
 const TrackerContainer = connect(mapStateToProps, {})(Tracker);
 
-export default GoogleApiWrapper({
-  apiKey: "AIzaSyDVtDW0vjeyc6t1NR5QYU4mkGKMeO-cxI8",
-})(TrackerContainer);
+export default TrackerContainer;
+
+// export default GoogleApiWrapper({
+//   apiKey: "AIzaSyDVtDW0vjeyc6t1NR5QYU4mkGKMeO-cxI8",
+// })(TrackerContainer);

@@ -1,19 +1,18 @@
-import React from "react";
+import React from 'react';
 import Icon from '@material-ui/core/Icon';
-import { Link } from "react-router-dom";
-const Title = ({ name, title }) => {
+import { Link } from 'react-router-dom';
+import './Title.css';
+
+const Title = ({ name, title, extraSpace }) => {
   return (
-    <div style={{marginTop: '5%'}} className="row">
-      <div className="col-10 mx-auto my-2 text-center">
-        <h1 className="text-capitalize font-weight-bold">
-          {name} <strong className="text-blue">{title}</strong>
-        </h1>
-        {/*<h1 className="text-capitalize" style={{ fontSize: 20 }}>
-          <Link to="/AddProduct" className="ml-auto">
-          <Icon className="fa fa-plus-circle" style={{ fontSize:40 }}/>
-          </Link>
-  </h1>*/}
-      </div>
+    <div className={`title-container${extraSpace ? ' extra-space' : ''}`}>
+      <h1 className="title-text">
+        <span className="title-name">{name}</span>
+        <span className="title-highlight">{title}</span>
+      </h1>
+      {/* <Link to="/AddProduct" className="title-add-product">
+        <Icon className="fa fa-plus-circle" style={{ fontSize: 40 }} />
+      </Link> */}
     </div>
   );
 };

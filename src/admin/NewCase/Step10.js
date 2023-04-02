@@ -5,7 +5,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-
+import Title from "../../components/Title";
 import {
   nulllist,
   optionsCivilLitigation,
@@ -101,9 +101,11 @@ const fields = {
 
 return (
 <>
-  <h2 style={{ textAlign: 'center', marginTop: 20 }}>
-    Case Worker Assignment
-  </h2>
+  {/* <h2 style={{ textAlign: 'center', marginTop: 20 }}>
+    Case Allocation
+  </h2> */}
+  <Title title="Case Allocation" extraSpace/>
+
     {/* Case Worker */}
     <FormControl className={classes.formControl}>
         <InputLabel>Case Worker</InputLabel>

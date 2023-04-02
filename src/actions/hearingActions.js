@@ -66,7 +66,8 @@ export const addHearingEntry = (details, initCase) => (
 ) => {
   // dispatch({ type: HEARINGS_LOADING });
 
-  const {next_proceedings, next_proceedings_date, previous_proceedings, previous_proceedings_date, updated_by, ...remaining_keys} = details;
+  // const {next_proceedings, next_proceedings_date, previous_proceedings, previous_proceedings_date, updated_by, ...remaining_keys} = details;
+  const { ...remaining_keys} = details;
   // const {next_proceedings, next_proceedings_date, previous_proceedings, previous_proceedings_date, updated_by, ...remaining_init} = initCase;
   
   
@@ -74,7 +75,7 @@ export const addHearingEntry = (details, initCase) => (
     // console.log("INSIDE PROMISE")
     // console.log(initCase);
     delete details["isLast"]; 
-    // console.log(details);
+    console.log('details', details);
      
     fire.getFire().database()
     .ref("/hearings")
@@ -84,7 +85,7 @@ export const addHearingEntry = (details, initCase) => (
       for (var key in remaining_keys) {
         if (initCase && initCase.hasOwnProperty(key)) {
             if (remaining_keys[key] !== initCase[key]) {
-              // console.log(key + " -> " + remaining_keys[key], initCase[key]);
+              console.log(key + " -> " + remaining_keys[key], initCase[key]);
               dispatch(updateHearingField(remaining_keys['file_n']+'/'+remaining_keys['case_n'], snapshot.key, key, remaining_keys[key], initCase[key]));
                     
             }

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -27,10 +27,21 @@ import { LogIcon } from "../../../src/icons";
 import { loadHearings, updateHearing } from "../../actions/hearingActions";
 import { loadLogs } from "../../actions/logActions";
 
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+
+import { jsPDF } from 'jspdf';
+
 import AddPeshiRow from "./AddPeshiRow";
 
 import EditableCellComp from "../../components/EditableCellComp";
 import EditableCellSelect from "../../components/EditableCellSelect";
+
+import CustomTableRow from "./CustomTableRow";
+
+import "jspdf-autotable";
+
 
 import {
   MuiPickersUtilsProvider,
@@ -38,6 +49,51 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import { createTheme } from "@material-ui/core";
+
+import ColumnSelect from "./ColumnSelect"
+
+// var jsPDF = require('jspdf');
+// require('jspdf-autotable');
+
+
+const filterValues = [
+  {
+    name: "CASE WORKER",
+    value: "worker",
+  },
+  {
+    name: "CASE CLERK",
+    value: "clerk",
+  },
+  {
+    name: "Case Supervisor",
+    value: "caseSupervisor",
+  }
+];
+
+const columnKeyMapping = {
+  "#": "id",
+  "FILE#": "file_number",
+  "CASE#": "case_number",
+  "COURT CASE#": "courtCaseNo",
+  "CASE TITLE": "litigationCaseTitle",
+  "NATURE OF CASE": "natureOfLitigation",
+  "CATEGORY": "litigation.category",
+  "COURT": "court",
+  "DISTRICT": "district",
+  "JUDGE": "judge",
+  "PREVIOUS PROCEEDINGS": "previous_proceedings",
+  "PREVIOUS DATE": "previous_proceedings_date",
+  "NEXT DATE": "next_proceedings_date",
+  "NEXT PROCEEDINGS": "next_proceedings",
+  "REMARKS": "legalAnalysis",
+  "CASE OWNER": "clientId",
+  "CASE SUPERVISOR": "contactPerson.name",
+  "CASE WORKER": "worker",
+  "CASE CLERK": "clerk",
+  "OTHER PARTY": "otherPartyDetails.partyName",
+  "UPDATED BY": "updated_by"
+};
 
 const hearingTableHeaders = [
   "#", 
@@ -65,11 +121,14 @@ const hearingTableHeaders = [
 function Tasks(props) {
   const [searchterm, setsearchterm] = React.useState("");
   const [NoHearings, setNoHearings] = React.useState(true);
-  const [timestampSearch, settimestampSearch] = React.useState(true);
+  const [timestampSearch, settimestampSearch] = React.useState(false);
   const [filterDate, setdate] = React.useState(new Date());
   const [file_n, setfile_n] = React.useState(-1);
   const [case_n, setcase_n] = React.useState(-1);
   const [workers, setworkers] = React.useState({});
+
+  const [searchTerm, setSearchTerm] = React.useState(null);
+  const [searchFilter, setSearchFilter] = React.useState(null);
 
   // const [openEntry, setopenEntry] = React.useState(false)
   // const [entryDetails, setentryDetails] = React.useState([])
@@ -87,10 +146,10 @@ function Tasks(props) {
 
   React.useEffect(() => {
     let workers = {};
-    props.caseworkers.map((worker) => {
-      workers[worker.id] = worker.firstName + " " + worker.lastName;
-    });
-    setworkers(workers);
+    // props.caseworkers.map((worker) => {
+    //   workers[worker.id] = worker.firstName + " " + worker.lastName;
+    // });
+    // setworkers(workers);
   }, []);
 
   React.useEffect(() => {
@@ -131,7 +190,10 @@ function Tasks(props) {
     props.loadLogs(case_path).then(() => {
       history.push({
         pathname: "/logsheet",
-        state: { case_path: case_path, keys: workers },
+        state: { 
+          case_path: case_path, 
+          // keys: workers 
+        },
       });
     });
   }
@@ -148,41 +210,145 @@ function Tasks(props) {
     }
   }
 
+  // TODO: Develop download pdf function here
+  const getValueFromMapping = (mapping, obj) => {
+    console.log('mapping', mapping, obj)
+    if (mapping === "litigation.category") {
+      console.log(obj);
+      return obj.litigation.category;
+    }
+    const keys = mapping.split('.');
+    let value = obj;
+    for (let key of keys) {
+      
+        value = value[key];
+      
+    }
+    return value;
+  };
+
+  function orderSelectedTags(selectedTags) {
+    const orderedTags = [];
+    for (const column of hearingTableHeaders) {
+      if (selectedTags.includes(column)) {
+        orderedTags.push(column);
+      }
+    }
+    return orderedTags;
+  }
+  const preview = () => {
+    // const json = props.hearings.hearings;
+    const json = props.hearings.hearings
+                  .slice(0)
+                  .reverse()
+                  .filter((row) => filterHearing(row));
+  
+    const pdf = new jsPDF("p", "pt", "a4");
+  
+    const columns = orderSelectedTags(selectedTags);
+  
+    var rows = [];
+  
+    for (let i = 0; i < json.length; i++) {
+      var temp = columns.map(column => {
+        const key = columnKeyMapping[column];
+        return getValueFromMapping(key, json[i]);
+      });
+      rows.push(temp);
+    }
+  
+    pdf.text(235, 40, "Current View");
+    pdf.autoTable(columns, rows, {
+      startY: 65,
+      theme: "grid",
+      styles: {
+        font: "times",
+        halign: "center",
+        cellPadding: 3.5,
+        lineWidth: 0.5,
+        lineColor: [0, 0, 0],
+        textColor: [0, 0, 0]
+      },
+      headStyles: {
+        textColor: [0, 0, 0],
+        fontStyle: "normal",
+        lineWidth: 0.5,
+        lineColor: [0, 0, 0],
+        fillColor: [166, 204, 247]
+      },
+      alternateRowStyles: {
+        fillColor: [212, 212, 212],
+        textColor: [0, 0, 0],
+        lineWidth: 0.5,
+        lineColor: [0, 0, 0]
+      },
+      rowStyles: {
+        lineWidth: 0.5,
+        lineColor: [0, 0, 0]
+      },
+      tableLineColor: [0, 0, 0]
+    });
+  
+    const pdfDataUri = pdf.output('datauristring');
+    const windowContent = '<!DOCTYPE html><html><head><title>Print Document</title></head><body><iframe src="' + pdfDataUri + '" frameborder="0" width="100%" height="820"></iframe></body></html>';
+    const printWindow = window.open('', '', 'width=800,height=600');
+    printWindow.document.open();
+    printWindow.document.write(windowContent);
+    printWindow.document.close();
+  };
+  
+  
   function filterHearing(row) {
-    {
-      if (props.user.user.type === "worker") {
-        if (!timestampSearch) {
-          console.log(row.caseSupervisor, props.user.user.uid);
-          return (
-            row.caseSupervisor === props.user.user.uid ||
-            row.caseWorker === props.user.user.uid
-          );
-        }
-        return (
-          (row.caseSupervisor === props.user.user.uid ||
-            row.caseWorker === props.user.user.uid) &&
-          row.next_proceedings_date === filterDate.toLocaleDateString("en-US")
-        );
-      }
-      if (!timestampSearch) {
-        return true;
-      }
+    const isWorker = props.user.user.type === "worker";
+    const isSupervisorOrWorker =
+      row.caseSupervisor === props.user.user.uid || row.caseWorker === props.user.user.uid;
+    const isDateMatch = row.next_proceedings_date === filterDate.toLocaleDateString("en-US");
+  
+    const isSearchTermMatch =
+      !searchFilter ||
+      !searchTerm ||
+      row[searchFilter]?.toLowerCase().includes(searchTerm.toLowerCase());
+  
+    if (isWorker) {
       return (
-        row.next_proceedings_date === filterDate.toLocaleDateString("en-US")
+        (timestampSearch ? isSupervisorOrWorker && isDateMatch : isSupervisorOrWorker) &&
+        isSearchTermMatch
       );
+    } else {
+      return (timestampSearch ? isDateMatch : true) && isSearchTermMatch;
     }
   }
+  
+
+  // These are tags for column select
+  const [selectedTags, setSelectedTags] = useState([]);
+  const handleTagClick = tag => {
+
+    
+    if (selectedTags.includes(tag)) {
+      setSelectedTags(selectedTags.filter(t => t !== tag));
+    } else {
+      setSelectedTags([...selectedTags, tag]);
+    }
+
+    console.log(selectedTags);
+    
+  };
 
   return (
     <div className="py-5 pl-4 pr-4">
       <div className="mb-5" style={{ minWidth: "1000px" }}>
-        <div style={{ marginBottom: "5%" }}>
+        {/* <div style={{ marginBottom: "5%" }}>
           <Title title="HEARINGS" />
-        </div>
+        </div> */}
+
+        <Title title="HEARINGS" />
         <div
           className="bg-light d-flex"
-          style={{ height: "100px", padding: "30px" }}
+          // style={{ height: "100px", padding: "30px" }}
+
         >
+          
           <div className="d-flex align-items-center justify-content-between align-items-center">
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <KeyboardDatePicker
@@ -215,21 +381,93 @@ function Tasks(props) {
               }}
             />
           </div>
+
+          <div>
+            <ButtonContainer
+                    onClick={preview}
+                  >
+              Preview PDF
+            </ButtonContainer>
+          </div>
+
+          <div
+              style={{
+                // backgroundColor:'blue',
+                // flexDirection: "row",
+                display: "flex",
+                justifyContent: "space-between",
+                // width: "70%",
+                // alignItems: "center",
+                // paddingBottom: "2%",
+              }}
+            >
+              <TextField
+                style={{}}
+                color="primary"
+                id="outlined-basic"
+                label="Search Hearings"
+                variant="outlined"
+                onChange={(query) => {
+                  setSearchTerm(query.target.value.toLowerCase());
+
+                }}
+              />
+
+              <FormControl 
+              // style={{ minWidth: "10vw" }}
+              style={{ minWidth: "10vw" }}
+              >
+                {/* <InputLabel id="demo-simple-select-label">search filter</InputLabel> */}
+                <Select
+                  variant="outlined"
+                  // value={this.state.searchFilter}
+
+                  onChange={(e) => {
+                    // setSearchTerm(query.target.value.toLowerCase());
+                    setSearchFilter(e.target.value)
+
+                    // this.setState({ searchFilter: e.target.value });
+                  }}
+                >
+                  {filterValues.map((item, index) => {
+                    return (
+                      <MenuItem key={index} value={item.value}>
+                        {item.name}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+              <h5>{props.hearings.hearings.length} hearing(s)</h5>
+            </div>
         </div>
+
+        <ColumnSelect selectedTags={selectedTags} handleTagClick={handleTagClick} setSelectedTags={setSelectedTags}/>
+
+
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                {hearingTableHeaders.map((header) => (
-                  <TableCell
-                    align="center"
-                    style={{ color: "white", backgroundColor: "var(--mainPurple)" }}
-                  >
-                    {header}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
+          <TableHead>
+          <TableRow>
+            {hearingTableHeaders.map((header) => (
+              selectedTags.includes(header) && (
+                <TableCell
+                  align="center"
+                  style={{ color: "white", backgroundColor: "var(--mainPurple)" }}
+                >
+                  {header}
+                </TableCell>
+              )
+            ))}
+
+              {/* <TableCell
+                  align="center"
+                  style={{ color: "white", backgroundColor: "var(--mainPurple)" }}
+                >
+                  {'UPDATED BY'}
+                </TableCell> */}
+          </TableRow>
+        </TableHead>
 
             <TableBody>
               {/* show hearings data here
@@ -244,230 +482,13 @@ function Tasks(props) {
                   .map((row, idx) => {
                     console.log("ROWED", row)
                     return (
-                      <TableRow
-                        className={`${row.isLast ? "highlightedRow" : ""} `}
-                      >
-                        <TableCell align="center">{row.id}</TableCell>
-                        <TableCell align="center">{row.file_n}</TableCell>
-                        <TableCell align="center">{row.case_n}</TableCell>
-
-                        {/* <TableCell align="center">{row.court_case_n}</TableCell> */}
-
-                        {row.isLast ? (
-                          <EditableCellComp
-                            updateHearing={updateHearing}
-                            file_n={row.file_n}
-                            case_n={row.case_n}
-                            hearing_key={row.key}
-                            cell={"courtCaseNo"}
-                            value={row.courtCaseNo}
-                          >
-                            {" "}
-                          </EditableCellComp>
-                        ) : (
-                          <TableCell align="center">
-                            {row.courtCaseNo}
-                          </TableCell>
-                        )}
-
-                        {row.isLast ? (
-                          <EditableCellComp
-                            updateHearing={updateHearing}
-                            file_n={row.file_n}
-                            case_n={row.case_n}
-                            hearing_key={row.key}
-                            cell={"caseTitle"}
-                            value={row.litigationCaseTitle}
-                          >
-                            {" "}
-                          </EditableCellComp>
-                        ) : (
-                          <TableCell align="center">{row.caseTitle}</TableCell>
-                        )}
-
-                        {row.isLast ? (
-                          <EditableCellComp
-                            updateHearing={updateHearing}
-                            file_n={row.file_n}
-                            case_n={row.case_n}
-                            hearing_key={row.key}
-                            cell={"subCategory"}
-                            value={row.subCategory}
-                          >
-                            {" "}
-                          </EditableCellComp>
-                        ) : (
-                          <TableCell align="center">
-                            {row.subCategory}
-                          </TableCell>
-                        )}
-
-                        <TableCell align="center">{row.category}</TableCell>
-
-                        {/* <TableCell align="center">{row.court}</TableCell> */}
-                        {row.isLast ? (
-                          <EditableCellComp
-                            updateHearing={updateHearing}
-                            file_n={row.file_n}
-                            case_n={row.case_n}
-                            hearing_key={row.key}
-                            cell={"court"}
-                            value={row.courtName}
-                          >
-                            {" "}
-                          </EditableCellComp>
-                        ) : (
-                          <TableCell align="center">{row.court}</TableCell>
-                        )}
-
-                        {/* <TableCell align="center">{row.district}</TableCell> */}
-                        {row.isLast ? (
-                          <EditableCellComp
-                            updateHearing={updateHearing}
-                            file_n={row.file_n}
-                            case_n={row.case_n}
-                            hearing_key={row.key}
-                            cell={"district"}
-                            value={row.district}
-                          >
-                            {" "}
-                          </EditableCellComp>
-                        ) : (
-                          <TableCell align="center">{row.district}</TableCell>
-                        )}
-
-                        {/* <TableCell align="center">{row.judge}</TableCell> */}
-                        {row.isLast ? (
-                          <EditableCellComp
-                            updateHearing={updateHearing}
-                            file_n={row.file_n}
-                            case_n={row.case_n}
-                            hearing_key={row.key}
-                            cell={"judge"}
-                            value={row.judge}
-                          >
-                            {" "}
-                          </EditableCellComp>
-                        ) : (
-                          <TableCell align="center">{row.judge}</TableCell>
-                        )}
-
-                        <TableCell align="center">
-                          {row.previous_proceedings}
-                        </TableCell>
-                        {/* <EditableCellComp value={row.} > </EditableCellComp> */}
-
-                        <TableCell align="center">
-                          {row.previous_proceedings_date}
-                        </TableCell>
-                        <TableCell align="center">
-                          {row.next_proceedings_date}
-                        </TableCell>
-                        <TableCell align="center">
-                          {row.next_proceedings}
-                        </TableCell>
-
-                        {/* <TableCell align="center">{row.remarks}</TableCell> */}
-                        {row.isLast ? (
-                          <EditableCellComp
-                            updateHearing={updateHearing}
-                            file_n={row.file_n}
-                            case_n={row.case_n}
-                            hearing_key={row.key}
-                            cell={"remarks"}
-                            value={row.remarks}
-                          >
-                            {" "}
-                          </EditableCellComp>
-                        ) : (
-                          <TableCell align="center">{row.remarks}</TableCell>
-                        )}
-
-                        {/* <TableCell align="center">{row.caseSrc}</TableCell> */}
-
-                        {row.isLast ? (
-                          <EditableCellComp
-                            updateHearing={updateHearing}
-                            file_n={row.file_n}
-                            case_n={row.case_n}
-                            hearing_key={row.key}
-                            cell={"caseSrc"}
-                            value={row.caseSrc}
-                          >
-                            {" "}
-                          </EditableCellComp>
-                        ) : (
-                          <TableCell align="center">{row.caseSrc}</TableCell>
-                        )}
-
-                        {/* <TableCell align="center">{row.caseSupervisor}</TableCell> */}
-                        {row.isLast ? (
-                          <EditableCellSelect
-                            updateHearing={updateHearing}
-                            file_n={row.file_n}
-                            case_n={row.case_n}
-                            hearing_key={row.key}
-                            cell={"caseSupervisor"}
-                            options={workers}
-                            value={row.caseSupervisor}
-                          ></EditableCellSelect>
-                        ) : (
-                          <TableCell align="center">
-                            {workers[row.caseSupervisor]}
-                          </TableCell>
-                        )}
-
-                        {/* <TableCell align="center">{row.caseWorker}</TableCell> */}
-                        {row.isLast ? (
-                          <EditableCellSelect
-                            updateHearing={updateHearing}
-                            file_n={row.file_n}
-                            case_n={row.case_n}
-                            hearing_key={row.key}
-                            cell={"caseWorker"}
-                            options={workers}
-                            value={row.caseWorker}
-                          ></EditableCellSelect>
-                        ) : (
-                          <TableCell align="center">
-                            {workers[row.caseWorker]}
-                          </TableCell>
-                        )}
-
-                        {/* <TableCell align="center">{row.case_clerk}</TableCell> */}
-                        {row.isLast ? (
-                          <EditableCellComp
-                            updateHearing={updateHearing}
-                            file_n={row.file_n}
-                            case_n={row.case_n}
-                            hearing_key={row.key}
-                            cell={"caseClerk"}
-                            value={row.caseClerk}
-                          >
-                            {" "}
-                          </EditableCellComp>
-                        ) : (
-                          <TableCell align="center">{row.caseClerk}</TableCell>
-                        )}
-
-                        {/* <TableCell align="center">{row.other_party}</TableCell> */}
-                        {row.isLast ? (
-                          <EditableCellComp
-                            updateHearing={updateHearing}
-                            file_n={row.file_n}
-                            case_n={row.case_n}
-                            hearing_key={row.key}
-                            cell={"otherParty"}
-                            value={row.otherParty}
-                          >
-                            {" "}
-                          </EditableCellComp>
-                        ) : (
-                          <TableCell align="center">{row.otherParty}</TableCell>
-                        )}
-
-                        <TableCell align="center">{row.updated_by}</TableCell>
-                      </TableRow>
+                      <CustomTableRow
+                        selectedTags={selectedTags}
+                        key={row.id}
+                        row={row}
+                        workers={workers}
+                        updateHearing={updateHearing}
+                      />
                     );
                     // }
                   })}

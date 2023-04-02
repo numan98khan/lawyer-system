@@ -7,7 +7,43 @@ import CNICTextField from "../../components/CNICTextField"
 import MaskedInput from 'react-text-mask';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
+import Title from "../../components/Title";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 
+const optionsA = [
+  {
+    name: "Plaintiff",
+    value: "Plaintiff",
+  },
+  {
+    name: "Claimant",
+    value: "Claimant",
+  },
+  {
+    name: "Complainant",
+    value: "Complainant",
+  },{
+    name: "Applicant",
+    value: "Applicant",
+  },{
+    name: "Petitioner",
+    value: "Petitioner",
+  }
+];
+
+const optionsB = [
+  {
+    name: "Defendant",
+    value: "Defendant",
+  },{
+    name: "Respondent",
+    value: "Respondent",
+  },{
+    name: "Accused",
+    value: "Accused",
+  },
+];
 
 function TextMaskCNIC(props) {
   const { inputRef, ...other } = props;
@@ -59,16 +95,16 @@ function ClientInformationForm({ formData, handleInputChange }) {
       id: "clientDetails.clientAddress",
       value: formData.clientDetails.clientAddress || "",
     },
-    {
-      label: "Plaintiff/Claimant/Complainant/Applicant/Petitioner",
-      id: "clientDetails.plaintiff",
-      value: formData.clientDetails.plaintiff || "",
-    },
-    {
-      label: "Defendant/Respondent/Accused",
-      id: "clientDetails.defendant",
-      value: formData.clientDetails.defendant || "",
-    },
+    // {
+    //   label: "Plaintiff/Claimant/Complainant/Applicant/Petitioner",
+    //   id: "clientDetails.plaintiff",
+    //   value: formData.clientDetails.plaintiff || "",
+    // },
+    // {
+    //   label: "Defendant/Respondent/Accused",
+    //   id: "clientDetails.defendant",
+    //   value: formData.clientDetails.defendant || "",
+    // },
     {
       label: "Phone No.",
       id: "clientDetails.phoneNumber",
@@ -84,7 +120,8 @@ function ClientInformationForm({ formData, handleInputChange }) {
 
   return (
     <>
-      <h2 style={{ textAlign: "center", marginTop: 20 }}>Client Information</h2>
+      {/* <h2 style={{ textAlign: "center", marginTop: 20 }}>Client Information</h2> */}
+      <Title title="Client Information" extraSpace/>
 
       <div className={classes.gridContainer}>
         {fields.map(({ label, id, value }) => (
@@ -130,6 +167,49 @@ function ClientInformationForm({ formData, handleInputChange }) {
 
           </FormControl>
         ))}
+
+    <FormControl className={classes.formControl}>
+      
+      
+      <InputLabel htmlFor="court-select">Plaintiff Type</InputLabel>
+      <Select
+
+
+        value={formData.clientDetails.plaintiff}
+        name={"clientDetails.plaintiff"}
+        onChange={handleInputChange}
+
+        // inputProps={{ id: "court-select" }}
+      >
+        {optionsA.map((option, index) => (
+          <MenuItem key={index} value={option.value}>
+            {option.name}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+
+    <FormControl className={classes.formControl}>
+      
+      
+      <InputLabel htmlFor="court-select">Defendant Type</InputLabel>
+      <Select
+
+
+        value={formData.clientDetails.defendant}
+        name={"clientDetails.defendant"}
+        onChange={handleInputChange}
+
+        // inputProps={{ id: "court-select" }}
+      >
+        {optionsB.map((option, index) => (
+          <MenuItem key={index} value={option.value}>
+            {option.name}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+
       </div>
     </>
   );

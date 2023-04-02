@@ -26,8 +26,8 @@ const useStyles = makeStyles((theme) => ({
   grow: {
     top: 0,
     flexGrow: 3,
-    backgroundColor: "#6600ff",
-    color: "#6600ff",
+    backgroundColor: "var(--mainPurple)",
+    color: "var(--mainPurple)",
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -208,7 +208,7 @@ function PrimarySearchAppBar(props) {
     <div className={classes.grow}>
       {/*renderRedirect()*/}
       <AppBar
-        style={{ backgroundColor: "#6600ff", position: "fixed" }}
+        style={{ backgroundColor: "var(--mainPurple)", position: "fixed" }}
         // position="static"
         position="sticky"
       >
