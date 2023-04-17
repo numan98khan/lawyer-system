@@ -44,7 +44,8 @@ function CourtForm({formData, handleInputChange }) {
   return (
     <>
           {/* <h2 style={{ textAlign: "center", marginTop: 20 }}>Nature of Litigation</h2> */}
-          <Title title="Nature of Litigation" extraSpace/>
+          {/* <Title title="Nature of Litigation" extraSpace/> */}
+          <Title title="Category Details" extraSpace/>
 
     <FormControl className={classes.formControl}>
       <InputLabel htmlFor="court-select">Nature of Litigation</InputLabel>

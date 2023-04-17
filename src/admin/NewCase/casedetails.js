@@ -66,6 +66,7 @@ function Form(props) {
 
   const [formData, setFormData] = useState({
     // category: 'Civil Litigation',
+    isOrganization: false,
 
     legalOpinion: false,
     legalDrafting: false,
@@ -77,6 +78,7 @@ function Form(props) {
     // courtName: '',
     clientDetails: {name: 'Nauman'},
     otherPartyDetails: {},
+    otherParties: [{}],
     contactPerson: {},
 
     // // Worker Details
@@ -88,19 +90,88 @@ function Form(props) {
   });
 
 
-  const handleInputChange = (event) => {
+  /*
+  const handleInputChange = (event, index) => {
     console.log(event);
+  
+    let name, value;
     if (event.target === undefined) {
-      const { name, value } = event;
-
-      setFormData({ ...formData, [name]: value });
-      return 
+      ({ name, value } = event);
+    } else {
+      ({ name, value } = event.target);
+  
+      if (event.target.type === 'checkbox') {
+        value = event.target.checked;
+      }
     }
-    
-    
-    const { name, value } = event.target;
+  
+    console.log("Upstream", name, value, event.target?.checked, event.target, index);
+  
+    // check if the name contains a '.' indicating a nested object
+    if (name.includes('.')) {
+      // separate the nested object key and property name
+      const [objName, propName] = name.split('.');
 
-    console.log("Upstream", name, value, event.target);
+      if (index !== undefined) {
+        // console.log('INDEX EDITING', index);
+        // update the nested object property
+        setFormData(prevState => ({
+          ...prevState,
+          otherParties: prevState.otherParties.map((otherParty, idx) => {
+            console.log(otherParty);
+            if (idx === index) {
+              console.log('hear me!');
+              return {
+                ...otherParty,
+                [objName]: {
+                  ...otherParty[objName],
+                  [propName]: value
+                }
+              };
+            }
+            console.log(otherParty);
+            return otherParty;
+          })
+        }));
+      } else {
+  
+        // update the nested object property
+        setFormData(prevState => ({
+          ...prevState,
+          [objName]: {
+            ...prevState[objName],
+            [propName]: value
+          }
+        }));
+
+      }
+
+    } else {
+
+        // update the top-level property
+        setFormData({ ...formData, [name]: value });
+      
+    }
+  
+    console.log(formData);
+  };
+  //*/
+
+  const handleInputChange = (event, index) => {
+    console.log(event);
+  
+    let name, value;
+    if (event.target === undefined) {
+      ({ name, value } = event);
+    } else {
+      ({ name, value } = event.target);
+  
+      if (event.target.type === 'checkbox') {
+        value = event.target.checked;
+      }
+    }
+  
+    console.log("Upstream", name, value, event.target?.checked, event.target, index);
   
     // check if the name contains a '.' indicating a nested object
     if (name.includes('.')) {
@@ -108,22 +179,51 @@ function Form(props) {
       const [objName, propName] = name.split('.');
   
       // update the nested object property
-      setFormData(prevState => ({
-        ...prevState,
-        [objName]: {
-          ...prevState[objName],
-          [propName]: value
+      setFormData(prevState => {
+        // When index is undefined, update the top-level property.
+        if (index === undefined) {
+          return {
+            ...prevState,
+            [objName]: {
+              ...prevState[objName],
+              [propName]: value
+            }
+          };
         }
-      }));
+  
+        // When index is provided, update the otherParties property.
+        return {
+          ...prevState,
+          otherParties: prevState.otherParties.map((otherParty, idx) => {
+            if (idx === index) {
+              console.log(index, otherParty)
+              return {
+                ...otherParty,
+                [objName]: {
+                  ...otherParty[objName],
+                  [propName]: value
+                }
+              };
+            }
+            return otherParty;
+          })
+        };
+      });
     } else {
-      if ( event.target.checked) {
-        setFormData({ ...formData, [name]: event.target.checked });
-
-      } else {
-        // update the top-level property
-        setFormData({ ...formData, [name]: value });
-      }
+      // update the top-level property
+      setFormData({ ...formData, [name]: value });
     }
+  
+    console.log(formData);
+  };
+  
+  
+
+  const handleAddOtherParty = () => {
+    setFormData({
+      ...formData,
+      otherParties: [...formData.otherParties, {}],
+    });
   };
 
   const handleSubmit = (event) => {
@@ -256,13 +356,21 @@ function Form(props) {
             <CourtDetails formData={formData} handleInputChange={handleInputChange} />
           )}
           {step === 5 && (
+
+            // <OtherPartyDetails formData={formData} handleInputChange={handleInputChange} />
             <ClientDetails formData={formData} handleInputChange={handleInputChange} />
           )}
           {step === 6 && (
-            <OtherPartyDetails formData={formData} handleInputChange={handleInputChange} />
+
+            // <ClientDetails formData={formData} handleInputChange={handleInputChange} />
+            // <OtherPartyDetails formData={formData} handleInputChange={handleInputChange} />
+
+            <ContactPerson formData={formData} handleInputChange={handleInputChange} />
           )}
           {step === 7 && (
-            <ContactPerson formData={formData} handleInputChange={handleInputChange} />
+            // <ContactPerson formData={formData} handleInputChange={handleInputChange} />
+
+            <OtherPartyDetails formData={formData} handleInputChange={handleInputChange} handleAddOtherParty={handleAddOtherParty}/>
           )}
           {step === 8 && (
             <NatureOfLitigation formData={formData} handleInputChange={handleInputChange} />
@@ -299,13 +407,14 @@ function Form(props) {
               <FormControl className={classes.formControl}>
                 <ButtonContainer
                   onClick={() => {
+                    console.log('form data', formData);
                     location.state.caseDetails = formData;
                     location.state.paymentOptions = {};
                     console.log(location.state);
                     
 
                     console.log('Observe Payload', retCase, initCase);
-
+                    /*
                     props.addClientAndCase(location.state).then(({ caseDetails, file_n, case_n })=>{
                       console.log('location.state', caseDetails, file_n, case_n, initCase);
                       // const temp_case = getCaseData(file_n, case_n);
@@ -353,6 +462,7 @@ function Form(props) {
                         
                         // history.push('/')
                     });
+                    // */
 
 
                   }}

@@ -92,11 +92,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ClientInformationForm({ formData, handleInputChange }) {
+function OtherPartyInformationForm({ formData, handleInputChange }) {
   const classes = useStyles();
   const [isOrganization, setIsOrganization] = useState(formData.isOrganization || false);
-
-  const [sameAsClientDetails, setSameAsClientDetails] = useState(false);
 
 
   const fields = (isOrganization) =>  [
@@ -107,124 +105,90 @@ function ClientInformationForm({ formData, handleInputChange }) {
     },
     {
       label: "Name of the Client(s)",
-      id: "contactPerson.clientName",
-      value: formData.contactPerson.clientName || "",
+      id: "otherPartyDetails.clientName",
+      value: formData.otherPartyDetails.clientName || "",
     },
     
     {
       label: "NTN number",
-      id: "contactPerson.ntn",
-      value: formData.contactPerson.ntn || "",
+      id: "otherPartyDetails.ntn",
+      value: formData.otherPartyDetails.ntn || "",
     },
     ...(isOrganization
       ? [
           {
             label: "Registration Number",
-            id: "contactPerson.registrationNumber",
-            value: formData.contactPerson.registrationNumber || "",
+            id: "otherPartyDetails.registrationNumber",
+            value: formData.otherPartyDetails.registrationNumber || "",
           },
           {
             label: "CUIN",
-            id: "contactPerson.cuin",
-            value: formData.contactPerson.cuin || "",
+            id: "otherPartyDetails.cuin",
+            value: formData.otherPartyDetails.cuin || "",
           },
         ]
       : [{
         label: "CNIC number",
-        id: "contactPerson.cnicNumber",
-        value: formData.contactPerson.cnicNumber || "",
+        id: "otherPartyDetails.cnicNumber",
+        value: formData.otherPartyDetails.cnicNumber || "",
       },]),
     {
       label: "Client Address",
-      id: "contactPerson.clientAddress",
-      value: formData.contactPerson.clientAddress || "",
+      id: "otherPartyDetails.clientAddress",
+      value: formData.otherPartyDetails.clientAddress || "",
     },
     // {
     //   label: "Plaintiff/Claimant/Complainant/Applicant/Petitioner",
-    //   id: "contactPerson.plaintiff",
-    //   value: formData.contactPerson.plaintiff || "",
+    //   id: "clientDetails.plaintiff",
+    //   value: formData.clientDetails.plaintiff || "",
     // },
     // {
     //   label: "Defendant/Respondent/Accused",
-    //   id: "contactPerson.defendant",
-    //   value: formData.contactPerson.defendant || "",
+    //   id: "clientDetails.defendant",
+    //   value: formData.clientDetails.defendant || "",
     // },
     {
       label: "Phone No.",
-      id: "contactPerson.phoneNumber",
-      value: formData.contactPerson.phoneNumber || "",
+      id: "otherPartyDetails.phoneNumber",
+      value: formData.otherPartyDetails.phoneNumber || "",
     },
     {
       label: "WhatsApp No.",
-      id: "contactPerson.whatsappNumber",
-      value: formData.contactPerson.whatsappNumber || "",
+      id: "otherPartyDetails.whatsappNumber",
+      value: formData.otherPartyDetails.whatsappNumber || "",
     },
     {
       label: "Email",
-      id: "contactPerson.email",
-      value: formData.contactPerson.email || "",
+      id: "otherPartyDetails.email",
+      value: formData.otherPartyDetails.email || "",
     },
 
     
   ];
 
-  const handleSameAsClientDetailsChange = (event) => {
-    setSameAsClientDetails(event.target.checked);
-    if (event.target.checked) {
-      handleInputChange({
-        target: {
-          name: "contactPerson",
-          value: { ...formData.clientDetails },
-        },
-      });
-    } else {
-      handleInputChange({
-        target: {
-          name: "contactPerson",
-          value: {
-            ...formData.contactPerson,
-            clientName: "",
-            ntn: "",
-            registrationNumber: "",
-            cuin: "",
-            cnicNumber: "",
-            clientAddress: "",
-            phoneNumber: "",
-            whatsappNumber: "",
-            email: "",
-            plaintiff: "",
-          },
-        },
-      });
-    }
-  };
-  
-
 
   return (
     <>
       {/* <h2 style={{ textAlign: "center", marginTop: 20 }}>Client Information</h2> */}
-      <Title title="Contact Details" extraSpace/>
+      <Title title="Other Party Details" extraSpace/>
 
       <div className={classes.gridContainer}>
           <FormControlLabel
             // key={id}
             control={
               <Checkbox
-                color="primary"
-                checked={sameAsClientDetails}
-                onChange={handleSameAsClientDetailsChange}
-                disabled={formData.isOrganization}
-    
-                
+              color="primary"
+                checked={fields(isOrganization)[0].value}
+                onChange={handleInputChange}
+                name={fields(isOrganization)[0].id}
               />
             }
-            label={"Same as Client Details"}
+            label={fields(isOrganization)[0]['label']}
           />
         {fields(fields(isOrganization)[0].value).slice(1).map(({ label, id, value }) => (
           
           <FormControl key={id} className={classes.formControl}>
-            {id === "contactPerson.cnicNumber" ? (
+            {id === "otherPartyDetails.cnicNumber" ? (
             <><InputLabel>cnic</InputLabel>
                 
             <Input
@@ -272,8 +236,8 @@ function ClientInformationForm({ formData, handleInputChange }) {
       <Select
 
 
-        value={formData.contactPerson.plaintiff}
-        name={"contactPerson.plaintiff"}
+        value={formData.otherPartyDetails.plaintiff}
+        name={"otherPartyDetails.plaintiff"}
         onChange={handleInputChange}
 
         // inputProps={{ id: "court-select" }}
@@ -293,8 +257,8 @@ function ClientInformationForm({ formData, handleInputChange }) {
       <Select
 
 
-        value={formData.contactPerson.defendant}
-        name={"contactPerson.defendant"}
+        value={formData.clientDetails.defendant}
+        name={"clientDetails.defendant"}
         onChange={handleInputChange}
 
         // inputProps={{ id: "court-select" }}
@@ -312,9 +276,9 @@ function ClientInformationForm({ formData, handleInputChange }) {
   );
 }
 
-ClientInformationForm.propTypes = {
+OtherPartyInformationForm.propTypes = {
   formData: PropTypes.object.isRequired,
   handleInputChange: PropTypes.func.isRequired,
 };
 
-export default ClientInformationForm;
+export default OtherPartyInformationForm;

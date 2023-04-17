@@ -37,28 +37,6 @@ function CourtForm({ formData, handleInputChange }) {
     setCourtName(event.target.value);
   };
 
-  const [naBenchChecked, setNaBenchChecked] = useState(false);
-  const [naTehsilChecked, setNaTehsilChecked] = useState(false);
-
-
-  const handleNaBenchChange = (event) => {
-    setNaBenchChecked(event.target.checked);
-    if (event.target.checked) {
-      handleInputChange({ target: { name: "bench", value: "N/A" } });
-    } else {
-      handleInputChange({ target: { name: "bench", value: "" } });
-    }
-  };
-
-  const handleNaTehsilChange = (event) => {
-    setNaTehsilChecked(event.target.checked);
-    if (event.target.checked) {
-      handleInputChange({ target: { name: "tehsil", value: "N/A" } });
-    } else {
-      handleInputChange({ target: { name: "tehsil", value: "" } });
-    }
-  };
-
   const fields = {
     "judge":
     {
@@ -169,19 +147,7 @@ function CourtForm({ formData, handleInputChange }) {
           onChange={handleInputChange}
           
           label="Bench"
-          disabled={naBenchChecked}
         ></TextField>
-        <FormControlLabel
-            control={
-              <Checkbox
-              color="primary"
-                checked={naBenchChecked}
-                onChange={handleNaBenchChange}
-                color="primary"
-              />
-            }
-            label="N/A"
-          />
       </FormControl>
 
 
@@ -200,19 +166,7 @@ function CourtForm({ formData, handleInputChange }) {
           onChange={handleInputChange}
           
           label="Tehsil"
-          disabled={naTehsilChecked}
         ></TextField>
-        <FormControlLabel
-            control={
-              <Checkbox
-                checked={naTehsilChecked}
-                onChange={handleNaTehsilChange}
-                color="primary"
-              />
-            }
-            label="N/A"
-          />
-        
       </FormControl>
 
       

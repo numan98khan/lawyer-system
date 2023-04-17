@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
@@ -10,6 +10,11 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Title from "../../components/Title";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
+
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+
+
 
 const optionsA = [
   {
@@ -29,10 +34,7 @@ const optionsA = [
   },{
     name: "Petitioner",
     value: "Petitioner",
-  }
-];
-
-const optionsB = [
+  },
   {
     name: "Defendant",
     value: "Defendant",
@@ -45,8 +47,22 @@ const optionsB = [
   },
 ];
 
+// const optionsB = [
+//   {
+//     name: "Defendant",
+//     value: "Defendant",
+//   },{
+//     name: "Respondent",
+//     value: "Respondent",
+//   },{
+//     name: "Accused",
+//     value: "Accused",
+//   },
+// ];
+
 function TextMaskCNIC(props) {
   const { inputRef, ...other } = props;
+
 
   return (
     <MaskedInput
@@ -78,18 +94,44 @@ const useStyles = makeStyles((theme) => ({
 
 function ClientInformationForm({ formData, handleInputChange }) {
   const classes = useStyles();
+  const [isOrganization, setIsOrganization] = useState(formData.isOrganization || false);
 
-  const fields = [
+
+  const fields = (isOrganization) =>  [
+    {
+      label: "Is Organization?",
+      id: "isOrganization",
+      value: formData.isOrganization || false,
+    },
     {
       label: "Name of the Client(s)",
       id: "clientDetails.clientName",
       value: formData.clientDetails.clientName || "",
     },
+    
     {
-      label: "CNIC number",
-      id: "clientDetails.cnicNumber",
-      value: formData.clientDetails.cnicNumber || "",
+      label: "NTN number",
+      id: "clientDetails.ntn",
+      value: formData.clientDetails.ntn || "",
     },
+    ...(isOrganization
+      ? [
+          {
+            label: "Registration Number",
+            id: "clientDetails.registrationNumber",
+            value: formData.clientDetails.registrationNumber || "",
+          },
+          {
+            label: "CUIN",
+            id: "clientDetails.cuin",
+            value: formData.clientDetails.cuin || "",
+          },
+        ]
+      : [{
+        label: "CNIC number",
+        id: "clientDetails.cnicNumber",
+        value: formData.clientDetails.cnicNumber || "",
+      },]),
     {
       label: "Client Address",
       id: "clientDetails.clientAddress",
@@ -111,20 +153,39 @@ function ClientInformationForm({ formData, handleInputChange }) {
       value: formData.clientDetails.phoneNumber || "",
     },
     {
+      label: "WhatsApp No.",
+      id: "clientDetails.whatsappNumber",
+      value: formData.clientDetails.whatsappNumber || "",
+    },
+    {
       label: "Email",
       id: "clientDetails.email",
       value: formData.clientDetails.email || "",
     },
+
+    
   ];
 
 
   return (
     <>
       {/* <h2 style={{ textAlign: "center", marginTop: 20 }}>Client Information</h2> */}
-      <Title title="Client Information" extraSpace/>
+      <Title title="Client Details" extraSpace/>
 
       <div className={classes.gridContainer}>
-        {fields.map(({ label, id, value }) => (
+          <FormControlLabel
+            // key={id}
+            control={
+              <Checkbox
+              color="primary"
+                checked={fields(isOrganization)[0].value}
+                onChange={handleInputChange}
+                name={fields(isOrganization)[0].id}
+              />
+            }
+            label={fields(isOrganization)[0]['label']}
+          />
+        {fields(fields(isOrganization)[0].value).slice(1).map(({ label, id, value }) => (
           
           <FormControl key={id} className={classes.formControl}>
             {id === "clientDetails.cnicNumber" ? (
@@ -171,7 +232,7 @@ function ClientInformationForm({ formData, handleInputChange }) {
     <FormControl className={classes.formControl}>
       
       
-      <InputLabel htmlFor="court-select">Plaintiff Type</InputLabel>
+      <InputLabel htmlFor="court-select">Plaintiff/Defendant Type</InputLabel>
       <Select
 
 
@@ -189,7 +250,7 @@ function ClientInformationForm({ formData, handleInputChange }) {
       </Select>
     </FormControl>
 
-    <FormControl className={classes.formControl}>
+    {/* <FormControl className={classes.formControl}>
       
       
       <InputLabel htmlFor="court-select">Defendant Type</InputLabel>
@@ -208,7 +269,7 @@ function ClientInformationForm({ formData, handleInputChange }) {
           </MenuItem>
         ))}
       </Select>
-    </FormControl>
+    </FormControl> */}
 
       </div>
     </>

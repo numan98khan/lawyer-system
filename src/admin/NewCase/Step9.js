@@ -119,7 +119,8 @@ return (
     {/* <h2 style={{ textAlign: 'center', marginTop: 20 }}>
     Litigation Information
     </h2> */}
-    <Title title="Litigation Information" extraSpace/>
+    {/* <Title title="Litigation Information" extraSpace/> */}
+    <Title title="Litigation Details" extraSpace/>
 
     {/* Case catergory */}
     <FormControl className={classes.formControl}>
@@ -136,38 +137,38 @@ return (
           //   setCategory(e.target.value);
           // }}
         >
-          <MenuItem value={"Civil Litigation"} >
-            Civil Litigation
-          </MenuItem>
-          <MenuItem value={"Criminal Litigation"}>
-            Criminal Litigation
-          </MenuItem>
-          <MenuItem value={"Service Law"}>
-            Service Law
-          </MenuItem>
-          <MenuItem value={"Family Law"}>
-            Family Law
-          </MenuItem>
           <MenuItem value={"Banking Law"}>
             Banking Law
           </MenuItem>
-          <MenuItem value={"Tax and other Levies"}>
-            Tax and other Levies
-          </MenuItem>
-          <MenuItem value={"Consumer Law"}>
-            Consumer Law
+          <MenuItem value={"Civil Litigation"} >
+            Civil Litigation
           </MenuItem>
           <MenuItem value={"Competition Law"}>
             Competition Law
           </MenuItem>
-          <MenuItem value={"Landlord and Tenant Law"}>
-            Landlord and Tenant Law
-          </MenuItem>
           <MenuItem value={"Company Law"}>
             Company Law
           </MenuItem>
+          <MenuItem value={"Consumer Law"}>
+            Consumer Law
+          </MenuItem>
+          <MenuItem value={"Criminal Litigation"}>
+            Criminal Litigation
+          </MenuItem>
+          <MenuItem value={"Family Law"}>
+            Family Law
+          </MenuItem>
+          <MenuItem value={"Landlord and Tenant Law"}>
+            Landlord and Tenant Law
+          </MenuItem>
           <MenuItem value={"Public Interest Litigation"}>
-          Public Interest Litigation
+            Public Interest Litigation
+          </MenuItem>
+          <MenuItem value={"Service Law"}>
+            Service Law
+          </MenuItem>
+          <MenuItem value={"Tax and other Levies"}>
+            Tax and other Levies
           </MenuItem>
           <MenuItem value={"Others"}>
             Others (Please specify)
@@ -175,6 +176,7 @@ return (
           <MenuItem value={"Blank"}>
             Or Leave Blank
           </MenuItem>
+
           
         </Select>
       </FormControl>

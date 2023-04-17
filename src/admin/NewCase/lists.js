@@ -237,7 +237,7 @@ export const optionsCivilLitigation = [
       name: "Leave Blank",
       value: "Leave Blank",
       },
-    ];
+    ].sort((a, b) => a.name.localeCompare(b.name));
 
 const optionsServiceLaw = [
   {
@@ -272,7 +272,7 @@ const optionsServiceLaw = [
     name: "Or leave blank",
     value: "Or leave blank",
   },
-];
+].sort((a, b) => a.name.localeCompare(b.name));
 
 const optionsCompetitionLaw = [
   {
@@ -283,7 +283,8 @@ const optionsCompetitionLaw = [
     name: "Or leave blank",
     value: "Or leave blank",
   },
-];
+].sort((a, b) => a.name.localeCompare(b.name));
+
 const optionsOtherLaw = [
   {
     name: "Specify",
@@ -293,7 +294,8 @@ const optionsOtherLaw = [
     name: "Or leave blank",
     value: "Or leave blank",
   },
-];
+].sort((a, b) => a.name.localeCompare(b.name));
+
 const optionsPublicInterestLaw = [
   {
     name: "Specify",
@@ -303,7 +305,8 @@ const optionsPublicInterestLaw = [
     name: "Or leave blank",
     value: "Or leave blank",
   },
-];
+].sort((a, b) => a.name.localeCompare(b.name));
+
 const optionsConsumerLaw = [
   {
     name: "",
@@ -337,7 +340,7 @@ const optionsConsumerLaw = [
     name: "Ownership issues",
     value: "Ownership issues",
   },
-];
+].sort((a, b) => a.name.localeCompare(b.name));
 
 const optionsCriminalLaw = [
   {
@@ -392,7 +395,7 @@ const optionsCriminalLaw = [
     name: "Or leave blank",
     value: "Or leave blank",
   },
-];
+].sort((a, b) => a.name.localeCompare(b.name));
 
 const optionsCriminalLaw_2 = [ 
   {
@@ -447,7 +450,7 @@ const optionsCriminalLaw_2 = [
     name: "Or leave blank",
     value: "Or leave blank",
   },
-];
+].sort((a, b) => a.name.localeCompare(b.name));
 
 const optionsCriminalLaw_3 = [
     {
@@ -482,7 +485,7 @@ const optionsCriminalLaw_3 = [
       name: "Or leave blank",
       value: "Or leave blank",
     },
-  ];
+  ].sort((a, b) => a.name.localeCompare(b.name));
 
 
 
@@ -516,7 +519,7 @@ const optionsHousingLaw = [
       name: "Or leave blank",
       value: "Or leave blank",
     },
-  ];
+  ].sort((a, b) => a.name.localeCompare(b.name));
   
   const optionsCompanyLaw = [
     {
@@ -539,7 +542,7 @@ const optionsHousingLaw = [
       name: "Or leave blank",
       value: "Or leave blank",
     },
-  ];
+  ].sort((a, b) => a.name.localeCompare(b.name));
   
 
 
@@ -593,7 +596,7 @@ const optionsFamilyLaw = [
     name: "Or leave blank option",
     value: "Or leave blank option",
   },
-];
+].sort((a, b) => a.name.localeCompare(b.name));
 
 const optionsBankingLaw = [
   {
@@ -632,7 +635,7 @@ const optionsBankingLaw = [
     name: "Or leave blank",
     value: "Or leave blank",
   },
-];
+].sort((a, b) => a.name.localeCompare(b.name));
 
 const optionsTaxLaw = [
   {
@@ -683,7 +686,7 @@ const optionsTaxLaw = [
     name: "Or leave blank",
     value: "Or leave blank",
   },
-];
+].sort((a, b) => a.name.localeCompare(b.name));
 
 const nulllist = [null];
 
@@ -701,7 +704,7 @@ const optionsCaseSupervisor = [
     name: "John Smith",
     value: "John Smith",
   },
-];
+].sort((a, b) => a.name.localeCompare(b.name));
 
 const optionsChances = [
   {
@@ -728,7 +731,7 @@ const optionsChances = [
     name: "Not Applicable",
     value: "Not Applicable",
   },
-];
+].sort((a, b) => a.name.localeCompare(b.name));
 
 
 const optionsLitigationTypes = [
@@ -743,7 +746,7 @@ const optionsLitigationTypes = [
     name: "Litigation consultation only",
     value: "Litigation consultation only",
   },
-];
+].sort((a, b) => a.name.localeCompare(b.name));
 
 const optionsCourts = [
   {
@@ -977,7 +980,7 @@ const optionsCourts = [
   {
     name: "Or leave blank option",
     value: "Or leave blank option",
-  },]
+  },].sort((a, b) => a.name.localeCompare(b.name))
 
 // const optionsLitigationTypes = [
 
@@ -1062,8 +1065,60 @@ const optionsCourts = [
       name: "Or leave blank option",
       value: "Or leave blank option",
     },
-  ];
+  ].sort((a, b) => a.name.localeCompare(b.name));
   
+const dummyFormData = {
+  "isOrganization": false,
+  "legalOpinion": true,
+  "legalDrafting": false,
+  "dueDiligence": false,
+  "legalisationRegistration": false,
+  "regulatoryWork": false,
+  "litigationWork": false,
+  "clientDetails": {
+      "name": "Nauman",
+      "clientName": "Muhammad Nauman",
+      "clientAddress": "House # 1029D, Street # 46",
+      "phoneNumber": "+923315882990",
+      "email": "numan98khan@gmail.com",
+      "cnicNumber": "12345-1234567-1",
+      "ntn": "123654789",
+      "plaintiff": "Defendant"
+  },
+  "otherPartyDetails": {
+      "partyName": "Muhammad Nauman",
+      "address": "House # 1029D, Street # 46",
+      "phoneNumber": "+923315882990",
+      "email": "numan98khan@gmail.com",
+      "cnicNumber": "9876598765439"
+  },
+  "contactPerson": {
+      "name": "Muhammad Nauman",
+      "fatherName": "Muhammad Nauman",
+      "cnic": "Muhammad Nauman",
+      "phoneNumber1": "+923315882990",
+      "whatsappNumber1": "+923315882990",
+      "email": "numan98khan@gmail.com",
+      "homeAddress": "House # 1029D, Street # 46"
+  },
+  "litigation": {
+      "category": "Civil Litigation",
+      "subCategory": "Specific Performance of Contract under Section 12"
+  },
+  "litigationCaseTitle": "My Unlawful Land Deal",
+  "courtCaseNo": "365/12",
+  "isDateNewCase": false,
+  "substantiveDateOfLastHearing": "2023-04-01T14:31:00.000Z",
+  "substantiveDateOfNextHearing": "2023-04-08T14:31:00.000Z",
+  "judge": "Judge Rukhsar",
+  "court": "District & Sessions Judge",
+  "district": "Lower Dir",
+  "bench": "High",
+  "tehsil": "Jandool",
+  "natureOfLitigation": "Trial",
+  "worker": "akashahmed@greystone.com",
+  "clerk": "numan98khan@gmail.com"
+};
 
 export {
   nulllist,

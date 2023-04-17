@@ -104,7 +104,7 @@ return (
   {/* <h2 style={{ textAlign: 'center', marginTop: 20 }}>
     Case Allocation
   </h2> */}
-  <Title title="Case Allocation" extraSpace/>
+  <Title title="Allocation Details" extraSpace/>
 
     {/* Case Worker */}
     <FormControl className={classes.formControl}>

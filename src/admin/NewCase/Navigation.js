@@ -62,7 +62,7 @@ const Navigation = ({ step, setStep }) => {
           className={`${classes.tocItem} ${step === 3 ? 'active' : ''}`}
           onClick={() => handleClick(3)}
         >
-          {'Litigation Case Details'}
+          {'Case Details'}
         </div>
         <div
           className={`${classes.tocItem} ${step === 4 ? 'active' : ''}`}
@@ -74,37 +74,42 @@ const Navigation = ({ step, setStep }) => {
           className={`${classes.tocItem} ${step === 5 ? 'active' : ''}`}
           onClick={() => handleClick(5)}
         >
-          {'Client Information'}
+          {/* {'Other Party Information'} */}
+          {'Client Details'}
         </div>
         <div
           className={`${classes.tocItem} ${step === 6 ? 'active' : ''}`}
           onClick={() => handleClick(6)}
         >
-          {'Other Party Information'}
+          {/* {'Client Information'} */}
+          {/* {'Other Party Information'} */}
+          {'Contact Details'}
         </div>
         <div
           className={`${classes.tocItem} ${step === 7 ? 'active' : ''}`}
           onClick={() => handleClick(7)}
         >
-          {'Contact Information'}
+          {'Other Party Details'}
+          {/* {'Contact Information'} */}
         </div>
         <div
           className={`${classes.tocItem} ${step === 8 ? 'active' : ''}`}
           onClick={() => handleClick(8)}
         >
-          {'Nature of Litigation'}
+          {/* {'Nature of Litigation'} */}
+          {'Category Details'}
         </div>
         <div
           className={`${classes.tocItem} ${step === 9 ? 'active' : ''}`}
           onClick={() => handleClick(9)}
         >
-          {'Litigation Information'}
+          {'Litigation Details'}
         </div>
         <div
           className={`${classes.tocItem} ${step === 10 ? 'active' : ''}`}
           onClick={() => handleClick(10)}
         >
-          {'Case Allocation'}
+          {'Allocation Details'}
         </div>
       </div>
     </div>

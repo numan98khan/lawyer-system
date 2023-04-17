@@ -27,6 +27,9 @@ import { LogIcon } from "../../../src/icons";
 import { loadHearings, updateHearing } from "../../actions/hearingActions";
 import { loadLogs } from "../../actions/logActions";
 
+import Grid from "@material-ui/core/Grid";
+
+
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
@@ -122,7 +125,10 @@ function Tasks(props) {
   const [searchterm, setsearchterm] = React.useState("");
   const [NoHearings, setNoHearings] = React.useState(true);
   const [timestampSearch, settimestampSearch] = React.useState(false);
+  
   const [filterDate, setdate] = React.useState(new Date());
+  const [filterDateTo, setdateTo] = React.useState(new Date());
+  
   const [file_n, setfile_n] = React.useState(-1);
   const [case_n, setcase_n] = React.useState(-1);
   const [workers, setworkers] = React.useState({});
@@ -298,11 +304,34 @@ function Tasks(props) {
   };
   
   
+  // function filterHearing(row) {
+  //   const isWorker = props.user.user.type === "worker";
+  //   const isSupervisorOrWorker =
+  //     row.caseSupervisor === props.user.user.uid || row.caseWorker === props.user.user.uid;
+  //   const isDateMatch = row.next_proceedings_date === filterDate.toLocaleDateString("en-US");
+  
+  //   const isSearchTermMatch =
+  //     !searchFilter ||
+  //     !searchTerm ||
+  //     row[searchFilter]?.toLowerCase().includes(searchTerm.toLowerCase());
+  
+  //   if (isWorker) {
+  //     return (
+  //       (timestampSearch ? isSupervisorOrWorker && isDateMatch : isSupervisorOrWorker) &&
+  //       isSearchTermMatch
+  //     );
+  //   } else {
+  //     return (timestampSearch ? isDateMatch : true) && isSearchTermMatch;
+  //   }
+  // }
+
   function filterHearing(row) {
     const isWorker = props.user.user.type === "worker";
     const isSupervisorOrWorker =
       row.caseSupervisor === props.user.user.uid || row.caseWorker === props.user.user.uid;
-    const isDateMatch = row.next_proceedings_date === filterDate.toLocaleDateString("en-US");
+    
+    const rowDate = new Date(row.next_proceedings_date);
+    const isDateMatch = rowDate >= filterDate && rowDate <= filterDateTo;
   
     const isSearchTermMatch =
       !searchFilter ||
@@ -319,9 +348,21 @@ function Tasks(props) {
     }
   }
   
+  
 
   // These are tags for column select
-  const [selectedTags, setSelectedTags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState(["#", 
+  "FILE#", 
+  "CASE#", 
+  "COURT CASE#", 
+  "CASE TITLE",
+  "NATURE OF CASE", 
+  "CATEGORY", 
+  "COURT",
+  "DISTRICT",
+  "JUDGE",
+  "UPDATED BY"]);
+
   const handleTagClick = tag => {
 
     
@@ -343,29 +384,49 @@ function Tasks(props) {
         </div> */}
 
         <Title title="HEARINGS" />
-        <div
-          className="bg-light d-flex"
-          // style={{ height: "100px", padding: "30px" }}
+   
 
-        >
-          
-          <div className="d-flex align-items-center justify-content-between align-items-center">
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                disabled={!timestampSearch}
-                margin="normal"
-                id="date-picker-dialog"
-                // label="Date of birth"
-                format="MM/dd/yyyy"
-                value={filterDate}
-                onChange={(e) => {
-                  setdate(e);
-                }}
-                KeyboardButtonProps={{
-                  "aria-label": "change date",
-                }}
-              />
-            </MuiPickersUtilsProvider>
+          <Grid container alignItems="center" spacing={1}>
+            <Grid item>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  disabled={!timestampSearch}
+                  margin="normal"
+                  id="date-picker-dialog-from"
+                  format="MM/dd/yyyy"
+                  value={filterDate}
+                  onChange={(e) => {
+                    setdate(e);
+                  }}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+            </Grid>
+
+            <Grid item>
+              <Typography variant="subtitle1">---></Typography>
+            </Grid>
+            <Grid item>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  disabled={!timestampSearch}
+                  margin="normal"
+                  id="date-picker-dialog-to"
+                  format="MM/dd/yyyy"
+                  value={filterDateTo}
+                  onChange={(e) => {
+                    setdateTo(e);
+                  }}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+            </Grid>
+
+            <Grid item>
             <input
               onChange={(e) => {
                 console.log(e.target.checked);
@@ -378,41 +439,12 @@ function Tasks(props) {
                 width: "50px",
                 marginLeft: "10px",
                 marginTop: "17px",
+                color: 'primary'
               }}
             />
-          </div>
+            </Grid>
 
-          <div>
-            <ButtonContainer
-                    onClick={preview}
-                  >
-              Preview PDF
-            </ButtonContainer>
-          </div>
-
-          <div
-              style={{
-                // backgroundColor:'blue',
-                // flexDirection: "row",
-                display: "flex",
-                justifyContent: "space-between",
-                // width: "70%",
-                // alignItems: "center",
-                // paddingBottom: "2%",
-              }}
-            >
-              <TextField
-                style={{}}
-                color="primary"
-                id="outlined-basic"
-                label="Search Hearings"
-                variant="outlined"
-                onChange={(query) => {
-                  setSearchTerm(query.target.value.toLowerCase());
-
-                }}
-              />
-
+            <Grid item>
               <FormControl 
               // style={{ minWidth: "10vw" }}
               style={{ minWidth: "10vw" }}
@@ -438,9 +470,42 @@ function Tasks(props) {
                   })}
                 </Select>
               </FormControl>
-              <h5>{props.hearings.hearings.length} hearing(s)</h5>
-            </div>
-        </div>
+            </Grid>
+
+            <Grid item>
+            <TextField
+                style={{}}
+                color="primary"
+                id="outlined-basic"
+                label="Search Hearings"
+                variant="outlined"
+                onChange={(query) => {
+                  setSearchTerm(query.target.value.toLowerCase());
+
+                }}
+              />
+            </Grid>
+            <Grid item>
+              <Typography variant="subtitle1">{props.hearings.hearings.length} hearing(s)</Typography>
+            </Grid>
+
+                        
+            <Grid item>
+              <ButtonContainer
+                onClick={preview}
+                style={{ flexGrow: 1, marginLeft: "auto" }}
+              >
+                Preview PDF
+              </ButtonContainer>
+            </Grid>
+
+          </Grid>
+
+
+       
+        
+
+ 
 
         <ColumnSelect selectedTags={selectedTags} handleTagClick={handleTagClick} setSelectedTags={setSelectedTags}/>
 

@@ -44,7 +44,15 @@ const useStyles = makeStyles(theme => ({
     "& > *": {
       margin: theme.spacing(0.5)
     }
-  }
+  },
+  primaryChip: {
+    backgroundColor: '#18ab1b', // Your custom primary color
+    color: '#ffffff', // Text color for primary Chip
+  },
+  secondaryChip: {
+    backgroundColor: '#e754e4', // Your custom secondary color
+    color: '#ffffff', // Text color for secondary Chip
+  },
 }));
 
 const TagPanel = ({ selectedTags, handleTagClick, setSelectedTags}) => {
@@ -76,7 +84,11 @@ const TagPanel = ({ selectedTags, handleTagClick, setSelectedTags}) => {
               <Chip
                 key={tag}
                 label={tag}
-                color={selectedTags.includes(tag) ? "primary" : undefined}
+                color={selectedTags.includes(tag) ? "secondary" : undefined}
+                // TODO: Make magenta the selected chip color
+                // className={
+                //   selectedTags.includes(tag) ? undefined : classes.secondaryChip
+                // }
                 onClick={() => handleTagClick(tag)}
               />
             ))}

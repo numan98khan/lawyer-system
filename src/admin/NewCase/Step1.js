@@ -98,6 +98,7 @@ function StepOne({ formData, handleInputChange }) {
             key={id}
             control={
               <Checkbox
+                color="primary"
                 checked={formData[id]}
                 onChange={handleInputChange}
                 name={id}

@@ -81,8 +81,8 @@ function StepTwo({ formData, handleInputChange }) {
       value: formData.interimDateOfLastHearing || null,
     },
     {
-      label: "Date of First Hearing",
-      id: "interimDateOfFirstHearing",
+      label: "Date of Next Hearing",
+      id: "interimDateOfNextHearing",
       value: formData.interimDateOfFirstHearing || null,
     },
     {
@@ -92,9 +92,14 @@ function StepTwo({ formData, handleInputChange }) {
       value: formData.interimDateOfHearing || null,
     },
     {
-      label: "Date not fixed yet/new case",
-      id: "interimDateNotFixed",
-      value: formData.interimDateNotFixed || "", //This will be checkbox
+      label: "Date not fixed yet",
+      id: "isDateNotFixed",
+      value: formData.isDateNotFixed || false, //This will be checkbox
+    },
+    {
+      label: "New case",
+      id: "isDateNewCase",
+      value: formData.isDateNewCase || false, //This will be checkbox
     },
     {
       label: "Court Case No.",
@@ -123,7 +128,7 @@ function StepTwo({ formData, handleInputChange }) {
           </FormControl>
         ))}
         
-        {fields.slice(9).map(({ label, id, value }) => (
+        {fields.slice(10).map(({ label, id, value }) => (
           <FormControl key={id} className={classes.formControl}>
 
             <TextField
@@ -136,10 +141,24 @@ function StepTwo({ formData, handleInputChange }) {
             />
           </FormControl>
         ))}
+
+      <FormControlLabel
+            // key={id}
+            control={
+              <Checkbox
+              color="primary"
+                checked={fields[9].value}
+                onChange={handleInputChange}
+                name={fields[9].id}
+              />
+            }
+            label={fields[9].label}
+          />
         <FormControlLabel
             // key={id}
             control={
               <Checkbox
+              color="primary"
                 checked={fields[8].value}
                 onChange={handleInputChange}
                 name={fields[8].id}
@@ -147,6 +166,10 @@ function StepTwo({ formData, handleInputChange }) {
             }
             label={fields[8].label}
           />
+
+
+
+        
 
 
         </div>
@@ -161,6 +184,8 @@ function StepTwo({ formData, handleInputChange }) {
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <KeyboardDatePicker
                 // disabled={!timestampSearch}
+                disabled={(formData.isDateNewCase && id === "substantiveDateOfLastHearing") || (formData.isDateNotFixed && id === "substantiveDateOfNextHearing")}
+                
 
                 margin="normal"
                 // id="date-picker-dialog"
@@ -199,6 +224,9 @@ function StepTwo({ formData, handleInputChange }) {
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <KeyboardDatePicker
                 // disabled={!timestampSearch}
+                disabled={(formData.isDateNewCase && id === "interimDateOfLastHearing") || (formData.isDateNotFixed && id === "interimDateOfNextHearing")}
+                // disabled={formData.isDateNewCase && id === "interimDateOfLastHearing"}
+                
 
                 margin="normal"
                 // id="date-picker-dialog"
