@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 
 // Old config
 export const firebaseConfig = {
@@ -32,7 +33,19 @@ export default class fire{
     {
       firebase.initializeApp(firebaseConfig);
     }
+    this.db = firebase.firestore();
     return firebase;
   }
   
 }
+
+// class Firebase {
+//   constructor() {
+//     if (!firebase.apps.length) {
+//       firebase.initializeApp(firebaseConfig);
+//     }
+//     this.db = firebase.firestore();
+//   }
+// }
+
+// export default new Firebase();

@@ -1,8 +1,14 @@
-import React from "react";
+import React, {useState} from "react";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Field from "../../components/Field";
-
+import {
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Grid,
+} from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import CreateIcon from "@material-ui/icons/Create";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
@@ -28,7 +34,15 @@ function AddPeshiRow(props) {
   const [initCase, setInitCase] = React.useState(null);
 
   const [nextProceedings, setNextProceedings] = React.useState("");
+
   const [dob, setdob] = React.useState(new Date());
+  const [inputType, setInputType] = useState("date");
+  const [dropdownValue, setDropdownValue] = useState("");
+
+  const handleDropdownChange = (event) => {
+    setDropdownValue(event.target.value);
+  };
+
   const [newCase, setnewCase] = React.useState(null);
   const [workers, setworkers] = React.useState({});
 
@@ -100,7 +114,7 @@ function AddPeshiRow(props) {
       retCase["updated_by"] = props.user.email;
 
       setRetCase(retCase);
-      console.log(retCase);
+      console.log('retCase Go', retCase);
       // console.log(peshiData)
     }
   }
@@ -155,16 +169,23 @@ function AddPeshiRow(props) {
 
             //if case is new, get details from case, else from peshi row
             if (!newCase) {
-              retCase["previous_proceedings_date"] =
-                retCase["next_proceedings_date"];
+              retCase["substantiveDateOfLastHearing"] =
+                retCase["substantiveDateOfNextHearing"];
               retCase["previous_proceedings"] = retCase["next_proceedings"];
             }
 
-            retCase["next_proceedings_date"] = dob.toLocaleDateString("en-US");
+            // retCase["next_proceedings_date"] = dob.toLocaleDateString("en-US");
+            try {
+              retCase["substantiveDateOfNextHearing"] = dob.toLocaleDateString("en-US");
+            } catch (error) {
+              // console.error("Error converting date to string:", error);
+              retCase["substantiveDateOfNextHearing"] = dob;
+            }
+            
             retCase["next_proceedings"] = nextProceedings;
             retCase["updated_by"] = props.user.email;
 
-            console.log('Observe Payload', payload, initCase);
+            console.log('Observe Payload', payload, initCase, retCase);
 
             // value.addHearingEntry(payload, initCase).then(() => {
             props
@@ -279,29 +300,63 @@ function AddPeshiRow(props) {
       </TableCell>
 
       <TableCell
-        align="center"
-        style={{
-          minWidth: "200px",
-          paddingBottom: "30px",
-        }}
-      >
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <KeyboardDatePicker
-            margin="normal"
-            id="date-picker-dialog"
-            // label="Date of birth"
-            format="MM/dd/yyyy"
-            value={dob}
-            onChange={(e) => {
-              console.log(e);
-              setdob(e);
-            }}
-            KeyboardButtonProps={{
-              "aria-label": "change date",
-            }}
-          />
-        </MuiPickersUtilsProvider>
-      </TableCell>
+      align="center"
+      style={{
+        minWidth: "200px",
+        paddingBottom: "30px",
+      }}
+    >
+      <Grid container direction="column" spacing={2}>
+        <Grid item>
+          <FormControl>
+            <InputLabel>Type</InputLabel>
+            <Select
+              value={inputType}
+              onChange={(e) => setInputType(e.target.value)}
+            >
+              <MenuItem value="date">Date</MenuItem>
+              <MenuItem value="dropdown">Dropdown</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item>
+          {inputType === "date" ? (
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                margin="normal"
+                id="date-picker-dialog"
+                format="MM/dd/yyyy"
+                value={dob}
+                onChange={(e) => {
+                  console.log(e);
+                  setdob(e);
+                }}
+                KeyboardButtonProps={{
+                  "aria-label": "change date",
+                }}
+              />
+            </MuiPickersUtilsProvider>
+          ) : (
+            <FormControl fullWidth>
+              <InputLabel>Options</InputLabel>
+              <Select
+                value={dob}
+                // onChange={handleDropdownChange}
+                onChange={(e) => {
+                  // console.log(e);
+                  setdob(e.target.value);
+                }}
+              >
+                <MenuItem value="list cancelled">List Cancelled</MenuItem>
+                <MenuItem value="case left over">Case Left Over</MenuItem>
+                <MenuItem value="date in office">Date in Office</MenuItem>
+                <MenuItem value="judgement reserved">Judgement Reserved</MenuItem>
+              </Select>
+            </FormControl>
+          )}
+        </Grid>
+      </Grid>
+    </TableCell>
 
       {/* <TableCell align="center">{dob.toString()}</TableCell> */}
 

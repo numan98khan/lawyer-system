@@ -39,7 +39,16 @@ function CourtForm({ formData, handleInputChange }) {
 
   const [naBenchChecked, setNaBenchChecked] = useState(false);
   const [naTehsilChecked, setNaTehsilChecked] = useState(false);
+  const [naCourtChecked, setNaCourtChecked] = useState(false);
 
+  const handleNaCourtChange = (event) => {
+    setNaCourtChecked(event.target.checked);
+    if (event.target.checked) {
+      handleInputChange({ target: { name: "bench", value: "N/A" } });
+    } else {
+      handleInputChange({ target: { name: "bench", value: "" } });
+    }
+  };
 
   const handleNaBenchChange = (event) => {
     setNaBenchChecked(event.target.checked);
@@ -117,25 +126,39 @@ function CourtForm({ formData, handleInputChange }) {
 
       <FormControl className={classes.formControl}>
       
-      
-      <InputLabel htmlFor="court-select">Name of Court</InputLabel>
-      <Select
+        
+        <InputLabel htmlFor="court-select">Name of Court</InputLabel>
+        <Select
 
 
-        value={fields['court'].value}
-        name={fields['court'].id}
-        onChange={handleInputChange}
+          value={fields['court'].value}
+          name={fields['court'].id}
+          onChange={handleInputChange}
 
-        inputProps={{ id: "court-select" }}
-      >
-        {optionsCourts.map((option, index) => (
-          <MenuItem key={index} value={option.value}>
-            {option.name}
-          </MenuItem>
-        ))}
-      </Select>
+          disabled={fields['court'].value === 'N/A'}
 
-    </FormControl>
+          inputProps={{ id: "court-select" }}
+        >
+          {optionsCourts.map((option, index) => (
+            <MenuItem key={index} value={option.value}>
+              {option.name}
+            </MenuItem>
+          ))}
+        </Select>
+        <FormControlLabel
+            control={
+              <Checkbox
+                checked={fields['court'].value === 'N/A'}
+                onChange={handleInputChange} // use handleInputChange instead of handleCheckboxChange
+                name="isNACourt"
+
+                color="primary"
+              />
+            }
+            label="is N/A"
+          />
+
+      </FormControl>
 
       <FormControl className={classes.formControl}>
         <TextField
@@ -174,7 +197,6 @@ function CourtForm({ formData, handleInputChange }) {
         <FormControlLabel
             control={
               <Checkbox
-              color="primary"
                 checked={naBenchChecked}
                 onChange={handleNaBenchChange}
                 color="primary"

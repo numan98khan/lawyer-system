@@ -51,10 +51,15 @@ const CaseDetailPage = () => {
             <Grid item xs={12} sm={6} key={key}>
               <Paper>
                 <Box p={2}>
+                  
                   <Typography variant="subtitle1" gutterBottom>
                     {key[0].toUpperCase() + key.slice(1)}
                   </Typography>
-                  <Typography variant="body1">{details[key]}</Typography>
+
+                  <Typography variant="body1">
+                    {details[key] || null}
+                  </Typography>
+
                 </Box>
               </Paper>
             </Grid>

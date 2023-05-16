@@ -10,6 +10,7 @@ const CustomTableRow = ({
   updateHearing,
   selectedTags
 }) => {
+    console.log('ROW out', row);
   return (
     <TableRow
         className={`${row.isLast ? "highlightedRow" : ""} `}
@@ -167,35 +168,35 @@ const CustomTableRow = ({
             file_n={row.file_n}
             case_n={row.case_n}
             hearing_key={row.key}
-            cell={"caseSrc"}
-            value={row.caseSrc}
+            cell={"caseowner"}
+            value={row.caseowner}
             >
             {" "}
             </EditableCellComp>
         ) : (
-            <TableCell align="center">{row.caseSrc}</TableCell>
+            <TableCell align="center">{row.caseowner}</TableCell>
         ))}
 
         {/* <TableCell align="center">{row.caseSupervisor}</TableCell> */}
         {selectedTags.includes("CASE SUPERVISOR") && (row.isLast ? (
-            <EditableCellSelect
+            <EditableCellComp
             updateHearing={updateHearing}
             file_n={row.file_n}
             case_n={row.case_n}
             hearing_key={row.key}
-            cell={"caseSupervisor"}
-            options={workers}
-            value={row.caseSupervisor}
-            ></EditableCellSelect>
+            cell={"casesupervisor"}
+            // options={workers}
+            value={row.casesupervisor}
+            ></EditableCellComp>
         ) : (
             <TableCell align="center">
-            {workers[row.caseSupervisor]}
+            {workers[row.casesupervisor]}
             </TableCell>
         ))}
 
         {/* <TableCell align="center">{row.caseWorker}</TableCell> */}
         {selectedTags.includes("CASE WORKER") && (row.isLast ? (
-            <EditableCellSelect
+            <EditableCellComp
             updateHearing={updateHearing}
             file_n={row.file_n}
             case_n={row.case_n}
@@ -203,7 +204,7 @@ const CustomTableRow = ({
             cell={"caseWorker"}
             options={workers}
             value={row.worker}
-            ></EditableCellSelect>
+            ></EditableCellComp>
         ) : (
             <TableCell align="center">
             {workers[row.worker]}

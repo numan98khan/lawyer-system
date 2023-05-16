@@ -1,3 +1,8 @@
+.flex-container {
+  display: flex;
+  /* justify-content: space-between; */
+}
+
 .form {
   /* padding-top: 400px; */
 
@@ -12,7 +17,7 @@
   width: 100%;
   /* width: 50%; */
   /* background-color: #ccc; */
-  /* flex-grow: 1; */
+  flex-grow: 1;
   /* margin-left: 20px; */
 }
 
@@ -32,7 +37,7 @@
 
 .form-container {
   /* background-color: #333; */
-  height: 90vh; /* change from 100% to 100vh */
+  height: 90vh; 
   /* width: 10vw;  */
 
   padding-top: 2%;

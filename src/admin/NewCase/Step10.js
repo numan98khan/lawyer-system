@@ -95,6 +95,12 @@ const fields = {
       id: "caseowner",
       value: formData.caseowner || "",
     },
+    "casesupervisor":
+    {
+      label: "casesupervisor",
+      id: "casesupervisor ",
+      value: formData.casesupervisor || "",
+    },
   }
 
 
@@ -167,6 +173,30 @@ return (
         >
 
           {workers.filter(option => option.type === "caseowner").map((option, index) => (
+            <MenuItem 
+              key={index} 
+              value={option.email}
+            >
+              {option.email}
+            </MenuItem>
+          ))}
+          
+        </Select>
+      </FormControl>
+
+      {/* Case Supervisor */}
+    <FormControl className={classes.formControl}>
+        <InputLabel>Case Supervisor</InputLabel>
+        <Select
+          
+          value={fields['casesupervisor'].value}
+          name={fields['casesupervisor'].id}
+          
+          onChange={handleInputChange}
+          
+        >
+
+          {workers.filter(option => option.type === "supervisor").map((option, index) => (
             <MenuItem 
               key={index} 
               value={option.email}

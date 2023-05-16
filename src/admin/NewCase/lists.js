@@ -980,7 +980,10 @@ const optionsCourts = [
   {
     name: "Or leave blank option",
     value: "Or leave blank option",
-  },].sort((a, b) => a.name.localeCompare(b.name))
+  },
+  {name: "Not Applicable",
+  value: "N/A",}
+].sort((a, b) => a.name.localeCompare(b.name))
 
 // const optionsLitigationTypes = [
 
@@ -1064,7 +1067,8 @@ const optionsCourts = [
     {
       name: "Or leave blank option",
       value: "Or leave blank option",
-    },
+    },{name: "Not Applicable",
+    value: "N/A",}
   ].sort((a, b) => a.name.localeCompare(b.name));
   
 const dummyFormData = {
@@ -1085,10 +1089,18 @@ const dummyFormData = {
       "ntn": "123654789",
       "plaintiff": "Defendant"
   },
+  "otherParties" : [{"otherPartyDetails": {
+          "partyName": "Muhammad Nauman",
+          "address": "House # 1029D, Street # 46",
+          "phoneNumber": "+923315882990",
+          "email": "numan98khan@gmail.com",
+          "cnicNumber": "9876598765439"
+      }},],
   "otherPartyDetails": {
       "partyName": "Muhammad Nauman",
       "address": "House # 1029D, Street # 46",
       "phoneNumber": "+923315882990",
+      "whatsappNumber": "",
       "email": "numan98khan@gmail.com",
       "cnicNumber": "9876598765439"
   },
@@ -1120,8 +1132,105 @@ const dummyFormData = {
   "clerk": "numan98khan@gmail.com"
 };
 
+const dummyFormData1 = {
+    "clientDetails": {
+        "address": "House # 1029D, Street # 46",
+        "cnic": "17301-0830477-1",
+        "companyName": "N/A",
+        "contactNumber": "+923315882990",
+        "country": "AM",
+        "dob": "06/03/2023, 05:48:18",
+        "email": "numan98khan@gmail.com",
+        "firstName": "Muhammad",
+        "gender": "male",
+        "howDidYou": "Myself",
+        "lastName": "Nauman",
+        "nationality": "AT",
+        "preferredCorr": "by email",
+        "registration_time": "6/3/2023 @ 5:51:48",
+        "title": "Mr.",
+        "town": "Islamabad",
+        "zipcode": "44000",
+        "id": "-NPoOnidu4OBYdUwnTSE"
+    },
+    "caseDetails": {
+        "isOrganization": false,
+        "legalOpinion": true,
+        "legalDrafting": false,
+        "dueDiligence": true,
+        "legalisationRegistration": false,
+        "regulatoryWork": false,
+        "litigationWork": false,
+        "clientDetails": {
+            "name": "Nauman",
+            "clientName": "Muhammad Nauman",
+            "clientAddress": "House # 1029D, Street # 46",
+            "phoneNumber": "+923315882990",
+            "email": "numan98khan@gmail.com",
+            "cnicNumber": "12345-1234567-1",
+            "ntn": "123654789",
+            "plaintiff": "Defendant",
+            "whatsappNumber": "+923315882990"
+        },
+        "otherParties": [
+            {
+                "otherPartyDetails": {
+                    "partyName": "Muhammad Nauman",
+                    "address": "House # 1029D, Street # 46",
+                    "phoneNumber": "+923315882990",
+                    "email": "numan98khan@gmail.com",
+                    "cnicNumber": "9876598765439",
+                    "clientName": "Muhammad Nauman",
+                    "clientAddress": "House # 1029D, Street # 46",
+                    "advocateName": "Malik Riaz",
+                    "ntn": "213465",
+                    "whatsappNumber": "+923335241011"
+                }
+            }
+        ],
+        "otherPartyDetails": {
+            "partyName": "Muhammad Nauman",
+            "address": "House # 1029D, Street # 46",
+            "phoneNumber": "+923315882990",
+            "email": "numan98khan@gmail.com",
+            "cnicNumber": "9876598765439"
+        },
+        "contactPerson": {
+            "name": "Nauman",
+            "clientName": "Muhammad Nauman",
+            "clientAddress": "House # 1029D, Street # 46",
+            "phoneNumber": "+923315882990",
+            "email": "numan98khan@gmail.com",
+            "cnicNumber": "12345-1234567-1",
+            "ntn": "123654789",
+            "plaintiff": "Defendant",
+            "whatsappNumber": "+923315882990"
+        },
+        "litigation": {
+            "category": "Civil Litigation",
+            "subCategory": "Specific Performance of Contract under Section 12"
+        },
+        "litigationCaseTitle": "My Unlawful Land Deal",
+        "courtCaseNo": "365/12",
+        "isDateNewCase": false,
+        "substantiveDateOfLastHearing": "2023-04-01T14:31:00.000Z",
+        "substantiveDateOfNextHearing": "2023-04-08T14:31:00.000Z",
+        "judge": "Judge Rukhsar",
+        "court": "District & Sessions Judge",
+        "district": "Lower Dir",
+        "bench": "N/A",
+        "tehsil": "Jandool",
+        "natureOfLitigation": "Trial",
+        "worker": "akashahmed@greystone.com",
+        "clerk": "numan98khan@gmail.com"
+    },
+    "paymentOptions": {}
+}
+
 export {
   nulllist,
+  dummyFormData,
+  dummyFormData1,
   optionsChances,
   optionsCaseSupervisor,
   optionsHousingLaw,

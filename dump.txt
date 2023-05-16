@@ -30,3 +30,24 @@
  
     }
 }
+
+
+
+
+UPDATE your_table
+SET date_column = STR_TO_DATE(
+    CONCAT(
+        SUBSTRING(date_column, 4, 2),
+        '/',
+        SUBSTRING(date_column, 1, 2),
+        '/',
+        SUBSTRING(date_column, 7)
+    ),
+    '%m/%d/%Y'
+)
+WHERE DATE_FORMAT(date_column, '%m') > 12;
+
+
+
+
+

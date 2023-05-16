@@ -1,0 +1,87 @@
+Users table:
+
+id (Primary Key)
+displayName
+email_id (Foreign Key referencing Emails.id)
+type
+username
+
+Emails table:
+
+id (Primary Key)
+email
+
+Clients table:
+
+id (Primary Key)
+address
+first_name
+last_name
+cnic_number
+email_id (Foreign Key referencing Emails.id)
+phone_number
+whatsapp_number
+user_id (Foreign Key referencing Users.id)
+client_type
+
+Contacts table:
+
+id (Primary Key)
+address
+first_name
+last_name
+cnic_number
+email_id (Foreign Key referencing Emails.id)
+phone_number
+whatsapp_number
+user_id (Foreign Key referencing Users.id)
+
+OtherParties table:
+
+id (Primary Key)
+address
+first_name
+last_name
+cnic_number
+email_id (Foreign Key referencing Emails.id)
+phone_number
+whatsapp_number
+user_id (Foreign Key referencing Users.id)
+party_type
+
+Cases table:
+
+id (Primary Key)
+file_number
+case_number
+client_id (Foreign Key referencing Clients.id)
+courtCaseNo
+courtName
+category
+district
+dieDiligence
+initial_judge
+legalAnalysis
+legalDrafting
+legalOpinion
+legalisationRegistration
+litigationCaseTitle
+recommendation
+regulatoryWork
+produced_by (Foreign Key referencing Users.id)
+
+Hearings table:
+
+id (Primary Key)
+case_id (Foreign Key referencing Cases.id)
+interimDateNotFixed
+interimDateOfFirstHearing
+interimDateOfHearing
+interimDateOfLastHearing
+judge
+substantiveDateNotFixed
+substantiveDateOfHearing
+substantiveDateOfLastHearing
+substantiveDateOfNextHearing
+summaryOfFacts
+updated_by (Foreign Key referencing Users.id)

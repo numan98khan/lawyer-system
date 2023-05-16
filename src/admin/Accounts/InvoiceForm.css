@@ -1,0 +1,38 @@
+
+  
+  .form {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 80%; /*Adjust this value*/
+    /* width: 50%; */
+    /* background-color: #ccc; */
+    /* flex-grow: 1; */
+    /* margin-left: 20px; */
+  }
+  
+  .sub-form {
+    /* padding-top: 400px; */
+    /* max-width: 800px;
+    margin: 0 auto;
+    display: flex;*/
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 90%;
+    /* background-color: #e1e; */
+  }
+  
+  .form-container {
+    /* background-color: #333; */
+    height: 90vh; /* change from 100% to 100vh */
+    /* width: 10vw; */
+    padding-top: 2%;
+    display: flex;
+    flex-direction: column; /* Add this to stack form and button vertically */
+    justify-content: space-between; /* Add this to add space between form and button */
+  }
+  

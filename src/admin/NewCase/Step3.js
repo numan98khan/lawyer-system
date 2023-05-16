@@ -92,7 +92,7 @@ function StepTwo({ formData, handleInputChange }) {
       value: formData.interimDateOfHearing || null,
     },
     {
-      label: "Date not fixed yet",
+      label: "Date not fixed yet (e.g. High court cases left over)",
       id: "isDateNotFixed",
       value: formData.isDateNotFixed || false, //This will be checkbox
     },
@@ -142,6 +142,44 @@ function StepTwo({ formData, handleInputChange }) {
           </FormControl>
         ))}
 
+
+
+          <FormControl className={classes.formControl}>
+
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                
+                margin="normal"
+                
+                format="MM/dd/yyyy"
+                label={'Tax Year'}
+
+                id={'taxYear'}
+                name={'taxYear'}
+                value={formData.taxYear}
+                onChange={(e) => {
+                  // e = id
+
+                  const event = {value: e, name:'taxYear'}
+                  console.log("My e", event);
+                  handleInputChange(event);
+                  // setdate(e);
+                }}
+                // onChange={handleInputChange}
+                KeyboardButtonProps={{
+                  "aria-label": "change date",
+                }}
+              />
+            </MuiPickersUtilsProvider>
+
+          </FormControl>
+          
+          <FormControl className={classes.formControl}>
+          </FormControl>
+
+
+
+
       <FormControlLabel
             // key={id}
             control={
@@ -173,6 +211,67 @@ function StepTwo({ formData, handleInputChange }) {
 
 
         </div>
+
+        <h6 className={classes.heading}>Tax Period</h6>
+        
+        <div className={classes.formRow}>
+        {/* <h6 className={classes.heading}>Substantive date of hearing</h6> */}
+        
+        <FormControl className={classes.formControl}>
+
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+
+              <KeyboardDatePicker
+                margin="normal"
+                format="MM/dd/yyyy"
+                label={'Start Date'}
+                id={'startDate'}
+                name={'startDate'}
+                value={formData.startDate}
+                onChange={(e) => {
+                  const event = {value: e, name:'startDate'}
+                  console.log("Start Date", event);
+                  handleInputChange(event);
+                }}
+                KeyboardButtonProps={{
+                  "aria-label": "change start date",
+                }}
+              />
+
+            </MuiPickersUtilsProvider>
+
+
+            </FormControl>
+
+        
+            <FormControl className={classes.formControl}>
+
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+
+              <KeyboardDatePicker
+                  margin="normal"
+                  format="MM/dd/yyyy"
+                  label={'End Date'}
+                  id={'endDate'}
+                  name={'endDate'}
+                  value={formData.endDate}
+                  onChange={(e) => {
+                    const event = {value: e, name:'endDate'}
+                    console.log("End Date", event);
+                    handleInputChange(event);
+                  }}
+                  KeyboardButtonProps={{
+                    "aria-label": "change end date",
+                  }}
+                />
+
+              </MuiPickersUtilsProvider>
+
+
+              </FormControl>
+
+        </div>
+
         <h6 className={classes.heading}>Substantive date of hearing</h6>
         
         <div className={classes.formRow}>

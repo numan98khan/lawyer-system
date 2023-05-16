@@ -31,11 +31,14 @@ const RowCell = (props) => {
         <Field
           value={cellValue}
           onEnter={(event) => {
-            // console.log('event')
-            // console.log(event.key)
+            console.log('event')
+            console.log(event.key)
 
             if (event.key === "Enter") {
               updateChange();
+            } else if (event.key === "`") {
+              setCellValueInput(false);
+              setCellValue(temp);
             }
           }}
           inputChange={(e) => {

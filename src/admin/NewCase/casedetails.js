@@ -11,20 +11,26 @@ import NatureOfLitigation from './Step8';
 import CaseCategory from './Step9';
 import WorkerAssignment from './Step10';
 
+import Title from "../../components/Title";
+
 import Navigation from './Navigation';
 import './Form.css';
+import fire, { firebaseConfig } from "../../fire";
 
 import ButtonContainer from '../../components/Button';
 
 import FormControl from '@material-ui/core/FormControl';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { addClientAndCase } from "../../actions/caseActions";
+import { addClientAndCase, addCaseFirestore } from "../../actions/caseActions";
 import { addHearingEntry, loadHearings } from "../../actions/hearingActions";
 
 
 import { connect } from 'react-redux';
 import {useHistory,useLocation} from 'react-router-dom';
+
+import {dummyFormData as dummy_data } from './lists';
+import {dummyFormData1 as dummy_data1 } from './lists';
 
 
 
@@ -64,6 +70,13 @@ function Form(props) {
   
   const classes = useStyles();
 
+  const breadCrumbs = location.state.clientDetails.firstName + ' ' +
+                      location.state.clientDetails.lastName + ' / ' +
+                      location.state.clientDetails.contactNumber + ' / ' + 
+                      location.state.file_n + ' / ' + 
+                      location.state.case_n;
+
+  ///*
   const [formData, setFormData] = useState({
     // category: 'Civil Litigation',
     isOrganization: false,
@@ -74,9 +87,23 @@ function Form(props) {
     legalisationRegistration: false,
     regulatoryWork: false,
     litigationWork: false,
+
+    clientId: location.state.clientId,
     
     // courtName: '',
-    clientDetails: {name: 'Nauman'},
+    // TODO: Find a more elegant solution rather than mapping
+    clientDetails: {
+      "name": location.state.clientDetails.firstName + ' ' + location.state.clientDetails.lastName,
+      "clientName": location.state.clientDetails.firstName + ' ' + location.state.clientDetails.lastName,
+      "clientAddress": location.state.clientDetails.address, 
+      // "clientAddress": "House # 1029D, Street # 46",
+      "phoneNumber": location.state.clientDetails.contactNumber, 
+      "email": location.state.clientDetails.email, 
+      "cnicNumber": location.state.clientDetails.cnic, 
+      "ntn": "123654789",
+      "plaintiff": "Defendant"
+      
+    },
     otherPartyDetails: {},
     otherParties: [{}],
     contactPerson: {},
@@ -86,76 +113,11 @@ function Form(props) {
     // clerk: null,
     // caseowner: null,
 
-    litigation: {category: 'Civil Litigation'}
+    litigation: {category: 'Civil Litigation', subCategory: null}
+    // litigation: {}
   });
+  // */
 
-
-  /*
-  const handleInputChange = (event, index) => {
-    console.log(event);
-  
-    let name, value;
-    if (event.target === undefined) {
-      ({ name, value } = event);
-    } else {
-      ({ name, value } = event.target);
-  
-      if (event.target.type === 'checkbox') {
-        value = event.target.checked;
-      }
-    }
-  
-    console.log("Upstream", name, value, event.target?.checked, event.target, index);
-  
-    // check if the name contains a '.' indicating a nested object
-    if (name.includes('.')) {
-      // separate the nested object key and property name
-      const [objName, propName] = name.split('.');
-
-      if (index !== undefined) {
-        // console.log('INDEX EDITING', index);
-        // update the nested object property
-        setFormData(prevState => ({
-          ...prevState,
-          otherParties: prevState.otherParties.map((otherParty, idx) => {
-            console.log(otherParty);
-            if (idx === index) {
-              console.log('hear me!');
-              return {
-                ...otherParty,
-                [objName]: {
-                  ...otherParty[objName],
-                  [propName]: value
-                }
-              };
-            }
-            console.log(otherParty);
-            return otherParty;
-          })
-        }));
-      } else {
-  
-        // update the nested object property
-        setFormData(prevState => ({
-          ...prevState,
-          [objName]: {
-            ...prevState[objName],
-            [propName]: value
-          }
-        }));
-
-      }
-
-    } else {
-
-        // update the top-level property
-        setFormData({ ...formData, [name]: value });
-      
-    }
-  
-    console.log(formData);
-  };
-  //*/
 
   const handleInputChange = (event, index) => {
     console.log(event);
@@ -177,11 +139,12 @@ function Form(props) {
     if (name.includes('.')) {
       // separate the nested object key and property name
       const [objName, propName] = name.split('.');
+      console.log(objName, propName, index)
   
       // update the nested object property
       setFormData(prevState => {
         // When index is undefined, update the top-level property.
-        if (index === undefined) {
+        if (!Number.isInteger(index)) {
           return {
             ...prevState,
             [objName]: {
@@ -190,7 +153,8 @@ function Form(props) {
             }
           };
         }
-  
+        
+        console.log('INDEX', index, prevState);
         // When index is provided, update the otherParties property.
         return {
           ...prevState,
@@ -211,7 +175,24 @@ function Form(props) {
       });
     } else {
       // update the top-level property
-      setFormData({ ...formData, [name]: value });
+      setFormData(prevState => {
+        // Handle the 'isNA' checkbox for the 'court' field
+        if (name === 'isNACourt') {
+          if (prevState.court === 'N/A') {
+            return { ...prevState, ['court']: null };  
+          } else {
+            return { ...prevState, ['court']: 'N/A' };
+          }
+        }
+        if (name === 'isNANOL') {
+          if (prevState.natureOfLitigation === 'N/A') {
+            return { ...prevState, ['natureOfLitigation']: null };  
+          } else {
+            return { ...prevState, ['natureOfLitigation']: 'N/A' };
+          }
+        }
+        return { ...prevState, [name]: value };
+      });
     }
   
     console.log(formData);
@@ -244,98 +225,20 @@ function Form(props) {
     }
   };
 
-  function getCaseData(fnum, cnum) {
-    //check if case is new or hearing exists already
-    //if hearing exists, get data from hearing
-    //else get it from cases table ::: contextValue.filesList
-    if (props.cases.files.length === 0) {
-      return;
-    }
 
-    var cases = props.cases.files[fnum].cases;
-    var retCase = null;
-    var peshiData = null;
-
-    // console.log(cases);
-    console.log(props.hearings);
-    console.log(cases[cnum]);
-    // ::: contextValue.peshiList
-    if (cases[cnum] !== undefined && props.hearings) {
-      console.log("fnum", fnum, cnum);
-
-      peshiData = props.hearings.hearings
-        .filter((x) => x.case_n === cnum)
-        .filter((x) => x.file_n === fnum);
-
-      // console.log()
-      console.log("what", peshiData);
-
-      if (peshiData.length > 0) {
-        setnewCase(false);
-        retCase = peshiData.pop();
-
-        // let trueDeep = jQ.extend(true, retCase, {});
-
-        var trueDeep = _.cloneDeep(retCase);
-
-        console.log("trueDeep", trueDeep);
-
-        setInitCase(trueDeep);
-      } else {
-        setnewCase(true);
-        retCase = cases[cnum];
-        retCase["previous_proceedings"] = "new case";
-        retCase["previous_proceedings_date"] = "new case";
-        retCase["file_n"] = fnum;
-        retCase["case_n"] = cnum;
-        // retCase['updated_by'] = 'noman';
-      }
-      retCase["updated_by"] = props.user.email;
-
-      setRetCase(retCase);
-      console.log('retCase', retCase);
-
-      return retCase;
-      // console.log(peshiData)
-    }
-  }
-
-  async function getCaseData(fnum, cnum) {
-    return new Promise(async (resolve) => {
-      if (props.cases.files.length === 0) {
-        resolve(null);
-        return;
-      }
-  
-      const cases = props.cases.files[fnum].cases;
-      let retCase = null;
-  
-      if (cases[cnum] !== undefined && props.hearings) {
-        const peshiData = props.hearings.hearings
-          .filter((x) => x.case_n === cnum && x.file_n === fnum);
-  
-        if (peshiData.length > 0) {
-          setnewCase(false);
-          retCase = _.cloneDeep(peshiData.pop());
-          setInitCase(retCase);
-        } else {
-          setnewCase(true);
-          retCase = { ...cases[cnum], previous_proceedings: "new case", previous_proceedings_date: "new case", file_n: fnum, case_n: cnum, updated_by: props.user.email };
-        }
-        setRetCase(retCase);
-      }
-      resolve(retCase);
-    });
-  }
-  
 
 
   return (
+    <div>
+    <Title title={breadCrumbs} extraSpace leftSpace />
     <div className="form-container">
+      
+      <div className="flex-container"> 
       <Navigation step={step} setStep={setStep} />
         
       <div className="form">
         
+        {/* <Title title="CRUMBS" extraSpace leftSpace /> */}
         <form className="sub-form" onSubmit={handleSubmit}>
           {step === 1 && (
             
@@ -407,35 +310,45 @@ function Form(props) {
               <FormControl className={classes.formControl}>
                 <ButtonContainer
                   onClick={() => {
-                    console.log('form data', formData);
-                    location.state.caseDetails = formData;
-                    location.state.paymentOptions = {};
-                    console.log(location.state);
+                    // console.log('form data', formData);
+                    // location.state.caseDetails = formData;
+                    // location.state.paymentOptions = {};
+                    // console.log(location.state);
                     
+                    // // const latestFileAndCase = getLatestFileAndCase(location.state.clientDetails.id);
+                    // getLatestFileAndCase(location.state.clientDetails.id).then((obj)=>{
+                    //   console.log('OBJ', obj);
+                    // });
+                    
+                    formData['file_number'] = location.state.file_n;
+                    formData['case_number'] = location.state.case_n;
 
-                    console.log('Observe Payload', retCase, initCase);
+                    console.log(formData)
+
+                    // props.addCaseFirestore(formData).then(({ caseDetails, file_n, case_n })=>{
+                    //     console.log('location.state', caseDetails, file_n, case_n, initCase);
+
+                    // });
+
+                    console.log('Observe Payload', retCase, initCase, props);
                     /*
                     props.addClientAndCase(location.state).then(({ caseDetails, file_n, case_n })=>{
                       console.log('location.state', caseDetails, file_n, case_n, initCase);
-                      // const temp_case = getCaseData(file_n, case_n);
-                      // setnewCase(true);
-      
-                      // retCase = props.cases[cnum];
-                      // temp_case["previous_proceedings"] = "new case";
-                      // temp_case["previous_proceedings_date"] = "new case";
-                      // retCase["file_n"] = fnum;
-                      // retCase["case_n"] = cnum;
-                      // temp_case["updated_by"] = props.user.email;
+                  
+
+                      try {
+                        caseDetails['substantiveDateOfLastHearing'] = caseDetails['substantiveDateOfLastHearing'].toString();
+                      } catch (error) {
+                        console.log("Error converting substantiveDateOfLastHearing to string:", error);
+                        caseDetails['substantiveDateOfLastHearing'] = "";
+                      }
                       
-                      // }
-
-                      // console.log('Observe Payload', temp_case, initCase);
-
-                      // retCase["next_proceedings_date"] = dob.toLocaleDateString("en-US");
-                      // retCase["next_proceedings"] = nextProceedings;
-
-                      caseDetails['substantiveDateOfLastHearing'] = caseDetails['substantiveDateOfLastHearing'].toString()
-                      caseDetails['substantiveDateOfNextHearing'] = caseDetails['substantiveDateOfNextHearing'].toString()
+                      try {
+                        caseDetails['substantiveDateOfNextHearing'] = caseDetails['substantiveDateOfNextHearing'].toString();
+                      } catch (error) {
+                        console.log("Error converting substantiveDateOfNextHearing to string:", error);
+                        caseDetails['substantiveDateOfNextHearing'] = "";
+                      }
 
                       caseDetails["updated_by"] = props.user.email;
                       caseDetails["file_n"] = file_n;
@@ -476,6 +389,9 @@ function Form(props) {
           </div>
         </form>
       </div>
+      </div>
+
+    </div>
     </div>
   );
 }
@@ -490,7 +406,7 @@ const mapStateToProps = (state) => ({
   // type: state.type
 });
 
-export default connect(mapStateToProps, { addHearingEntry, loadHearings, addClientAndCase })(
+export default connect(mapStateToProps, { addHearingEntry, loadHearings, addClientAndCase, addCaseFirestore })(
   Form
 );
 

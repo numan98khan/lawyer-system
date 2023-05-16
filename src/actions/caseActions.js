@@ -21,16 +21,23 @@ export const loadCase = () => (dispatch, getState) => {
       files = {};
       snapshot.forEach((doc) => {
         var tempJSON = doc.toJSON();
-        tempJSON["id"] = doc.key;
+        
+        tempJSON["id"] = decodeURIComponent(doc.key);
+        console.log('tempJSON', tempJSON)
+        // var decoded_file_key = decodeURIComponent(file_key);
+
+        if (tempJSON.cases === undefined) {
+          tempJSON.cases = []
+        }
 
         //filter the cases if user type is worker and then push
-        Object.keys(tempJSON.cases).map((caseKey) => {
+        Object.keys(tempJSON?.cases).map((caseKey) => {
           tempJSON.cases[caseKey]["case_number"] = caseKey;
-          tempJSON.cases[caseKey]["file_number"] = doc.key;
+          tempJSON.cases[caseKey]["file_number"] = tempJSON["id"];
           cases.push(tempJSON.cases[caseKey]);
         });
         files[tempJSON["id"]] = {};
-        files[tempJSON["id"]]["cases"] = tempJSON.cases;
+        files[tempJSON["id"]]["cases"] = tempJSON?.cases;
         files[tempJSON["id"]]["client_id"] = tempJSON.client_id;
       });
 
@@ -49,7 +56,7 @@ export const loadCase = () => (dispatch, getState) => {
     });
 };
 
-const addCaseAndPayments = (payload) => {
+const addCaseAndPayments = (payload, isAppeal) => {
   payload.caseDetails.clientId = payload.clientDetails.id;
   payload.paymentOptions.clientid = payload.clientDetails.id;
   return new Promise((res, rej) => {
@@ -73,11 +80,14 @@ const addCaseAndPayments = (payload) => {
             console.log("searching!");
 
             if (snapshot.exists()) {
-              console.log("found it!");
+              console.log("found it!", payload);
 
-              var file_key = Object.keys(snapshot.toJSON())[0];
+              // var file_key = Object.keys(snapshot.toJSON())[0];
+              // var file_key = payload.file_n;
+              var file_key = encodeURIComponent(payload.file_n);
 
-              console.log(file_key);
+
+              console.log('file_key', file_key, Object.keys(snapshot.toJSON()));
 
               fire
                 .getFire()
@@ -117,7 +127,7 @@ const addCaseAndPayments = (payload) => {
   });
 };
 
-export const addClientAndCase = (payload) => (dispatch, getState) => {
+export const addClientAndCase = (payload, isAppeal) => (dispatch, getState) => {
   return new Promise((res, rej) => {
     //convert dates to strings
     payload.clientDetails.dob = payload.clientDetails.dob.toLocaleString();
@@ -140,12 +150,12 @@ export const addClientAndCase = (payload) => (dispatch, getState) => {
         if (snapshot.exists()) {
           console.log("client exists!");
           //only create case and payments
-          addCaseAndPayments(payload)
+          addCaseAndPayments(payload, isAppeal)
             .then(({ caseDetails, file_n, case_n }) => {
               const files = getState().cases.files;
               const cases = getState().cases.cases;
               cases.push(caseDetails);
-              console.log(files[file_n].cases);
+              // console.log(files[file_n].cases);
               dispatch({
                 type: ADD_CASE,
                 payload: { files, cases },
@@ -161,6 +171,7 @@ export const addClientAndCase = (payload) => (dispatch, getState) => {
       });
     //return if id exists
     if (id) return;
+
     //add client, case and payments
     uploadPayload(payload)
       .then(() => {
@@ -170,8 +181,53 @@ export const addClientAndCase = (payload) => (dispatch, getState) => {
   });
 };
 
-const uploadPayload = (payload) => {
+export const addCaseFirestore = (payload, file_n, case_n, isAppeal) => (dispatch, getState) => {
+  
+}
+
+export const addClient = (payload) => (dispatch, getState) => {
+  return new Promise((resolve, reject) => {
+    const clientDetails = payload.clientDetails
+    // Convert date to string
+    clientDetails.dob = clientDetails.dob.toLocaleString();
+
+    let id = clientDetails.id;
+
+    // Check if the user exists already
+    fire
+      .getFire()
+      .database()
+      .ref(`clients/${id}/`)
+      .once("value", (snapshot) => {
+        if (snapshot.exists()) {
+          console.log("client exists!");
+          resolve({ clientDetails, message: "Client already exists" });
+        } else {
+          // Add client
+          fire
+            .getFire()
+            .database()
+            .ref(`clients/${id}/`)
+            .set(clientDetails)
+            .then(() => {
+              // Update the Redux state if needed
+              // Example:
+              // const clients = getState().clients;
+              // clients.push(clientDetails);
+              // dispatch({ type: ADD_CLIENT, payload: { clients } });
+
+              resolve({ clientDetails, message: "Client added successfully" });
+            })
+            .catch((err) => reject(err));
+        }
+      });
+  });
+};
+
+
+export const uploadPayload = (payload) => {
   //add client and make new client user
+  // console.log("uploadPayload", payload)
 
   return new Promise((res, rej) => {
     var currentdate = new Date();
@@ -198,7 +254,7 @@ const uploadPayload = (payload) => {
       .then((snap) => {
         // Update successful.
         var client_key = snap.key;
-        payload.caseDetails.clientId = client_key;
+        // payload.caseDetails.clientId = client_key;
         //add case
 
         fire
@@ -207,8 +263,8 @@ const uploadPayload = (payload) => {
           .ref("/files")
           .once("value")
           .then(function(snapshot) {
-            console.log("doin somethin");
-            console.log(snapshot.numChildren());
+            // console.log("doin somethin", payload.caseDetails, client_key);
+            // console.log(snapshot.numChildren());
             fire
               .getFire()
               .database()
@@ -224,23 +280,27 @@ const uploadPayload = (payload) => {
           });
 
         //add payment options
-        payload.paymentOptions.clientid = client_key;
+        // payload.paymentOptions.clientid = client_key;
+
         fire
           .getFire()
           .database()
           .ref("/invoice")
           .push(payload.paymentOptions)
           .then((snap) => {
-            // Update successful.
-            //add new client account
-            addClientUser(payload.clientDetails.email)
-              .then(() => {
-                res();
-              })
-              .catch((err) => {
-                rej(err);
-              });
+
+            // // Update successful.
+            // //add new client account
+            // addClientUser(payload.clientDetails.email)
+            //   .then(() => {
+            //     res();
+            //   })
+            //   .catch((err) => {
+            //     rej(err);
+            //   });
+
           });
+
       })
       .catch((err) => rej(err));
   });

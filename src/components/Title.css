@@ -26,3 +26,13 @@
 .title-add-product {
   margin-left: auto;
 }
+
+.left-space {
+  margin-left: 0.5rem;
+}
+
+.sub-heading {
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #888;
+}

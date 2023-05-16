@@ -98,6 +98,23 @@ function ClientInformationForm({ formData, handleInputChange }) {
 
   const [sameAsClientDetails, setSameAsClientDetails] = useState(false);
 
+  const [sameAsPhone, setSameAsPhone] = useState(false);
+
+  const handleCheckboxChange = (event) => {
+    setSameAsPhone(event.target.checked);
+  
+    if (event.target.checked) {
+      handleInputChange({
+        name: 'contactPerson.whatsappNumber',
+        value: formData.contactPerson.phoneNumber,
+      });
+    } else {
+      handleInputChange({
+        name: 'contactPerson.whatsappNumber',
+        value: '',
+      });
+    }
+  };
 
   const fields = (isOrganization) =>  [
     {
@@ -155,14 +172,14 @@ function ClientInformationForm({ formData, handleInputChange }) {
       value: formData.contactPerson.phoneNumber || "",
     },
     {
-      label: "WhatsApp No.",
-      id: "contactPerson.whatsappNumber",
-      value: formData.contactPerson.whatsappNumber || "",
-    },
-    {
       label: "Email",
       id: "contactPerson.email",
       value: formData.contactPerson.email || "",
+    },
+    {
+      label: "WhatsApp No.",
+      id: "contactPerson.whatsappNumber",
+      value: formData.contactPerson.whatsappNumber || "",
     },
 
     
@@ -240,7 +257,33 @@ function ClientInformationForm({ formData, handleInputChange }) {
               
               inputComponent={TextMaskCNIC}
             /></>
-          ) : (
+          ) : id === 'contactPerson.whatsappNumber' ? (
+            // Add your desired component or code for handling the 'Whatsapp no.' case here
+            <>
+              <TextField
+                  required
+                  name={id}
+                  label={label}
+                  id={id}
+                  value={value}
+                  onChange={handleInputChange}
+                  fullWidth
+                  // disabled
+              />
+              <FormControlLabel
+              control={
+                <Checkbox
+                  checked={sameAsPhone}
+                  onChange={handleCheckboxChange} // use handleInputChange instead of handleCheckboxChange
+                  // name="isNACourt"
+
+                  color="primary"
+                />
+              }
+              label="same as above"
+            />
+            </>
+        ) : (
             <TextField
               required
               name={id}

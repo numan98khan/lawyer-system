@@ -104,6 +104,44 @@ function OtherPartyInformationForm({ formData, handleInputChange, handleAddOther
   const classes = useStyles();
   const [isOrganization, setIsOrganization] = useState(formData.isOrganization || false);
 
+  // const [sameAsPhone, setSameAsPhone] = useState([]);
+  const [sameAsPhone, setSameAsPhone] = useState(formData.otherParties.map(() => false));
+
+
+  const handleCheckboxChange = (event, index) => {
+    const isChecked = event.target.checked;
+
+    // Update the sameAsPhone state for the specific other party
+    setSameAsPhone(prevState => {
+        const updatedSameAsPhone = [...prevState];
+        updatedSameAsPhone[index] = isChecked;
+        return updatedSameAsPhone;
+    });
+    console.log('isChecked', isChecked);
+
+    // Update the whatsappNumber value based on the isChecked value
+    handleInputChange({
+        name: 'otherPartyDetails.whatsappNumber',
+        value: isChecked ? formData.otherParties[index]?.otherPartyDetails?.phoneNumber : '',
+    }, index);
+};
+
+  // const handleCheckboxChange = (event) => {
+  //   setSameAsPhone(event.target.checked);
+  
+  //   if (event.target.checked) {
+  //     handleInputChange({
+  //       name: 'otherPartyDetails.whatsappNumber',
+  //       value: formData.otherPartyDetails.phoneNumber,
+  //     });
+  //   } else {
+  //     handleInputChange({
+  //       name: 'otherPartyDetails.whatsappNumber',
+  //       value: '',
+  //     });
+  //   }
+  // };
+  
 
   const fields = (isOrganization, index) =>  [
     {
@@ -173,17 +211,23 @@ function OtherPartyInformationForm({ formData, handleInputChange, handleAddOther
       id: "otherPartyDetails.phoneNumber",
       value: formData.otherPartyDetails.phoneNumber || "",
     },
-    {
-      label: "WhatsApp No.",
-      id: "otherPartyDetails.whatsappNumber",
-      value: formData.otherPartyDetails.whatsappNumber || "",
-    },
+    
     {
       label: "Email",
       id: "otherPartyDetails.email",
       value: formData.otherPartyDetails.email || "",
     },
-
+    // {
+    //   label: "WhatsApp No.",
+    //   id: "otherPartyDetails.whatsappNumber",
+    //   value: formData.otherPartyDetails.whatsappNumber || "",
+    // },
+    {
+      // ...
+      label: "WhatsApp No.",
+      id: "otherPartyDetails.whatsappNumber",
+      value: formData.otherParties[index]?.otherPartyDetails?.whatsappNumber || "",
+    }
     
   ];
 
@@ -253,7 +297,9 @@ function OtherPartyInformationForm({ formData, handleInputChange, handleAddOther
               name={id}
               label={label}
               id={id}
-              value={value}
+              // value={value}
+              value={formData.otherParties[index]?.otherPartyDetails?.[id.split('.')[1]] || ""}
+        
               onChange={handleInputChange}
               // onChange={(e) => handleInputChange(e, index)}
               
@@ -262,7 +308,38 @@ function OtherPartyInformationForm({ formData, handleInputChange, handleAddOther
               
               inputComponent={TextMaskCNIC}
             /></>
-          ) : (
+          ) : id === 'otherPartyDetails.whatsappNumber' ? (
+            // Add your desired component or code for handling the 'Whatsapp no.' case here
+            <>
+              <TextField
+                  required
+                  name={id}
+                  label={label}
+                  id={id}
+                  // value={value}
+                  value={formData.otherParties[index]?.otherPartyDetails?.[id.split('.')[1]] || ""}
+        
+                  onChange={handleInputChange}
+                  fullWidth
+                  // disabled
+              />
+              <FormControlLabel
+              control={
+                <Checkbox
+                  // checked={sameAsPhone}
+                  // onChange={handleCheckboxChange} // use handleInputChange instead of handleCheckboxChange
+                  // // name="isNACourt"
+                  // color="primary"
+
+                  checked={sameAsPhone[index] || false}
+                  onChange={(e) => handleCheckboxChange(e, index)}
+                  color="primary"
+                />
+              }
+              label="same as above"
+            />
+            </>
+        )  : (
             <TextField
               required
               name={id}

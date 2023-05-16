@@ -24,15 +24,12 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { withRouter } from "react-router-dom";
 
 import TextField from "@material-ui/core/TextField";
-
-import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 
-import Rating from "@material-ui/lab/Rating";
+import IconButton from '@material-ui/core/IconButton';
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 
-import { makeStyles, useTheme } from "@material-ui/core/styles";
 
-import Paper from "@material-ui/core/Paper";
 
 // import { loadCase } from "../../actions/caseActions";
 
@@ -294,6 +291,15 @@ class casesList extends Component {
                           </React.Fragment>
                         }
                       />
+
+                        <IconButton edge="end" onClick={(event) => {
+                          event.stopPropagation();
+                          /* Go to another form */
+                          this.props.history.push('/invoiceform', { Case })
+                        }}>
+
+                        <AttachMoneyIcon />
+                      </IconButton>
                     </ListItem>
                   );
                 })}
